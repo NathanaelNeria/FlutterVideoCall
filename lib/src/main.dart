@@ -143,7 +143,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'pages/welcomePage.dart';
 
 void main() {
-  runApp(MaterialApp(home: MyApp()));
+  runApp(MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: MyApp()));
 }
 
 class MyApp extends StatelessWidget {

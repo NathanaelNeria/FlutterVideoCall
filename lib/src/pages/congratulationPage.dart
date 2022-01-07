@@ -51,30 +51,6 @@ class _CongratulationPageState extends State<CongratulationPage> {
     );
   }
 
-  Widget _entryField(String title, {bool isPassword = false}) {
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            title,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          TextField(
-              obscureText: isPassword,
-              decoration: InputDecoration(
-                  border: InputBorder.none,
-                  fillColor: Color(0xfff3f3f4),
-                  filled: true))
-        ],
-      ),
-    );
-  }
-
   Widget _submitButton() {
     return
       InkWell(
@@ -109,39 +85,6 @@ class _CongratulationPageState extends State<CongratulationPage> {
 
   }
 
-  Widget _loginAccountLabel() {
-    return InkWell(
-      onTap: () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => WelcomePage()));
-      },
-      child: Container(
-        margin: EdgeInsets.symmetric(vertical: 20),
-        padding: EdgeInsets.all(15),
-        alignment: Alignment.bottomCenter,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'Already have an account ?',
-              style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
-            ),
-            SizedBox(
-              width: 10,
-            ),
-            Text(
-              'Login',
-              style: TextStyle(
-                  color: Color(0xfff79c4f),
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   Widget _title() {
     return RichText(
       textAlign: TextAlign.center,
@@ -166,15 +109,6 @@ class _CongratulationPageState extends State<CongratulationPage> {
     );
   }
 
-  Widget _emailPasswordWidget() {
-    return Column(
-      children: <Widget>[
-        _entryField("Username"),
-        _entryField("Email id"),
-        _entryField("Password", isPassword: true),
-      ],
-    );
-  }
   Widget buildItem(DocumentSnapshot doc) {
     return Text(
         '${(doc.data() as dynamic)['email']}',
@@ -212,7 +146,7 @@ class _CongratulationPageState extends State<CongratulationPage> {
                     ),
                     Text(
                       //'Selamat! Anda telah berhasil membuka rekening di Bank IST!',
-                      'Congratulation! You have successfully opening your account in IST Bank',
+                      'Congratulation! You have successfully registered for a product in NTBS',
                       style: TextStyle(color: Colors.black, fontSize: 17, fontWeight: FontWeight.bold), textAlign: TextAlign.left,
                     ),
                     //_emailPasswordWidget(),
@@ -242,7 +176,7 @@ class _CongratulationPageState extends State<CongratulationPage> {
                     ),
                     Text(
                       //'Silahkan bapak/ibu cek di email tsb untuk melihat hasil verifikasi dari pihak Bank dalam 24 jam',
-                      'Please keep checking your email above to follow up IST Bank verification process within 24 hours',
+                      'Please keep checking your email above to follow up NTBS verification process within 24 hours',
                       style: TextStyle(color: Colors.black, fontSize: 17), textAlign: TextAlign.left,
                     ),
                     SizedBox(

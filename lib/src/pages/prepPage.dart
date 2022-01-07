@@ -84,7 +84,10 @@ class _PrepPageState extends State<PrepPage> {
                 gradient: LinearGradient(
                     begin: Alignment.centerLeft,
                     end: Alignment.centerRight,
-                    colors: [Color(0xfffbb448), Color(0xfff7892b)])),
+                    // colors: [Color(0xfffbb448), Color(0xfff7892b)]
+                    colors: [Colors.green, Colors.green[700]]
+                )
+            ),
             child: Text(
          //     'OK, Semua sudah siap',
               'OK, I am ready',
@@ -132,12 +135,13 @@ class _PrepPageState extends State<PrepPage> {
     return RichText(
       textAlign: TextAlign.center,
       text: TextSpan(
-          text: 'IST',
+          text: 'NTB Syariah',
           style: GoogleFonts.portLligatSans(
             textStyle: Theme.of(context).textTheme.headline4,
             fontSize: 30,
             fontWeight: FontWeight.w700,
-            color: Color(0xffe46b10),
+            // color: Color(0xffe46b10),
+            color: Colors.black
           ),
           children: [
             TextSpan(
@@ -170,11 +174,11 @@ class _PrepPageState extends State<PrepPage> {
         height: height,
         child: Stack(
           children: <Widget>[
-            Positioned(
-              top: -MediaQuery.of(context).size.height * .15,
-              right: -MediaQuery.of(context).size.width * .4,
-              child: BezierContainer(),
-            ),
+            // Positioned(
+            //   top: -MediaQuery.of(context).size.height * .15,
+            //   right: -MediaQuery.of(context).size.width * .4,
+            //   child: BezierContainer(),
+            // ),
             Container(
               padding: EdgeInsets.symmetric(horizontal: 20),
               child: SingleChildScrollView(
@@ -199,7 +203,7 @@ class _PrepPageState extends State<PrepPage> {
                       ),
                       Text(
                         //'Hai, buka rekening IST Bank kamu sekarang yuk',
-                        'Let\'s follow these steps to open IST Bank Account',
+                        'Let\'s follow these steps to open NTB Syariah Bank Account',
                         style: TextStyle(color: Colors.black, fontSize: 17, fontWeight: FontWeight.bold), textAlign: TextAlign.left,
                       ),
                       //_emailPasswordWidget(),
@@ -215,7 +219,7 @@ class _PrepPageState extends State<PrepPage> {
                         height: 20,
                       ),
                       Text(
-                        '\u2022 eKTP and NPWP',
+                        '\u2022 eKTP',
                         style: TextStyle(color: Colors.black, fontSize: 17, fontWeight: FontWeight.bold), textAlign: TextAlign.left,
                       ),
                       //_emailPasswordWidget(),
@@ -239,20 +243,20 @@ class _PrepPageState extends State<PrepPage> {
                       SizedBox(
                         height: 20,
                       ),
-                      Text(
-                        //'\u2022 Perangkat dan koneksi internet untuk video call',
-                        '\u2022 Video call ready device',
-                        style: TextStyle(color: Colors.black, fontSize: 17, fontWeight: FontWeight.bold), textAlign: TextAlign.left,
-                      ),
-                      //_emailPasswordWidget(),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Text(
-                        //'\u2022 Perangkat dan koneksi internet untuk video call',
-                        '\u2022 Sufficient internet connection to have video call',
-                        style: TextStyle(color: Colors.black, fontSize: 17, fontWeight: FontWeight.bold), textAlign: TextAlign.left,
-                      ),
+                      // Text(
+                      //   //'\u2022 Perangkat dan koneksi internet untuk video call',
+                      //   '\u2022 Video call ready device',
+                      //   style: TextStyle(color: Colors.black, fontSize: 17, fontWeight: FontWeight.bold), textAlign: TextAlign.left,
+                      // ),
+                      // //_emailPasswordWidget(),
+                      // SizedBox(
+                      //   height: 20,
+                      // ),
+                      // Text(
+                      //   //'\u2022 Perangkat dan koneksi internet untuk video call',
+                      //   '\u2022 Sufficient internet connection to have video call',
+                      //   style: TextStyle(color: Colors.black, fontSize: 17, fontWeight: FontWeight.bold), textAlign: TextAlign.left,
+                      // ),
                       SizedBox(
                         height: 50,
                       ),

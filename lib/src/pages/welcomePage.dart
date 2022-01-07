@@ -27,18 +27,22 @@ class _WelcomePageState extends State<WelcomePage> {
         alignment: Alignment.center,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(5)),
-            boxShadow: <BoxShadow>[
-              BoxShadow(
-                  color: Color(0xffdf8e33).withAlpha(100),
-                  offset: Offset(2, 4),
-                  blurRadius: 8,
-                  spreadRadius: 2)
-            ],
-            color: Colors.white),
+            border: Border.all(color: Colors.white, width: 2),
+            // boxShadow: <BoxShadow>[
+            //   BoxShadow(
+            //       color: Color(0xffdf8e33).withAlpha(100),
+            //       offset: Offset(2, 4),
+            //       blurRadius: 8,
+            //       spreadRadius: 2)
+            // ],
+            // color: Colors.white
+        ),
         child: Text(
-          //'Buka Rekening Sekarang',
           'Open Account Now',
-          style: TextStyle(fontSize: 20, color: Color(0xfff7892b)),
+          style: TextStyle(fontSize: 20,
+              color: Colors.white
+              // color: Color(0xfff7892b)
+          ),
         ),
       ),
     );
@@ -135,22 +139,25 @@ class _WelcomePageState extends State<WelcomePage> {
                     spreadRadius: 2)
               ],
               gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [Color(0xfffbb448), Color(0xffe46b10)])),
+                  begin: Alignment.bottomLeft,
+                  end: Alignment.topRight,
+                  // colors: [Color(0xfffbb448), Color(0xffe46b10)]
+                colors: [Colors.green, Colors.green[600], Colors.green[700], Colors.green[800]]
+              )
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Image.asset(
-                'images/logoist.jpg',
+                'images/bank_NTBS.png',
                 width: 200,
               ),
               SizedBox(
                 height: 10,
               ),
               Text(
-                'Infosys Solusi Terpadu Bank',
+                'Bank NTB Syariah',
                 style: TextStyle(color: Colors.white, fontSize: 23, fontWeight: FontWeight.bold), textAlign: TextAlign.center,
               ),
               SizedBox(
@@ -158,15 +165,15 @@ class _WelcomePageState extends State<WelcomePage> {
               ),
               Text(
                 //'Selamat datang di IST Bank Mobile. Kemudahan bertransaksi dalam genggaman Anda',
-                'Welcome to IST Mobile Banking. Ease of transaction in your hand',
-                style: TextStyle(color: Colors.black, fontSize: 17), textAlign: TextAlign.center,
+                'Welcome to NTB Syariah Mobile Banking. Ease of transaction in your hand',
+                style: TextStyle(color: Colors.white, fontSize: 17), textAlign: TextAlign.center,
               ),
               SizedBox(
                 height: 80,
               ),
               Text(
                 //'Apakah kamu sudah memiliki rekening IST Mobile?',
-                'Do you have IST Mobile Banking Account?',
+                'Do you have NTB Syariah Mobile Banking Account?',
                 style: TextStyle(color: Colors.white, fontSize: 17), textAlign: TextAlign.center,
               ),
               SizedBox(
@@ -178,7 +185,7 @@ class _WelcomePageState extends State<WelcomePage> {
               ),
               Text(
                 //'Belum memiliki rekening IST Mobile.\nMau buka rekening kamu sekarang juga?',
-                'I don\'t have IST Mobile Banking Account. \nWant to open account now?',
+                'I don\'t have NTB Syariah Mobile Banking Account. \nWant to open account now?',
                 style: TextStyle(color: Colors.white, fontSize: 17), textAlign: TextAlign.center,
               ),
               SizedBox(

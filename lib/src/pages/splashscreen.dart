@@ -264,9 +264,9 @@ class _SplashScreenState extends State<SplashScreen> {
                         spreadRadius: 2)
                   ],
                   gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [Color(0xfffbb448), Color(0xffe46b10)])
+                      begin: Alignment.bottomLeft,
+                      end: Alignment.topRight,
+                      colors: [Colors.green, Colors.green[600], Colors.green[700], Colors.green[800]])
                 // borderRadius: BorderRadius.all(Radius.circular(5)),
                 // boxShadow: <BoxShadow>[
                 //   BoxShadow(

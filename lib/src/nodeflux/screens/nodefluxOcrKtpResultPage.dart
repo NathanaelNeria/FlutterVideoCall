@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_webrtc_demo/src/pages/congratulationPage.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../Widget/bezierContainer.dart';
@@ -251,7 +252,8 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
             textStyle: Theme.of(context).textTheme.headline4,
             fontSize: 30,
             fontWeight: FontWeight.w700,
-            color: Color(0xffe46b10),
+            // color: Color(0xffe46b10),
+            color: Colors.black
           ),
           children: [
             TextSpan(
@@ -809,7 +811,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
             elevation: 5.0,
             shape: new RoundedRectangleBorder(
                 borderRadius: new BorderRadius.circular(30.0)),
-            color: Colors.lightBlue,
+            color: Colors.green,
             child: new Text(
               //'Foto Selfie bersama eKTP',
                 'Take Selfie Photo with eKTP',
@@ -1097,16 +1099,12 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
             Column (
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                //Text("I want to have Video Call :"),
-                //Text("Please choose below: "),
                 RaisedButton(
                   onPressed: createData,
                   child: Text(
-                    //'Ok Saya Siap Melakukan Video Call',
-                    //'OK, I am ready to have Video Call',
-                      'Have Video Call now',
+                      'Submit registration data',
                       style: TextStyle(color: Colors.white, fontSize: 20)),
-                  color: Colors.orange,
+                  color: Colors.green,
                 ),
                 //SizedBox(height: 10),
                 //     Text("- or -"),
@@ -1317,7 +1315,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (BuildContext context) => WebrtcRoom()));
+              builder: (BuildContext context) => CongratulationPage()));
     }
   }
 
@@ -1667,6 +1665,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
   TextFormField buildTextFormFieldEmail(){
     return TextFormField (
       controller:emailController,
+      keyboardType: TextInputType.emailAddress,
       decoration: new InputDecoration(
           hintText: 'Email',
           icon: new Icon(
@@ -1696,7 +1695,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
             color: Colors.grey,
           )),
       validator: (value) {
-        if (value.isEmpty && value.length < 11 && value.length > 12) {
+        if (value.isEmpty || value.length < 11 || value.length > 12) {
           return 'Input a proper phone number';
         }
         return null;
