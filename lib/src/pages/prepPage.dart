@@ -16,6 +16,8 @@ class PrepPage extends StatefulWidget {
 }
 
 class _PrepPageState extends State<PrepPage> {
+  var selectedValue = 'Savings Account';
+
   Widget _backButton() {
     return InkWell(
       onTap: () {
@@ -27,10 +29,10 @@ class _PrepPageState extends State<PrepPage> {
           children: <Widget>[
             Container(
               padding: EdgeInsets.only(left: 0, top: 10, bottom: 10),
-              child: Icon(Icons.keyboard_arrow_left, color: Colors.black),
+              child: Icon(Icons.keyboard_arrow_left, color: Colors.white),
             ),
             Text('Back',
-                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500))
+                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: Colors.white))
           ],
         ),
       ),
@@ -74,19 +76,7 @@ class _PrepPageState extends State<PrepPage> {
             alignment: Alignment.center,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(5)),
-                boxShadow: <BoxShadow>[
-                  BoxShadow(
-                      color: Colors.grey.shade200,
-                      offset: Offset(2, 4),
-                      blurRadius: 5,
-                      spreadRadius: 2)
-                ],
-                gradient: LinearGradient(
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                    // colors: [Color(0xfffbb448), Color(0xfff7892b)]
-                    colors: [Colors.green, Colors.green[700]]
-                )
+                border: Border.all(color: Colors.white, width: 2),
             ),
             child: Text(
          //     'OK, Semua sudah siap',
@@ -95,7 +85,42 @@ class _PrepPageState extends State<PrepPage> {
             ),
           )
       );
+  }
 
+  Widget selectProduct(){
+    var product = ['Savings Account', 'Current Account'];
+    return Container(
+        width: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.symmetric(vertical: 15),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(5)),
+          border: Border.all(color: Colors.white, width: 2),
+        ),
+          child: DropdownButtonHideUnderline(
+            child: DropdownButton<String>(
+              value: selectedValue,
+              isDense: true,
+              items: product.map((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: new Theme(
+                    data: Theme.of(context).copyWith(
+                      canvasColor: Colors.blue.shade200,
+                    ),
+                    child: Text(value, style: TextStyle(color: Colors.white)),
+                  )
+                );
+              }).toList(),
+              onChanged: (String newValue) {
+                setState(() {
+                  selectedValue = newValue;
+                  print(selectedValue + ' ' + newValue);
+                });
+              },
+            ),
+          )
+      );
   }
 
   Widget _loginAccountLabel() {
@@ -141,12 +166,12 @@ class _PrepPageState extends State<PrepPage> {
             fontSize: 30,
             fontWeight: FontWeight.w700,
             // color: Color(0xffe46b10),
-            color: Colors.black
+            color: Colors.white
           ),
           children: [
             TextSpan(
               text: ' Bank',
-              style: TextStyle(color: Colors.black, fontSize: 30),
+              style: TextStyle(color: Colors.white, fontSize: 30),
             ),
             // TextSpan(
             //   text: 'rnz',
@@ -171,6 +196,22 @@ class _PrepPageState extends State<PrepPage> {
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
       body: Container(
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(5)),
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                  color: Colors.grey.shade200,
+                  offset: Offset(2, 4),
+                  blurRadius: 5,
+                  spreadRadius: 2)
+            ],
+            gradient: LinearGradient(
+                begin: Alignment.bottomLeft,
+                end: Alignment.topRight,
+                // colors: [Color(0xfffbb448), Color(0xffe46b10)]
+                colors: [Colors.green, Colors.green[600], Colors.green[700], Colors.green[800]]
+            )
+        ),
         height: height,
         child: Stack(
           children: <Widget>[
@@ -204,7 +245,7 @@ class _PrepPageState extends State<PrepPage> {
                       Text(
                         //'Hai, buka rekening IST Bank kamu sekarang yuk',
                         'Let\'s follow these steps to open NTB Syariah Bank Account',
-                        style: TextStyle(color: Colors.black, fontSize: 17, fontWeight: FontWeight.bold), textAlign: TextAlign.left,
+                        style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.bold), textAlign: TextAlign.left,
                       ),
                       //_emailPasswordWidget(),
                       SizedBox(
@@ -213,14 +254,14 @@ class _PrepPageState extends State<PrepPage> {
                       Text(
                         //'Sebelum mulai kita persiapkan hal ini yuk:',
                         'Please prepare these following items to begin:',
-                        style: TextStyle(color: Colors.black, fontSize: 17), textAlign: TextAlign.left,
+                        style: TextStyle(color: Colors.white, fontSize: 17), textAlign: TextAlign.left,
                       ),
                       SizedBox(
                         height: 20,
                       ),
                       Text(
                         '\u2022 eKTP',
-                        style: TextStyle(color: Colors.black, fontSize: 17, fontWeight: FontWeight.bold), textAlign: TextAlign.left,
+                        style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.bold), textAlign: TextAlign.left,
                       ),
                       //_emailPasswordWidget(),
                       SizedBox(
@@ -229,7 +270,7 @@ class _PrepPageState extends State<PrepPage> {
                       Text(
                         //'\u2022 Nomor HP dan Email yang aktif',
                         '\u2022 Active Mobile Phone Number and Email',
-                        style: TextStyle(color: Colors.black, fontSize: 17, fontWeight: FontWeight.bold), textAlign: TextAlign.left,
+                        style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.bold), textAlign: TextAlign.left,
                       ),
                       //_emailPasswordWidget(),
                       SizedBox(
@@ -238,7 +279,7 @@ class _PrepPageState extends State<PrepPage> {
                       Text(
                         //'\u2022 Situasi kondusif untuk mengambil foto Selfie',
                         '\u2022 Appropriate situation to take selfie',
-                        style: TextStyle(color: Colors.black, fontSize: 17, fontWeight: FontWeight.bold), textAlign: TextAlign.left,
+                        style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.bold), textAlign: TextAlign.left,
                       ),
                       SizedBox(
                         height: 20,
@@ -258,8 +299,16 @@ class _PrepPageState extends State<PrepPage> {
                       //   style: TextStyle(color: Colors.black, fontSize: 17, fontWeight: FontWeight.bold), textAlign: TextAlign.left,
                       // ),
                       SizedBox(
-                        height: 50,
+                        height: 30,
                       ),
+                      Text(
+                          'Please Select Account Type',
+                          style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.bold),
+                          textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: 20),
+                      selectProduct(),
+                      SizedBox(height: 20),
                       _submitButton(),
                       SizedBox(height: height * .14),
                     ]),

@@ -289,8 +289,12 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
   Widget showUploadSelfieButton() {
     return new Padding(
         padding: EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 0.0),
-        child: SizedBox(
+        child: Container(
           height: 40.0,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(5)),
+            border: Border.all(color: Colors.white, width: 2),
+          ),
           child: new ElevatedButton(
             child: new Text(
                 //'Ambil Foto Selfie',
@@ -302,7 +306,7 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
               _getSelfieImage(this.context, ImageSource.camera);
             },
             style: ElevatedButton.styleFrom(
-              primary: changeColor? Colors.grey : Colors.transparent
+              primary: changeColor? Colors.grey : Colors.green[700]
             )
           ),
         ));
@@ -1058,8 +1062,12 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
   Widget showUploadEktpButton() {
     return new Padding(
         padding: EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 0.0),
-        child: SizedBox(
+        child: Container(
           height: 40.0,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(5)),
+            border: Border.all(color: Colors.white, width: 2),
+          ),
           child: new ElevatedButton(
             child: new Text(
                 //'Ambil Foto eKTP',
@@ -1070,7 +1078,7 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
               nodefluxSelfie? changeColor: _getEktpImage(this.context, ImageSource.camera);
             },
             style: ElevatedButton.styleFrom(
-              primary: changeColor? Colors.grey : Colors.transparent
+              primary: changeColor? Colors.grey : Colors.green[700]
             ),
           ),
         ));
@@ -1351,13 +1359,32 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
                           SizedBox(height:20),
                           (similarityValue != null && livenessValue != null && _ektpImage!=null && _nodefluxResult2Model!=null
                               && _selfieImage != null && similarityValue >= 0.75 && livenessValue >= 0.75
-                          )?RaisedButton(
-                            onPressed: goToResultPage,
-                            child: Text(
-                                'Next',
-                                style: TextStyle(color: Colors.white, fontSize: 20)),
-                            color: Colors.transparent,
-                          ):Container(
+                          )?
+                          // RaisedButton(
+                          //   onPressed: goToResultPage,
+                          //   child: Text(
+                          //       'Next',
+                          //       style: TextStyle(color: Colors.white, fontSize: 20)),
+                          //   color: Colors.transparent,
+                          // )
+                          InkWell(
+                              onTap: goToResultPage,
+                              child:Container(
+                                width: MediaQuery.of(context).size.width,
+                                padding: EdgeInsets.symmetric(vertical: 15),
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(Radius.circular(5)),
+                                  border: Border.all(color: Colors.white, width: 2),
+                                ),
+                                child: Text(
+                                  //'Selesai',
+                                  'Next',
+                                  style: TextStyle(fontSize: 20, color: Colors.white),
+                                ),
+                              )
+                          )
+                              :Container(
                               child: (noFace && message == 'No face detected')?
                               RaisedButton(
                                 onPressed: (){

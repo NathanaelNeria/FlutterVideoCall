@@ -321,7 +321,7 @@ class _SplashScreenState extends State<SplashScreen> {
                       widget.useLoader
                           ? CircularProgressIndicator(
                         valueColor: AlwaysStoppedAnimation<Color>(
-                          widget.loaderColor,
+                          Colors.white,
                         ),
                       )
                           : Container(),

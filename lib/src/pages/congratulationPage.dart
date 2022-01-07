@@ -41,10 +41,10 @@ class _CongratulationPageState extends State<CongratulationPage> {
           children: <Widget>[
             Container(
               padding: EdgeInsets.only(left: 0, top: 10, bottom: 10),
-              child: Icon(Icons.keyboard_arrow_left, color: Colors.black),
+              child: Icon(Icons.keyboard_arrow_left, color: Colors.white),
             ),
             Text('Back',
-                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500))
+                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: Colors.white))
           ],
         ),
       ),
@@ -56,7 +56,7 @@ class _CongratulationPageState extends State<CongratulationPage> {
       InkWell(
           onTap: () {
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => WelcomePage()));;
+                context, MaterialPageRoute(builder: (context) => WelcomePage()));
           },
           child:Container(
             width: MediaQuery.of(context).size.width,
@@ -64,17 +64,8 @@ class _CongratulationPageState extends State<CongratulationPage> {
             alignment: Alignment.center,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(5)),
-                boxShadow: <BoxShadow>[
-                  BoxShadow(
-                      color: Colors.grey.shade200,
-                      offset: Offset(2, 4),
-                      blurRadius: 5,
-                      spreadRadius: 2)
-                ],
-                gradient: LinearGradient(
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                    colors: [Color(0xfffbb448), Color(0xfff7892b)])),
+                border: Border.all(color: Colors.white, width: 2),
+            ),
             child: Text(
               //'Selesai',
               'Done',
@@ -89,17 +80,17 @@ class _CongratulationPageState extends State<CongratulationPage> {
     return RichText(
       textAlign: TextAlign.center,
       text: TextSpan(
-          text: 'IST',
+          text: 'NTB Syariah',
           style: GoogleFonts.portLligatSans(
             textStyle: Theme.of(context).textTheme.headline4,
             fontSize: 30,
             fontWeight: FontWeight.w700,
-            color: Color(0xffe46b10),
+            color: Colors.white,
           ),
           children: [
             TextSpan(
               text: ' Bank',
-              style: TextStyle(color: Colors.black, fontSize: 30),
+              style: TextStyle(color: Colors.white, fontSize: 30),
             ),
             // TextSpan(
             //   text: 'rnz',
@@ -112,7 +103,7 @@ class _CongratulationPageState extends State<CongratulationPage> {
   Widget buildItem(DocumentSnapshot doc) {
     return Text(
         '${(doc.data() as dynamic)['email']}',
-        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)
+        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)
     );
   }
 
@@ -125,13 +116,29 @@ class _CongratulationPageState extends State<CongratulationPage> {
     return Scaffold(
       body: Container(
         height: height,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(5)),
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                  color: Colors.grey.shade200,
+                  offset: Offset(2, 4),
+                  blurRadius: 5,
+                  spreadRadius: 2)
+            ],
+            gradient: LinearGradient(
+                begin: Alignment.bottomLeft,
+                end: Alignment.topRight,
+                // colors: [Color(0xfffbb448), Color(0xffe46b10)]
+                colors: [Colors.green, Colors.green[600], Colors.green[700], Colors.green[800]]
+            )
+        ),
         child: Stack(
           children: <Widget>[
-            Positioned(
-              top: -MediaQuery.of(context).size.height * .15,
-              right: -MediaQuery.of(context).size.width * .4,
-              child: BezierContainer(),
-            ),
+            // Positioned(
+            //   top: -MediaQuery.of(context).size.height * .15,
+            //   right: -MediaQuery.of(context).size.width * .4,
+            //   child: BezierContainer(),
+            // ),
             Container(
               padding: EdgeInsets.symmetric(horizontal: 20),
               child: SingleChildScrollView(
@@ -146,8 +153,8 @@ class _CongratulationPageState extends State<CongratulationPage> {
                     ),
                     Text(
                       //'Selamat! Anda telah berhasil membuka rekening di Bank IST!',
-                      'Congratulation! You have successfully registered for a product in NTBS',
-                      style: TextStyle(color: Colors.black, fontSize: 17, fontWeight: FontWeight.bold), textAlign: TextAlign.left,
+                      'Congratulation! You have successfully registered for a Savings Account in NTB Syariah Bank',
+                      style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.bold), textAlign: TextAlign.left,
                     ),
                     //_emailPasswordWidget(),
                     SizedBox(
@@ -155,8 +162,8 @@ class _CongratulationPageState extends State<CongratulationPage> {
                     ),
                     Text(
                       //'Proses verifikasi bapak/ibu sudah selesai. Pemberitahuan akan kami kirimkan melalui email:',
-                      'Your verification process has been done. We are sending you confifmation email to:',
-                      style: TextStyle(color: Colors.black, fontSize: 17), textAlign: TextAlign.left,
+                      'Your verification process has been done. We are sending you confirmation email to:',
+                      style: TextStyle(color: Colors.white, fontSize: 17), textAlign: TextAlign.left,
                     ),
                     SizedBox(
                       height: 20,
@@ -177,7 +184,7 @@ class _CongratulationPageState extends State<CongratulationPage> {
                     Text(
                       //'Silahkan bapak/ibu cek di email tsb untuk melihat hasil verifikasi dari pihak Bank dalam 24 jam',
                       'Please keep checking your email above to follow up NTBS verification process within 24 hours',
-                      style: TextStyle(color: Colors.black, fontSize: 17), textAlign: TextAlign.left,
+                      style: TextStyle(color: Colors.white, fontSize: 17), textAlign: TextAlign.left,
                     ),
                     SizedBox(
                       height: 20,
