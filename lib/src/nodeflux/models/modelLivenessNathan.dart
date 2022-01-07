@@ -22,7 +22,7 @@ class LivenessModel {
   String jobId;
   String message;
   bool ok;
-  List<Result> result;
+  List<ResultLive> result;
   String status;
 
   factory LivenessModel.fromJson(Map<String, dynamic> json) => LivenessModel(
@@ -30,7 +30,7 @@ class LivenessModel {
     jobId: json["job_id"],
     message: json["message"],
     ok: json["ok"],
-    result: List<Result>.from(json["result"].map((x) => Result.fromJson(x))),
+    result: List<ResultLive>.from(json["result"].map((x) => ResultLive.fromJson(x))),
     status: json["status"],
   );
 
@@ -44,8 +44,8 @@ class LivenessModel {
   };
 }
 
-class Result {
-  Result({
+class ResultLive {
+  ResultLive({
     this.faceLiveness,
     this.faceMatch,
   });
@@ -53,7 +53,7 @@ class Result {
   FaceLiveness faceLiveness;
   FaceMatch faceMatch;
 
-  factory Result.fromJson(Map<String, dynamic> json) => Result(
+  factory ResultLive.fromJson(Map<String, dynamic> json) => ResultLive(
     faceLiveness: json["face_liveness"] == null ? null : FaceLiveness.fromJson(json["face_liveness"]),
     faceMatch: json["face_match"] == null ? null : FaceMatch.fromJson(json["face_match"]),
   );

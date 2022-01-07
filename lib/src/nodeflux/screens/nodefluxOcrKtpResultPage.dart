@@ -1358,7 +1358,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
           )),
       validator: (value) {
         if (value.isEmpty || value.length < 16) {
-          return 'Please input nik';
+          return 'Please input NIK';
         }
         return null;
       },
@@ -1673,14 +1673,14 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
             Icons.mail,
             color: Colors.grey,
           )),
-      // validator: (value){
-      //   isEmail = EmailValidator.validate(value);
-      //
-      //   if (value.isEmpty || !isEmail) {
-      //     return 'Please input a valid email address';
-      //   }
-      //   return null;
-      // },
+      validator: (value){
+        isEmail = EmailValidator.validate(value);
+
+        if (value.isEmpty || !isEmail) {
+          return 'Please input a valid email address';
+        }
+        return null;
+      },
       onSaved: (value) => firestoreEmail = value,
     );
   }
@@ -1695,12 +1695,12 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
             Icons.phone_android,
             color: Colors.grey,
           )),
-      // validator: (value) {
-      //   if (value.isEmpty) {
-      //     return 'Please phone number';
-      //   }
-      //   return null;
-      // },
+      validator: (value) {
+        if (value.isEmpty && value.length < 11 && value.length > 12) {
+          return 'Input a proper phone number';
+        }
+        return null;
+      },
       onSaved: (value) => firestoreMobilePhone = value,
     );
   }

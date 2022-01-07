@@ -264,7 +264,7 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
       text: TextSpan(
           text: 'eKTP & Contact ',
           style: GoogleFonts.portLligatSans(
-            textStyle: Theme.of(context).textTheme.headline4,
+            textStyle: Theme.of(context).textTheme.display1,
             fontSize: 30,
             fontWeight: FontWeight.w700,
             color: Color(0xffe46b10),
@@ -795,14 +795,14 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
               isLive = livenessModelUnderqualified.result[0].faceLiveness.live;
 
               double livenessPercentage=livenessValue*100;
-              String isLiveString = (livenessPercentage>=75)? "not from live": "from live";
+              String isLiveString = (livenessPercentage>=75)? "from live": "not from live";
               matchLivenessFeedback= "Selfie is taken " + isLiveString +"person ("+livenessPercentage.toStringAsFixed(2)+" %)! Please try again";
               _nodefluxResult2Model.face_liveness=new NodefluxFaceLivenessModel();
               _nodefluxResult2Model.face_liveness.live=isLive;
               _nodefluxResult2Model.face_liveness.liveness=livenessValue;
               setState(() {});
             }
-            else {
+            else if(message == 'Face Match Liveness Success'){
               similarityValue = livenessModel.result[0].faceMatch.similarity;
               isMatched = livenessModel.result[0].faceMatch.match;
               livenessValue = livenessModel.result[0].faceLiveness.liveness;
