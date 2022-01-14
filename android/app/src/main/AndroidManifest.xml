@@ -46,5 +46,6 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity android:name="nodeflux.sdk.liveness.Liveness"/>
     </application>
 </manifest>

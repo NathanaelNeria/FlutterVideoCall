@@ -38,10 +38,6 @@ class WebrtcSignaling {
   var inCall1;
   var inCall2;
 
-  void route() async{
-
-  }
-
 
   Future<String> createRoom(RTCVideoRenderer remoteRenderer, FirebaseFirestore db) async {
     DocumentReference roomRef = db.collection('rooms').doc('mobiletest').collection('mobiletestroom').doc();
@@ -51,9 +47,7 @@ class WebrtcSignaling {
     var agent1Active = db.collection('isActive').doc('agent1').get();
     var agent2Active = db.collection('isActive').doc('agent2').get();
 
-    print('isi json ' + VCHandled1.toString());
-
-    agent1Active.then((doc){
+    await agent1Active.then((doc){
       var jsonData = jsonEncode(doc.data());
       var parsedJson = jsonDecode(jsonData);
       VCHandled1 = parsedJson['VCHandled'];
@@ -62,13 +56,13 @@ class WebrtcSignaling {
       print('a1 >>>>>' + VCHandled1.toString() + loggedIn1.toString() + inCall1.toString());
     });
 
-    agent2Active.then((doc){
+    await agent2Active.then((doc){
       var jsonData = jsonEncode(doc.data());
       var parsedJson = jsonDecode(jsonData);
       VCHandled2 = parsedJson['VCHandled'];
       loggedIn2 = parsedJson['loggedIn'];
       inCall2 = parsedJson['inCall'];
-      print('a2 state >>>>> ' + VCHandled2.toString() + loggedIn2.toString() + inCall2.toString());
+      print('a2 >>>>> ' + VCHandled2.toString() + loggedIn2.toString() + inCall2.toString());
     });
 
     print('Create PeerConnection with configuration: $configuration');

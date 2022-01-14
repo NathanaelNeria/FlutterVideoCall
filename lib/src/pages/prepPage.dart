@@ -92,6 +92,7 @@ class _PrepPageState extends State<PrepPage> {
     return Container(
         width: MediaQuery.of(context).size.width,
         padding: EdgeInsets.symmetric(vertical: 15),
+        margin: EdgeInsets.only(bottom: 35),
         alignment: Alignment.center,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(5)),
@@ -99,6 +100,7 @@ class _PrepPageState extends State<PrepPage> {
         ),
           child: DropdownButtonHideUnderline(
             child: DropdownButton<String>(
+              dropdownColor: Colors.white.withOpacity(0.15),
               value: selectedValue,
               isDense: true,
               items: product.map((String value) {

@@ -37,6 +37,7 @@ class AfterSplash extends StatelessWidget {
         primarySwatch: Colors.blue,
         textTheme:GoogleFonts.latoTextTheme(textTheme).copyWith(
           bodyText1: GoogleFonts.montserrat(textStyle: textTheme.bodyText1),
+          //abcde
         ),
       ),
       home: WelcomePage(),

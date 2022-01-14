@@ -102,6 +102,8 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
   bool noFace = false;
   bool underQualified = false;
   bool changeColor = false;
+  String ktpDetected = '';
+  bool ktpProcessed = false;
 
   @override
   void initState() {
@@ -433,6 +435,9 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
           this.setState(() {
             //_imageFileProfile = cropped;
             _ektpImage = result;
+            ktpDetected = 'lagi proses';
+            nodefluxSelfie = true;
+            changeColor = true;
             //loading = false;
           });
         } catch (e) {
@@ -473,15 +478,8 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
     // NodefluxResult2Model nodefluxResult2Model =NodefluxResult2Model();
     bool okValue=true;
     try{
-      // var data = "images: ["+ base64Image +"]";
 
-      //var uri = Uri.parse('https://api.cloud.nodeflux.io/v1/analytics/ocr-ktp');
       var url='https://api.cloud.nodeflux.io/v1/analytics/ocr-ktp';
-      // var response = http.post(uri, headers: {
-      //   "Content-Type": "application/json",
-      //   "x-nodeflux-timestamp": "20201110T135945Z",
-      //       "Authorization": authorization,
-      // }, body:data).then((http.Response response) {});
       List<String> photoBase64List=List<String>();
       photoBase64List.add(base64Image);
 
@@ -505,6 +503,7 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
           nodefluxResultModel = nodefluxJobModel.result;
 
           currentStatus=nodefluxResultModel.status;
+          message = nodefluxDataModel.message;
         } else {
           dialog=nodefluxDataModel.message;
           isPassed=false;
@@ -519,40 +518,42 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
       }
 
       // decipherin result
-      if (nodefluxResultModel.status=="success" && nodefluxDataModel.message=="OCR_KTP Service Success") { // if photo ktp
-        // process
-        dialog="OCR Process success";
-        isPassed=true;
-        // Navigator.of(context).push(MaterialPageRoute(
-        //     builder: (context) => NodefluxOcrKtpResult(nodefluxResultModel.result[0]))); MAYA NOTES: dicomment
-        //NodefluxResult2Model result2Model=nodefluxResultModel.result[0];
-        setState(() {
-          //loading = false;
-          ocrNik = _nodefluxResult2Model.nik;
-          ocrNama= _nodefluxResult2Model.nama;
-          ocrTempatLahir = _nodefluxResult2Model.tempat_lahir;
-          ocrTanggalLahir = _nodefluxResult2Model.tanggal_lahir;
-          ocrJenisKelamin = _nodefluxResult2Model.jenis_kelamin;
-          ocrAlamat = _nodefluxResult2Model.alamat;
-          ocrRtrw = _nodefluxResult2Model.rt_rw;
-          ocrKecamatan = _nodefluxResult2Model.kecamatan;
-          ocrAgama = _nodefluxResult2Model.agama;
-          ocrStatusPerkawinan = _nodefluxResult2Model.status_perkawinan;
-          ocrPekerjaan = _nodefluxResult2Model.pekerjaan;
-          ocrProvinsi = _nodefluxResult2Model.provinsi;
-          ocrBerlakuHingga = _nodefluxResult2Model.berlaku_hingga;
-          ocrGolonganDarah = _nodefluxResult2Model.golongan_darah;
-          ocrKabupatenKota = _nodefluxResult2Model.kabupaten_kota;
-          ocrKelurahanDesa = _nodefluxResult2Model.kelurahan_desa;
-          ocrKewarganegaraan= _nodefluxResult2Model.kewarganegaraan;
-        });
-        // Navigator.of(context).push(MaterialPageRoute(
-        //   // builder: (context) => NodefluxOcrKtpResult(nodefluxResultModel.result[0])));
-        //     builder: (context) => NodefluxOcrKtpResultPage(nodefluxResult2Model)));
-
-      } else if (nodefluxDataModel.message=="The image might be in wrong orientation") { // if photo not ktp/ wrong orientation
-        dialog=nodefluxDataModel.message+" or photo is not KTP";
+      if(nodefluxResultModel.status != 'on going' && nodefluxDataModel.message != 'Job successfully submitted'){
+        if (nodefluxResultModel.status=="success" && nodefluxDataModel.message=="OCR_KTP Service Success") { // if photo ktp
+          dialog="OCR Process success";
+          isPassed=true;
+          setState(() {
+            ocrNik = _nodefluxResult2Model.nik;
+            ocrNama= _nodefluxResult2Model.nama;
+            ocrTempatLahir = _nodefluxResult2Model.tempat_lahir;
+            ocrTanggalLahir = _nodefluxResult2Model.tanggal_lahir;
+            ocrJenisKelamin = _nodefluxResult2Model.jenis_kelamin;
+            ocrAlamat = _nodefluxResult2Model.alamat;
+            ocrRtrw = _nodefluxResult2Model.rt_rw;
+            ocrKecamatan = _nodefluxResult2Model.kecamatan;
+            ocrAgama = _nodefluxResult2Model.agama;
+            ocrStatusPerkawinan = _nodefluxResult2Model.status_perkawinan;
+            ocrPekerjaan = _nodefluxResult2Model.pekerjaan;
+            ocrProvinsi = _nodefluxResult2Model.provinsi;
+            ocrBerlakuHingga = _nodefluxResult2Model.berlaku_hingga;
+            ocrGolonganDarah = _nodefluxResult2Model.golongan_darah;
+            ocrKabupatenKota = _nodefluxResult2Model.kabupaten_kota;
+            ocrKelurahanDesa = _nodefluxResult2Model.kelurahan_desa;
+            ocrKewarganegaraan= _nodefluxResult2Model.kewarganegaraan;
+            ktpDetected = 'ktp ada';
+            ktpProcessed = true;
+          });
+        }
+        else if(nodefluxResultModel.status == 'incompleted' && nodefluxDataModel.message != "OCR_KTP Service Success"){
+          setState(() {
+            ktpDetected = 'ktp ga ada';
+            ktpProcessed = true;
+          });
+        }
       }
+      // else if (nodefluxDataModel.message=="The image might be in wrong orientation"){ // if photo not ktp/ wrong orientation
+      //   dialog=nodefluxDataModel.message+" or photo is not KTP";
+      // }
     }
     catch(e){
       debugPrint('Error $e');
@@ -712,6 +713,7 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
           this.setState(() {
             //_imageFileProfile = cropped;
             _selfieImage = result;
+            ktpDetected = 'lagi proses';
             //loading = false;
           });
         } catch (e) {
@@ -837,84 +839,13 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
                 changeColor = true;
               });
 
-              double similarityPercentage=similarityValue*100;
-              double livenessPercentage=livenessValue*100;
+              double similarityPercentage = similarityValue*100;
+              double livenessPercentage = livenessValue*100;
               String isLiveString = (livenessPercentage>=75)? "from live ": "not from live ";
               String isMatchedString = (similarityPercentage>=75)? "matched": "not matched";
               matchLivenessFeedback = "Selfie is taken " + isLiveString +"person ("+livenessPercentage.toStringAsFixed(2)+" %)";
               matchLivenessFeedback+= "\neKTP photo is " + isMatchedString +" with selfie ("+similarityPercentage.toStringAsFixed(2)+" %)";
             }
-            // if (resultListSize==2) { // kalau ada liveness dan match
-            //
-            //
-            //   // nodefluxDataModelSync2=NodefluxDataModelSync2.fromJson2(jsonDecode(response.body));
-            //    //nodefluxFaceLiveness=nodefluxDataModelSync2.result[0].face_liveness;
-            //    //livenessValue = nodefluxFaceLiveness.liveness;
-            //   // isLive=nodefluxFaceLiveness.live;
-            //   // _nodefluxResult2Model.face_liveness = nodefluxFaceLiveness;
-            //   // String isLiveString = (isLive)? "from live": "not from live";
-            //   // double livenessPercentage = livenessValue * 100;
-            //   // matchLivenessFeedback+= "selfie is taken " + isLiveString +"person ("+livenessPercentage.toStringAsFixed(2)+" %)";
-            //
-            //   if (isLive) {
-            //     // nodefluxDataModelSync2=NodefluxDataModelSync2.fromJson(jsonDecode(response.body));
-            //     nodefluxFaceMatch=nodefluxDataModelSync2.result[0].face_match;
-            //     similarityValue = nodefluxFaceMatch.similarity;
-            //     isMatched=nodefluxFaceMatch.match;
-            //     _nodefluxResult2Model.face_match = nodefluxFaceMatch;
-            //     String isMatchedString = (isMatched)? "match": "not matched";
-            //     double similarityPercentage = similarityValue * 100;
-            //     matchLivenessFeedback+= "selfie and eKTP photo are " + isMatchedString +"("+similarityPercentage.toStringAsFixed(2)+" %)";
-            //   } else { //(fourth), if liveness: false, gak ada match -> selesai
-            //     dialog=nodefluxDataModelSync2.message;
-            //     isPassed=false;
-            //     matchLivenessFeedback+= "selfie is not taken from live person ("+nodefluxFaceLiveness.liveness.toString()+" %)";
-            //   }
-            // } else if (resultListSize==1) { // kalau cuma ada liveness
-            //   const start1="\"live\":";
-            //   const end1=",\"liveness\":";
-            //   int startIndex1 = respbody.indexOf(start1);
-            //   int endIndex1 = respbody.indexOf(end1, startIndex1 + start1.length);
-            //   String liveString=respbody.substring(startIndex1 + start1.length, endIndex1);
-            //   isLive=(liveString=="true")?true:false;
-            //   const start1a=",\"liveness\":";
-            //   const end1a="}},{\"face_match\"";
-            //   int startIndex1a = respbody.indexOf(start1a);
-            //   int endIndex1a = respbody.indexOf(end1a, startIndex1a + start1a.length);
-            //   String livenessString=respbody.substring(startIndex1a + start1a.length, endIndex1a);
-            //   livenessValue=double.parse(livenessString.substring(0,7));
-            //   double livenessPercentage=livenessValue*100;
-            //   String isLiveString = (isLive)? "from live": "not from live";
-            //   matchLivenessFeedback+= "selfie is taken " + isLiveString +"person ("+livenessPercentage.toStringAsFixed(2)+" %)";
-            //   nodefluxFaceLiveness=new NodefluxFaceLivenessModel();
-            //   nodefluxFaceLiveness.live=isLive;
-            //   _nodefluxResult2Model.face_liveness.live=isLive;
-            //   _nodefluxResult2Model.face_liveness.liveness=livenessValue;
-            //   // nodefluxDataModelSync2=NodefluxDataModelSync2.fromJson1(jsonDecode(response.body));
-            //   // nodefluxFaceLiveness=nodefluxDataModelSync2.result[0].face_liveness;
-            //   // livenessValue = nodefluxFaceLiveness.liveness;
-            //   // isLive=nodefluxFaceLiveness.live;
-            //   // _nodefluxResult2Model.face_liveness = nodefluxFaceLiveness;
-            //   // String isLiveString = (isLive)? "": "not";
-            //   // double livenessPercentage = livenessValue * 100;
-            //   // matchLivenessFeedback+= "selfie is "+ isLiveString +" taken from live person ("+livenessPercentage.toStringAsFixed(2)+" %)";
-            // }
-
-            // fourth, if liveness: true, ada match -> check face_match > match & similarity
-            // if (isLive) {
-            //   nodefluxDataModelSync2=NodefluxDataModelSync2.fromJson(jsonDecode(response.body));
-            //   nodefluxFaceMatch=nodefluxDataModelSync2.result[0].face_match;
-            //   similarityValue = nodefluxFaceMatch.similarity;
-            //   isMatched=nodefluxFaceMatch.match;
-            //   _nodefluxResult2Model.face_match = nodefluxFaceMatch;
-            //   String isMatchedString = (isMatched)? "match": "not matched";
-            //   double similarityPercentage = similarityValue * 100;
-            //   matchLivenessFeedback+= "selfie and eKTP photo are " + isMatchedString +"("+similarityPercentage.toStringAsFixed(2)+" %)";
-            // } else { //(fourth), if liveness: false, gak ada match -> selesai
-            //   dialog=nodefluxDataModelSync2.message;
-            //   isPassed=false;
-            //   matchLivenessFeedback+= "selfie is not taken from live person ("+nodefluxFaceLiveness.liveness.toString()+" %)";
-            // }
           } else {
             noFaceDetected = NoFaceDetected.fromJson(jsonDecode(response.body));
             matchLivenessFeedback = noFaceDetected.message;
@@ -929,46 +860,6 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
           matchLivenessFeedback=nodefluxDataModelSync2.message;
           isPassed=false;
         }
-      // }
-
-      // third, if ok true and status success, check if photo live or not (live: true or false)
-      // if (response!=null && nodefluxDataModelSync2.ok && currentStatus=="success") {
-      //   nodefluxDataModelSync2=NodefluxDataModelSync2.fromJson0(jsonDecode(response.body));
-      //   nodefluxResult2Model = nodefluxDataModelSync2.result[0];
-      //   nodefluxFaceLiveness = nodefluxResult2Model.face_liveness;
-      //   isLive=nodefluxFaceLiveness.live;
-      //   livenessValue=nodefluxFaceLiveness.liveness;
-      //   if (isLive) { // check if live, then there is a face_match
-      //     nodefluxFaceMatch = nodefluxResult2Model.face_match;
-      //     isMatched=nodefluxFaceMatch.match;
-      //     similarityValue=nodefluxFaceMatch.similarity;
-      //   }
-      // }
-
-      // deciphering result
-      // if (okValue) {
-      //   if(currentStatus=="success") {
-      //     if (nodefluxResult2Model!=null){
-      //       if (isLive) { // kalau live:true
-      //         dialog = "Photo taken from live person";
-      //         livenessValue=nodefluxResult2Model.face_liveness.liveness;
-      //         if (nodefluxFaceMatch.match) {
-      //           dialog+=" and selfie owner is the ektp photo owner";
-      //         } else {
-      //           dialog+=" but selfie owner is not the ektp photo owner";
-      //         }
-      //       } else {
-      //         dialog = "Photo unclear or not taken from live person";
-      //         livenessValue=nodefluxResult2Model.face_liveness.liveness;
-      //       }
-      //     }
-      //   }
-      //   else { // photo doesn't contain face
-      //     dialog = nodefluxDataModelSync2.message; // e.g. No Face Detected
-      //   }
-      // } else { // empty input argument (no picture, no value in input API or wrong format/not jpg or jpeg)
-      //   dialog = nodefluxDataModelSync2.message; // e.g. invalid base64 jpeg/jpg string..
-      // }
     }
     catch(e){
       debugPrint('Error $e');
@@ -978,8 +869,6 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
       //loading = false;
 
     });
-    //createAlertDialog(context,isPassed?'Success!':'Failed',dialog);
-
   }
 
   _getSelfieEktpImage(BuildContext context, ImageSource source) async{
@@ -1084,6 +973,31 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
         ));
   }
 
+  Widget tryAgainButton(){
+    return new Padding(
+        padding: EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 0.0),
+        child: Container(
+          height: 40.0,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(5)),
+            border: Border.all(color: Colors.white, width: 2),
+          ),
+          child: new ElevatedButton(
+            child: new Text(
+              //'Ambil Foto eKTP',
+                'Try again',
+                style: new TextStyle(fontSize: 12.0, color: Colors.white)),
+            //onPressed: () { navigateToPage('Login Face');}
+            onPressed:  () {
+              Navigator.pop(context);
+            },
+            style: ElevatedButton.styleFrom(
+                primary: changeColor? Colors.red : Colors.red
+            ),
+          ),
+        ));
+  }
+
   Widget showUploadSelfieEktpButton() {
     return new Padding(
         padding: EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 0.0),
@@ -1183,80 +1097,6 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
     );
   }
 
-  // _getImage(BuildContext context, ImageSource source) async{
-  //   this.setState(() {
-  //     loading = true;
-  //   });
-  //   try{
-  //     Directory tempDir = await getTemporaryDirectory();
-  //     String tempPath = tempDir.path;
-  //
-  //     if (await tempDir.exists())
-  //       tempDir.delete(recursive: false);
-  //
-  //     Directory appdocdir= await getApplicationSupportDirectory();
-  //     String test=appdocdir.path;
-  //
-  //     if (await appdocdir.exists())
-  //       appdocdir.delete(recursive: false);
-  //
-  //     var picture =  await ImagePicker.pickImage(source: source);
-  //
-  //     int appFileDirectory=picture.path.lastIndexOf('/');
-  //     String resultDirectory=picture.path.substring(0,appFileDirectory+1); // = appdocdir+'/Pictures/'
-  //     String resultPath=resultDirectory+DateFormat('yyyyMMddHHmmss').format(DateTime.now())+'.jpg';
-  //     //String resultPath='/storage/emulated/0/Android/data/com.smartherd.flutter_app_section2/files/Pictures/'+DateFormat('yyyyMMddHHmmss').format(DateTime.now())+'.jpg';
-  //
-  //     int photoQuality=50;
-  //     if(picture != null) {
-  //       try {
-  //         var result = await FlutterImageCompress.compressAndGetFile(
-  //           picture.absolute.path, resultPath,
-  //           quality: photoQuality,
-  //         );
-  //
-  //         int pictureLength=picture.lengthSync();
-  //         int resultLength=result.lengthSync();
-  //
-  //         var i = 1;
-  //
-  //         while ((resultLength < professionalMinPhotoSize || resultLength > professionalMaxPhotoSize) && photoQuality>0 && photoQuality<100) {
-  //           if (result!=null)
-  //             await result.delete();
-  //           resultPath=resultDirectory+DateFormat('yyyyMMddHHmmss').format(DateTime.now())+'.jpg';
-  //           photoQuality=(resultLength>professionalMaxPhotoSize)? photoQuality-10:photoQuality+10;
-  //           result = await FlutterImageCompress.compressAndGetFile(
-  //             picture.absolute.path, resultPath,
-  //             quality: photoQuality,
-  //           );
-  //           resultLength=result.lengthSync();
-  //         }
-  //
-  //         double sizeinKb=resultLength.toDouble()/1024;
-  //         debugPrint('Photo compressed size is '+sizeinKb.toString()+' kb');
-  //         //print(pictureLength+resultLength);
-  //         await picture.delete();
-  //         this.setState(() {
-  //           //_imageFileProfile = cropped;
-  //           _professionalImage = result;
-  //           loading = false;
-  //         });
-  //       } catch (e) {
-  //         print (e);
-  //         debugPrint("Error $e");
-  //       }
-  //     }else{
-  //       this.setState(() {
-  //         loading = false;
-  //       });
-  //     }
-  //   } catch (e) {
-  //     print (e);
-  //     debugPrint("Error $e");
-  //   }
-  //   //Navigator.of(context).pop();
-  // }
-
   Widget showPhotoUploadedInfo() {
     if (_imageFile != null) {
       return new Padding(
@@ -1311,6 +1151,27 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
     }
   }
 
+  Widget nextButton(){
+    return InkWell(
+        onTap: goToResultPage,
+        child:Container(
+          margin: EdgeInsets.only(top: 60),
+          width: MediaQuery.of(context).size.width,
+          padding: EdgeInsets.symmetric(vertical: 15),
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(5)),
+            border: Border.all(color: Colors.white, width: 2),
+          ),
+          child: Text(
+            //'Selesai',
+            'Next',
+            style: TextStyle(fontSize: 20, color: Colors.white),
+          ),
+        )
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -1344,12 +1205,24 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
                           _title(),
 
                           showUploadEktpButton(),
-                          (_ektpImage!=null && _nodefluxResult2Model==null)?Text('Processing.. Please wait a moment..',
+                          (ktpDetected == 'lagi proses')?Text('Processing.. Please wait a moment..',
                               style: new TextStyle(fontSize: 12.0, color: Colors.white)):Container(),
-                          (_ektpImage!=null && _nodefluxResult2Model!=null)?Text('eKTP Processed',
+
+                          (ktpDetected == 'ktp ada')?Text('eKTP Processed',
                               style: new TextStyle(fontSize: 12.0, color: Colors.white)):Container(),
+
                           SizedBox(height: 20),
-                          (_ektpImage!=null && _nodefluxResult2Model!=null)?showUploadSelfieButton():Container(),
+                          (ktpDetected == 'ktp ga ada')?
+                          Text('eKTP not found', style: new TextStyle(fontSize: 12.0, color: Colors.red[200])) : Container(),
+                          (ktpDetected == 'ktp ga ada')? tryAgainButton() : Container(
+                              child: (ktpProcessed)? nextButton() : Container()
+                          ),
+                          // (ktpDetected == 'ktp ada' && ktpProcessed && _ektpImage != null)?
+
+
+
+                          SizedBox(height: 20),
+                          // (_ektpImage!=null && _nodefluxResult2Model!=null)?showUploadSelfieButton():Container(),
                           SizedBox(height: 20),
                           (matchLivenessFeedback!="")?
                           Text(matchLivenessFeedback,
@@ -1357,78 +1230,44 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
                             textAlign: TextAlign.center,
                           ):Container(),
                           SizedBox(height:20),
-                          (similarityValue != null && livenessValue != null && _ektpImage!=null && _nodefluxResult2Model!=null
-                              && _selfieImage != null && similarityValue >= 0.75 && livenessValue >= 0.75
-                          )?
-                          // RaisedButton(
-                          //   onPressed: goToResultPage,
-                          //   child: Text(
-                          //       'Next',
-                          //       style: TextStyle(color: Colors.white, fontSize: 20)),
-                          //   color: Colors.transparent,
+                          // (similarityValue != null && livenessValue != null && _ektpImage!=null && _nodefluxResult2Model!=null
+                          //     && _selfieImage != null && similarityValue >= 0.75 && livenessValue >= 0.75
+                          // )?
+                          // InkWell(
+                          //     onTap: goToResultPage,
+                          //     child:Container(
+                          //       width: MediaQuery.of(context).size.width,
+                          //       padding: EdgeInsets.symmetric(vertical: 15),
+                          //       alignment: Alignment.center,
+                          //       decoration: BoxDecoration(
+                          //         borderRadius: BorderRadius.all(Radius.circular(5)),
+                          //         border: Border.all(color: Colors.white, width: 2),
+                          //       ),
+                          //       child: Text(
+                          //         //'Selesai',
+                          //         'Next',
+                          //         style: TextStyle(fontSize: 20, color: Colors.white),
+                          //       ),
+                          //     )
                           // )
-                          InkWell(
-                              onTap: goToResultPage,
-                              child:Container(
-                                width: MediaQuery.of(context).size.width,
-                                padding: EdgeInsets.symmetric(vertical: 15),
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(Radius.circular(5)),
-                                  border: Border.all(color: Colors.white, width: 2),
-                                ),
-                                child: Text(
-                                  //'Selesai',
-                                  'Next',
-                                  style: TextStyle(fontSize: 20, color: Colors.white),
-                                ),
-                              )
-                          )
-                              :Container(
-                              child: (noFace && message == 'No face detected')?
-                              RaisedButton(
-                                onPressed: (){
-                                  Navigator.pop(context);
-                                },
-                                color: Colors.teal,
-                                child: Text('Try again',
-                                    style: TextStyle(color: Colors.white, fontSize: 20)
-                                ),
-                              )
-                                  :
-                              ((nodefluxSelfie)?
-                              ((underQualified)?
-                              RaisedButton(
-                                onPressed: (){
-                                  Navigator.pop(context);
-                                },
-                                color: Colors.teal,
-                                child: Text('Try again',
-                                    style: TextStyle(color: Colors.white, fontSize: 20)
-                                ),
-                              )
-                                  :
-                              ((similarityValue < 75 && livenessValue < 75)? Column(
-                                children: [
-                                  Text('Liveness or face match do not pass the requirement',
-                                    style: TextStyle(fontSize: 15.0, color: Colors.red),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  SizedBox(height: 10),
-                                  ElevatedButton(
-                                    onPressed: (){
-                                      Navigator.pop(context);
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                        primary: Colors.teal
-                                    ),
-                                    child: Text('Try again',
-                                        style: TextStyle(color: Colors.white, fontSize: 20)
-                                    ),
-                                  )
-                                ],
-                              ):Container())) : Container())
-                          ),
+                          //     :
+                          // Container(
+                          //     child: (noFace && message == 'No face detected')? tryAgainButton()
+                          //         :
+                          //     ((nodefluxSelfie)?
+                          //     ((underQualified)? tryAgainButton()
+                          //         :
+                          //     ((similarityValue < 75 && livenessValue < 75)? Column(
+                          //       children: [
+                          //         Text('Liveness or face match do not pass the requirement',
+                          //           style: TextStyle(fontSize: 15.0, color: Colors.red),
+                          //           textAlign: TextAlign.center,
+                          //         ),
+                          //         SizedBox(height: 10),
+                          //         tryAgainButton()
+                          //       ],
+                          //     ):Container())) : Container())
+                          // ),
                         ],
                       )
                   ),
@@ -1581,7 +1420,7 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
 
       Navigator.of(context).push(MaterialPageRoute(
         // builder: (context) => NodefluxOcrKtpResult(nodefluxResultModel.result[0])));
-          builder: (context) => NodefluxOcrKtpResultPage(_nodefluxResult2Model, _ektpImage, _selfieImage)));
+          builder: (context) => NodefluxOcrKtpResultPage(model: _nodefluxResult2Model, ektpImage: _ektpImage,)));
     }
   }
 

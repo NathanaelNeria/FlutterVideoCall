@@ -267,25 +267,6 @@ class _SplashScreenState extends State<SplashScreen> {
                       begin: Alignment.bottomLeft,
                       end: Alignment.topRight,
                       colors: [Colors.green, Colors.green[600], Colors.green[700], Colors.green[800]])
-                // borderRadius: BorderRadius.all(Radius.circular(5)),
-                // boxShadow: <BoxShadow>[
-                //   BoxShadow(
-                //       //color: Color(0xffdf8e33).withAlpha(100),
-                //       color: Colors.grey,
-                //       offset: Offset(2, 4),
-                //       blurRadius: 8,
-                //       spreadRadius: 2)
-                // ],
-                // color: Colors.white,
-
-                // image: widget.imageBackground != null
-                //     ? DecorationImage(
-                //   fit: BoxFit.cover,
-                //   image: widget.imageBackground!,
-                // )
-                //     : null,
-                // gradient: widget.gradientBackground,
-                // color: widget.backgroundColor,
               ),
             ),
             Column(
