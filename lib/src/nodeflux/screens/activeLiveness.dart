@@ -35,6 +35,7 @@ class _ActiveLivenessDetectionState extends State<ActiveLivenessDetection> {
           children: [
             RaisedButton(
               child: Text('Call Native Method'),
+              onPressed: LivenessDetection,
             ),
             Text('_responseFromNativeCode'),
           ],
