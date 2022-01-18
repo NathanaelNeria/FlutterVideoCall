@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_webrtc_demo/src/nodeflux/screens/activeLiveness.dart';
 import 'loginPage.dart';
 // import 'signup.dart';
 import 'prepPage.dart';
@@ -52,7 +53,7 @@ class _WelcomePageState extends State<WelcomePage> {
     return InkWell(
       onTap: () {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => LoginPage()));
+            context, MaterialPageRoute(builder: (context) => ActiveLivenessDetection()));
       },
       child: Container(
         width: MediaQuery.of(context).size.width,

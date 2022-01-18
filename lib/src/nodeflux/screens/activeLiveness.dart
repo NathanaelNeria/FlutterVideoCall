@@ -3,42 +3,40 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class ActiveLivenessDetection extends StatefulWidget {
-  const ActiveLivenessDetection({Key key}) : super(key: key);
+
 
   @override
   _ActiveLivenessDetectionState createState() => _ActiveLivenessDetectionState();
 }
 
 class _ActiveLivenessDetectionState extends State<ActiveLivenessDetection> {
-  static const platform = const MethodChannel('activeLiveness');
+  static const platform = MethodChannel('samples.flutter.dev/battery');
 
-  Future<void> LivenessDetection() async {
+  // Get battery level.
+  String _batteryLevel = 'Unknown battery level.';
+
+  Future<void> _getBatteryLevel() async {
+    String batteryLevel;
     try {
-      await platform.invokeMethod('startActivity');
+      final int result = await platform.invokeMethod('getBatteryLevel');
+      batteryLevel = 'Battery level at $result % .';
     } on PlatformException catch (e) {
-      print(e.message);
+      batteryLevel = "Failed to get battery level: '${e.message}'.";
     }
+
+    setState(() {
+      _batteryLevel = batteryLevel;
+    });
   }
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    LivenessDetection();
-  }
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            RaisedButton(
-              child: Text('Call Native Method'),
-            ),
-            Text('_responseFromNativeCode'),
-          ],
-        ),
+    return Center(
+      child: Column(
+        children: [
+          ElevatedButton(onPressed: _getBatteryLevel, child: Text('Get Battery Level', textDirection: TextDirection.ltr,)),
+          Text(_batteryLevel, textDirection: TextDirection.ltr,)
+        ],
       ),
     );
   }

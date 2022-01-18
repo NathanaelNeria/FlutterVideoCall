@@ -26,8 +26,8 @@ apply plugin: 'com.google.gms.google-services'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
-    compileSdkVersion 28
-
+    compileSdkVersion 29
+    buildToolsVersion '30.0.3'
     lintOptions {
         disable 'InvalidPackage'
     }
@@ -36,7 +36,7 @@ android {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.cloudwebrtc.flutterwebrtcdemo"
         minSdkVersion 21 
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -50,10 +50,15 @@ android {
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.
+
+
             // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig signingConfigs.debug
-            useProguard true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            useProguard false
+            shrinkResources false
+            minifyEnabled false
+
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
     packagingOptions {
@@ -77,5 +82,7 @@ dependencies {
     implementation 'androidx.camera:camera-camera2:1.0.0-beta08'
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.4.20'
     implementation 'com.android.volley:volley:1.1.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+
 }
 
