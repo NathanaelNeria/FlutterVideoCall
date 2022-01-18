@@ -13,7 +13,7 @@ import 'congratulationPage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DisplayDataPage extends StatefulWidget {
-  DisplayDataPage({Key key, this.title}) : super(key: key);
+  DisplayDataPage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
@@ -22,7 +22,7 @@ class DisplayDataPage extends StatefulWidget {
 }
 
 class _DisplayDataPageState extends State<DisplayDataPage> {
-  DateTime selectedbirthdate=null;
+  DateTime? selectedbirthdate = null;
   File _imageFile=new File('');
 
   TextEditingController nikController = TextEditingController();
@@ -33,16 +33,16 @@ class _DisplayDataPageState extends State<DisplayDataPage> {
   TextEditingController emailController = TextEditingController();
 
   //firestore
-  String firestoreId;
+  late String firestoreId;
   final db = FirebaseFirestore.instance;
   final _formKey = GlobalKey<FormState>();
-  String firestoreName;
-  String firestoreNik;
-  String firestoreAddress;
-  String firestoreBirthdate;
-  String firestoreBirthday;
-  String firestoreMobilePhone;
-  String firestoreEmail;
+  late String firestoreName;
+  late String firestoreNik;
+  late String firestoreAddress;
+  late String firestoreBirthdate;
+  late String firestoreBirthday;
+  late String firestoreMobilePhone;
+  late String firestoreEmail;
 
   Widget _backButton() {
     return InkWell(
@@ -167,7 +167,7 @@ class _DisplayDataPageState extends State<DisplayDataPage> {
     return InkWell(
       onTap: () {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => SignUpPage()));
+            context, MaterialPageRoute(builder: (context) => SignUpPage(title: '',)));
       },
       child: Container(
         margin: EdgeInsets.symmetric(vertical: 20),
@@ -202,7 +202,7 @@ class _DisplayDataPageState extends State<DisplayDataPage> {
       text: TextSpan(
           text: 'eKTP & Contact ',
           style: GoogleFonts.portLligatSans(
-            textStyle: Theme.of(context).textTheme.display1,
+            textStyle: Theme.of(context).textTheme.headline4,
             fontSize: 30,
             fontWeight: FontWeight.w700,
             color: Color(0xffe46b10),
@@ -270,7 +270,7 @@ class _DisplayDataPageState extends State<DisplayDataPage> {
 //            return 'NIK character amount is wrong';
 //          }
         },
-        onSaved: (value) => firestoreNik = value,
+        onSaved: (value) => firestoreNik = value!,
 //        onSaved: (value) => _email = value.trim(),
 //        onChanged: (value) {
 //          debugPrint('Something changed in Title Email Field');
@@ -336,7 +336,7 @@ class _DisplayDataPageState extends State<DisplayDataPage> {
             //lastDate: Jiffy(DateTime.now()).add(years: -17)
           ).then((selectedDate){
             selectedbirthdate=selectedDate;
-            birthdateController.text= DateFormat('dd-MM-yyyy').format(selectedDate).toString();
+            birthdateController.text= DateFormat('dd-MM-yyyy').format(selectedDate!).toString();
             //new DateFormat.yMMMd().format(selectedDate);
                 ;
           });
@@ -518,12 +518,12 @@ class _DisplayDataPageState extends State<DisplayDataPage> {
 
   Future getImage() async {
 
-    File registerSelfieimage;
+    File? registerSelfieimage;
     //Future<bool> faceMatchFound=Future<bool>.value(false);
     bool faceMatchFound1 = false;
     registerSelfieimage= await ImagePicker.pickImage(source: ImageSource.camera);
     if(registerSelfieimage != null) {
-      File cropped = await ImageCropper.cropImage(
+      File? cropped = await ImageCropper.cropImage(
           sourcePath: registerSelfieimage.path,
           aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
           compressQuality: 80,
@@ -543,7 +543,7 @@ class _DisplayDataPageState extends State<DisplayDataPage> {
     }
 
     setState(() {
-      _imageFile = registerSelfieimage;
+      _imageFile = registerSelfieimage!;
     });
 
   }
@@ -729,7 +729,7 @@ class _DisplayDataPageState extends State<DisplayDataPage> {
                             stream: db.collection('form').snapshots(),
                             builder: (context, snapshot){
                               if (snapshot.hasData) {
-                                return Column(children:snapshot.data.docs.map((doc)=> buildItem(doc)).toList());
+                                return Column(children:snapshot.data!.docs.map((doc)=> buildItem(doc)).toList());
                               } else {
                                 return SizedBox();
                               }
@@ -754,7 +754,7 @@ class _DisplayDataPageState extends State<DisplayDataPage> {
       InkWell(
           onTap: () {
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => CongratulationPage(email: firestoreEmail)));;
+                context, MaterialPageRoute(builder: (context) => CongratulationPage(email: firestoreEmail, title: '',)));;
           },
           child:Container(
             width: MediaQuery.of(context).size.width,
@@ -901,8 +901,8 @@ class _DisplayDataPageState extends State<DisplayDataPage> {
   }
 
   void createData() async {
-    if (_formKey.currentState.validate()) {
-      _formKey.currentState.save();
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
       DocumentReference ref = await db.collection('form').add({'name': '$firestoreName', 'nik': '$firestoreNik', 'address': '$firestoreAddress', 'birthdate': '$firestoreBirthdate', 'birthday': '$firestoreBirthday', 'mobilePhone': '$firestoreMobilePhone', 'email': '$firestoreEmail'});
       setState(() => firestoreId = ref.id);
       print (ref.id);
@@ -931,7 +931,7 @@ class _DisplayDataPageState extends State<DisplayDataPage> {
       //     return 'Please enter some text';
       //   }
       // },
-      onSaved: (value) => firestoreName = value,
+      onSaved: (value) => firestoreName = value!,
     );
   }
 
@@ -948,7 +948,7 @@ class _DisplayDataPageState extends State<DisplayDataPage> {
       //     return 'Please enter some text';
       //   }
       // },
-      onSaved: (value) => firestoreNik = value,
+      onSaved: (value) => firestoreNik = value!,
     );
   }
 
@@ -965,7 +965,7 @@ class _DisplayDataPageState extends State<DisplayDataPage> {
       //     return 'Please enter some text';
       //   }
       // },
-      onSaved: (value) => firestoreAddress = value,
+      onSaved: (value) => firestoreAddress = value!,
     );
   }
 
@@ -982,7 +982,7 @@ class _DisplayDataPageState extends State<DisplayDataPage> {
       //     return 'Please enter some text';
       //   }
       // },
-      onSaved: (value) => firestoreBirthdate = value,
+      onSaved: (value) => firestoreBirthdate = value!,
     );
   }
 
@@ -999,7 +999,7 @@ class _DisplayDataPageState extends State<DisplayDataPage> {
       //     return 'Please enter some text';
       //   }
       // },
-      onSaved: (value) => firestoreBirthday = value,
+      onSaved: (value) => firestoreBirthday = value!,
     );
   }
 
@@ -1016,7 +1016,7 @@ class _DisplayDataPageState extends State<DisplayDataPage> {
       //     return 'Please enter some text';
       //   }
       // },
-      onSaved: (value) => firestoreEmail = value,
+      onSaved: (value) => firestoreEmail = value!,
     );
   }
 
@@ -1033,7 +1033,7 @@ class _DisplayDataPageState extends State<DisplayDataPage> {
       //     return 'Please enter some text';
       //   }
       // },
-      onSaved: (value) => firestoreMobilePhone = value,
+      onSaved: (value) => firestoreMobilePhone = value!,
     );
   }
 

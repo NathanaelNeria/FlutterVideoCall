@@ -33,7 +33,7 @@ class WebrtcRoom2 extends StatelessWidget {
 }
 
 class WebrtcRoom extends StatefulWidget {
-  WebrtcRoom({Key key}) : super(key: key);
+  // WebrtcRoom({required Key key}) : super(key: key);
 
   @override
   _WebrtcRoomState createState() => _WebrtcRoomState();
@@ -43,11 +43,11 @@ class _WebrtcRoomState extends State<WebrtcRoom> {
   WebrtcSignaling signaling = WebrtcSignaling();
   RTCVideoRenderer _localRenderer = RTCVideoRenderer();
   RTCVideoRenderer _remoteRenderer = RTCVideoRenderer();
-  String roomId;
+  String roomId = '';
   TextEditingController textEditingController = TextEditingController(text: '');
-  Timer _timer;
+  late Timer _timer;
 
-  TextEditingController _scheduledDateTimeController;
+  late TextEditingController _scheduledDateTimeController;
   String _scheduledDateTimeValueChanged = '';
   String _scheduledDateTimeValueToValidate = '';
   String _scheduledDateTimeValueSaved = '';
@@ -274,7 +274,7 @@ class _WebrtcRoomState extends State<WebrtcRoom> {
                 onPressed: () {
                   signaling.hangUp(_localRenderer);
                   Navigator.push(
-                      context, MaterialPageRoute(builder: (context) => DisplayDataPage()));
+                      context, MaterialPageRoute(builder: (context) => DisplayDataPage(title: '',)));
                 },
                 //child: Text("Hangup"),
                 child: Icon(Icons.call_end_rounded),
@@ -282,9 +282,10 @@ class _WebrtcRoomState extends State<WebrtcRoom> {
                   shape: MaterialStateProperty.all(CircleBorder()),
                   padding: MaterialStateProperty.all(EdgeInsets.all(20)),
                   backgroundColor: MaterialStateProperty.all(Colors.red), // <-- Button color
-                  overlayColor: MaterialStateProperty.resolveWith<Color>((states) {
-                    if (states.contains(MaterialState.pressed)) return Colors.red; // <-- Splash color
-                  }),
+                  // overlayColor: MaterialStateProperty.resolveWith<Color>((states) {
+                  //   if (states.contains(MaterialState.pressed))
+                  //     return Colors.red; // <-- Splash color
+                  // }),
                 ),
               ):Container(),
               // END: Comment button hangup

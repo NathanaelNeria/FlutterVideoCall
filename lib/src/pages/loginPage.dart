@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../Widget/bezierContainer.dart';
 
 class LoginPage extends StatefulWidget {
-  LoginPage({Key key, this.title}) : super(key: key);
+  LoginPage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
@@ -169,7 +169,7 @@ class _LoginPageState extends State<LoginPage> {
     return InkWell(
       onTap: () {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => SignUpPage()));
+            context, MaterialPageRoute(builder: (context) => SignUpPage(title: '',)));
       },
       child: Container(
         margin: EdgeInsets.symmetric(vertical: 20),
@@ -204,7 +204,7 @@ class _LoginPageState extends State<LoginPage> {
       text: TextSpan(
           text: 'd',
           style: GoogleFonts.portLligatSans(
-            textStyle: Theme.of(context).textTheme.display1,
+            textStyle: Theme.of(context).textTheme.headline4,
             fontSize: 30,
             fontWeight: FontWeight.w700,
             color: Color(0xffe46b10),

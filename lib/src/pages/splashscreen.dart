@@ -40,12 +40,6 @@ class SplashScreen extends StatefulWidget {
   /// Padding for long Loading text, default: EdgeInsets.all(0)
   final EdgeInsets loadingTextPadding;
 
-  ///  Background image for the entire screen
-  final ImageProvider imageBackground;
-
-  /// Background gradient for the entire screen
-  final Gradient gradientBackground;
-
   /// Whether to display a loader or not
   final bool useLoader;
 
@@ -68,29 +62,21 @@ class SplashScreen extends StatefulWidget {
   /// Use one of the provided factory constructors instead of.
   @protected
   SplashScreen({
-    this.loaderColor,
-    this.navigateAfterFuture,
-    this.seconds,
-    this.photoSize,
-    this.pageRoute,
-    this.onClick,
-    this.navigateAfterSeconds,
-    //required this.title,
-    this.title,
-    //required this.backgroundColor,
-    this.backgroundColor,
-    //required this.styleTextUnderTheLoader,
-    this.styleTextUnderTheLoader,
-    this.image,
-    //required this.loadingText,
-    this.loadingText,
-    //required this.loadingTextPadding,
-    this.loadingTextPadding,
-    this.imageBackground,
-    this.gradientBackground,
-    //required this.useLoader,
-    this.useLoader,
-    this.routeName,
+    required this.loaderColor,
+    required this.navigateAfterFuture,
+    required this.seconds,
+    required this.photoSize,
+    required this.pageRoute,
+    required this.onClick,
+    required this.navigateAfterSeconds,
+    required this.title,
+    required this.backgroundColor,
+    required this.styleTextUnderTheLoader,
+    required this.image,
+    required this.loadingText,
+    required this.loadingTextPadding,
+    required this.useLoader,
+    required this.routeName,
   })  : assert(
   routeName == null ||
       (routeName is String && routeName.startsWith('/')),
@@ -121,22 +107,19 @@ class SplashScreen extends StatefulWidget {
 
   factory SplashScreen.timer({
     //required int seconds,
-    int seconds,
-    Color loaderColor,
+    required int seconds,
+    required Color loaderColor,
     Color backgroundColor = Colors.white,
-    double photoSize,
+    required double photoSize,
     Text loadingText = const Text(''),
     EdgeInsets loadingTextPadding = const EdgeInsets.only(top: 10.0),
-    Image image,
-    Route pageRoute,
-    GestureTapCallback onClick,
-    Object navigateAfterSeconds,
+    required Image image,
+    Route? pageRoute,
+    Object? navigateAfterSeconds,
+    Future<Object>? navigateAfterFuture,
     Text title = const Text(''),
     TextStyle styleTextUnderTheLoader = _defaultStyleTextUnderTheLoader,
-    ImageProvider imageBackground,
-    Gradient gradientBackground,
     bool useLoader = true,
-    String routeName,
   }) =>
       SplashScreen(
         loaderColor: loaderColor,
@@ -146,54 +129,53 @@ class SplashScreen extends StatefulWidget {
         loadingTextPadding: loadingTextPadding,
         backgroundColor: backgroundColor,
         image: image,
-        pageRoute: pageRoute,
-        onClick: onClick,
-        navigateAfterSeconds: navigateAfterSeconds,
+        navigateAfterSeconds: navigateAfterSeconds!,
         title: title,
         styleTextUnderTheLoader: styleTextUnderTheLoader,
-        imageBackground: imageBackground,
-        gradientBackground: gradientBackground,
         useLoader: useLoader,
-        routeName: routeName,
+        routeName: '',
+        pageRoute: pageRoute!,
+        onClick:(){},
+        navigateAfterFuture: navigateAfterFuture!,
       );
 
-  factory SplashScreen.future({
-    //required Future<Object> navigateAfterFuture,
-    Future<Object> navigateAfterFuture,
-    Color loaderColor,
-    Color backgroundColor = Colors.white,
-    double photoSize,
-    Text loadingText = const Text(''),
-    EdgeInsets loadingTextPadding = const EdgeInsets.only(top: 10.0),
-    Image image,
-    Route pageRoute,
-    GestureTapCallback onClick,
-    dynamic navigateAfterSeconds,
-    Text title = const Text(''),
-    TextStyle styleTextUnderTheLoader = _defaultStyleTextUnderTheLoader,
-    ImageProvider imageBackground,
-    Gradient gradientBackground,
-    bool useLoader = true,
-    String routeName,
-  }) =>
-      SplashScreen(
-        loaderColor: loaderColor,
-        navigateAfterFuture: navigateAfterFuture,
-        photoSize: photoSize,
-        loadingText: loadingText,
-        loadingTextPadding: loadingTextPadding,
-        backgroundColor: backgroundColor,
-        image: image,
-        pageRoute: pageRoute,
-        onClick: onClick,
-        navigateAfterSeconds: navigateAfterSeconds,
-        title: title,
-        styleTextUnderTheLoader: styleTextUnderTheLoader,
-        imageBackground: imageBackground,
-        gradientBackground: gradientBackground,
-        useLoader: useLoader,
-        routeName: routeName,
-      );
+  // factory SplashScreen.future({
+  //   //required Future<Object> navigateAfterFuture,
+  //   Future<Object>? navigateAfterFuture,
+  //   required Color loaderColor,
+  //   Color backgroundColor = Colors.white,
+  //   required double photoSize,
+  //   Text loadingText = const Text(''),
+  //   EdgeInsets loadingTextPadding = const EdgeInsets.only(top: 10.0),
+  //   required Image image,
+  //   required Route pageRoute,
+  //   required GestureTapCallback onClick,
+  //   dynamic navigateAfterSeconds,
+  //   Text title = const Text(''),
+  //   TextStyle styleTextUnderTheLoader = _defaultStyleTextUnderTheLoader,
+  //   required ImageProvider imageBackground,
+  //   required Gradient gradientBackground,
+  //   bool useLoader = true,
+  //   required String routeName,
+  // }) =>
+  //     SplashScreen(
+  //       loaderColor: loaderColor,
+  //       navigateAfterFuture: navigateAfterFuture!,
+  //       photoSize: photoSize,
+  //       loadingText: loadingText,
+  //       loadingTextPadding: loadingTextPadding,
+  //       backgroundColor: backgroundColor,
+  //       image: image,
+  //       pageRoute: pageRoute,
+  //       onClick: onClick,
+  //       navigateAfterSeconds: navigateAfterSeconds,
+  //       title: title,
+  //       styleTextUnderTheLoader: styleTextUnderTheLoader,
+  //       imageBackground: imageBackground,
+  //       gradientBackground: gradientBackground,
+  //       useLoader: useLoader,
+  //       routeName: routeName,
+  //     );
 
   @override
   _SplashScreenState createState() => _SplashScreenState();
@@ -266,7 +248,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   gradient: LinearGradient(
                       begin: Alignment.bottomLeft,
                       end: Alignment.topRight,
-                      colors: [Colors.green, Colors.green[600], Colors.green[700], Colors.green[800]])
+                      colors: [Colors.green, Colors.green.shade700, Colors.green.shade900])
               ),
             ),
             Column(

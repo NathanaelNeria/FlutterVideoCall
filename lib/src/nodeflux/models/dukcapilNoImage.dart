@@ -10,11 +10,11 @@ String dukcapilNoImageToJson(DukcapilNoImage data) => json.encode(data.toJson())
 
 class DukcapilNoImage {
   DukcapilNoImage({
-    this.analytic,
-    this.code,
-    this.errors,
-    this.message,
-    this.ok,
+    required this.analytic,
+    required this.code,
+    required this.errors,
+    required this.message,
+    required this.ok,
   });
 
   String analytic;

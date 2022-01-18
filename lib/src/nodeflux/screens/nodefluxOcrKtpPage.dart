@@ -268,7 +268,7 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
       text: TextSpan(
           text: 'eKTP & Contact ',
           style: GoogleFonts.portLligatSans(
-            textStyle: Theme.of(context).textTheme.display1,
+            textStyle: Theme.of(context).textTheme.headline4,
             fontSize: 30,
             fontWeight: FontWeight.w700,
             // color: Color(0xffe46b10),
@@ -333,47 +333,6 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
     );
   }
 
-  _getEktpImage0(BuildContext context, ImageSource source) async{
-    this.setState(() {
-      //loading = true;
-    });
-    var picture = await ImagePicker.pickImage(source: source);
-
-    if(picture != null){
-      //File cropped=picture;
-      try {
-        File cropped = await ImageCropper.cropImage(
-            sourcePath: picture.path,
-            aspectRatio: CropAspectRatio(ratioX: 8, ratioY: 5),
-            compressQuality: 100,
-            maxWidth: 640,
-            maxHeight: 480,
-            compressFormat: ImageCompressFormat.jpg,
-            androidUiSettings: AndroidUiSettings(
-              toolbarColor: Colors.deepOrange,
-              toolbarTitle: "RPS Cropper",
-              statusBarColor: Colors.deepOrange.shade900,
-              backgroundColor: Colors.white,
-            )
-        );
-        this.setState(() {
-          _ektpImage = cropped;
-          //loading = false;
-        });
-      }
-      catch (e) {
-        print (e);
-        debugPrint("Error $e");
-      }
-    }else{
-      this.setState(() {
-        //loading = false;
-      });
-    }
-
-
-    Navigator.of(context).pop();
-  }
 
   _getEktpImage(BuildContext context, ImageSource source) async{
     this.setState(() {
@@ -405,11 +364,10 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
       if(picture != null) {
         try {
           var result = await FlutterImageCompress.compressAndGetFile(
-            picture.absolute.path, resultPath,
+            picture.path, resultPath,
             quality: photoQuality,
           );
 
-          int pictureLength=picture.lengthSync();
           int resultLength=result.lengthSync();
 
           var i = 1;
