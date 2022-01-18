@@ -7,7 +7,7 @@ import 'WelcomePage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CongratulationPage extends StatefulWidget {
-  CongratulationPage({Key key, this.title, this.email}) : super(key: key);
+  CongratulationPage({Key? key, required this.title, required this.email}) : super(key: key);
 
   final String title;
   final String email;
@@ -19,16 +19,16 @@ class CongratulationPage extends StatefulWidget {
 
 class _CongratulationPageState extends State<CongratulationPage> {
   //firestore
-  String firestoreId;
+  late String firestoreId;
   final db = FirebaseFirestore.instance;
   final _formKey = GlobalKey<FormState>();
-  String firestoreName;
-  String firestoreNik;
-  String firestoreAddress;
-  String firestoreBirthdate;
-  String firestoreBirthday;
-  String firestoreMobilePhone;
-  String firestoreEmail;
+  late String firestoreName;
+  late String firestoreNik;
+  late String firestoreAddress;
+  late String firestoreBirthdate;
+  late String firestoreBirthday;
+  late String firestoreMobilePhone;
+  late String firestoreEmail;
 
   Widget _backButton() {
     return InkWell(
@@ -129,7 +129,7 @@ class _CongratulationPageState extends State<CongratulationPage> {
                 begin: Alignment.bottomLeft,
                 end: Alignment.topRight,
                 // colors: [Color(0xfffbb448), Color(0xffe46b10)]
-                colors: [Colors.green, Colors.green[600], Colors.green[700], Colors.green[800]]
+                colors: [Colors.green, Colors.green.shade700, Colors.green.shade900]
             )
         ),
         child: Stack(
@@ -172,7 +172,7 @@ class _CongratulationPageState extends State<CongratulationPage> {
                         stream: db.collection('form').snapshots(),
                         builder: (context, snapshot){
                           if (snapshot.hasData) {
-                            return Column(children:snapshot.data.docs.map((doc)=> buildItem(doc)).toList());
+                            return Column(children:snapshot.data!.docs.map((doc)=> buildItem(doc)).toList());
                           } else {
                             return SizedBox();
                           }

@@ -10,9 +10,9 @@ String dukcapilFailToJson(DukcapilFail data) => json.encode(data.toJson());
 
 class DukcapilFail {
   DukcapilFail({
-    this.job,
-    this.message,
-    this.ok,
+    required this.job,
+    required this.message,
+    required this.ok,
   });
 
   Job job;
@@ -34,8 +34,8 @@ class DukcapilFail {
 
 class Job {
   Job({
-    this.id,
-    this.result,
+    required this.id,
+    required this.result,
   });
 
   String id;
@@ -54,9 +54,9 @@ class Job {
 
 class Result {
   Result({
-    this.status,
-    this.analyticType,
-    this.result,
+    required this.status,
+    required this.analyticType,
+    required this.result,
   });
 
   String status;

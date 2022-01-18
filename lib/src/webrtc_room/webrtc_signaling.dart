@@ -9,9 +9,9 @@ import 'package:intl/intl.dart';
 typedef void StreamStateCallback(MediaStream stream);
 
 class WebrtcSignaling {
-  WebrtcSignaling({this.context});
+  // WebrtcSignaling({required this.context});
 
-  final BuildContext context;
+  late final BuildContext context;
 
   Map<String, dynamic> configuration = {
     'iceServers': [
@@ -24,12 +24,12 @@ class WebrtcSignaling {
     ]
   };
 
-  RTCPeerConnection peerConnection;
-  MediaStream localStream;
-  MediaStream remoteStream;
-  String roomId;
-  String currentRoomText;
-  StreamStateCallback onAddRemoteStream;
+  late RTCPeerConnection peerConnection;
+  late MediaStream localStream;
+  late MediaStream remoteStream;
+  late String roomId;
+  late String currentRoomText;
+  late StreamStateCallback onAddRemoteStream;
 
   var VCHandled1;
   var VCHandled2;
@@ -47,7 +47,7 @@ class WebrtcSignaling {
     var agent1Active = db.collection('isActive').doc('agent1').get();
     var agent2Active = db.collection('isActive').doc('agent2').get();
 
-    await agent1Active.then((doc){
+    agent1Active.then((doc){
       var jsonData = jsonEncode(doc.data());
       var parsedJson = jsonDecode(jsonData);
       VCHandled1 = parsedJson['VCHandled'];
@@ -55,8 +55,8 @@ class WebrtcSignaling {
       inCall1 = parsedJson['inCall'];
       print('a1 >>>>>' + VCHandled1.toString() + loggedIn1.toString() + inCall1.toString());
     });
-
-    await agent2Active.then((doc){
+//buat condition lagi
+    agent2Active.then((doc){
       var jsonData = jsonEncode(doc.data());
       var parsedJson = jsonDecode(jsonData);
       VCHandled2 = parsedJson['VCHandled'];
@@ -482,7 +482,7 @@ class WebrtcSignaling {
       print('Connection state change: $state');
       if (state==RTCPeerConnectionState.RTCPeerConnectionStateDisconnected) {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => DisplayDataPage()));
+            context, MaterialPageRoute(builder: (context) => DisplayDataPage(title: '',)));
       }
     };
 

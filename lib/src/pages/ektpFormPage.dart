@@ -17,7 +17,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 class EktpFormPage extends StatefulWidget {
-  EktpFormPage({Key key, this.title}) : super(key: key);
+  EktpFormPage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
@@ -26,13 +26,13 @@ class EktpFormPage extends StatefulWidget {
 }
 
 class _EktpFormPageState extends State<EktpFormPage> {
-  DateTime selectedbirthdate=null;
-  File _imageFile;
+  DateTime? selectedbirthdate=null;
+  late File _imageFile;
 
-  File _ektpImage;
-  File _selfieImage;
-  File _npwpImage;
-  File _selfieEktpImage;
+  late File _ektpImage;
+  late File _selfieImage;
+  late File _npwpImage;
+  late File _selfieEktpImage;
 
   TextEditingController nikController = TextEditingController();
   TextEditingController nameController = TextEditingController();
@@ -42,16 +42,16 @@ class _EktpFormPageState extends State<EktpFormPage> {
   TextEditingController emailController = TextEditingController();
 
   //firestore
-  String firestoreId;
+  late String firestoreId;
   final db = FirebaseFirestore.instance;
   final _formKey = GlobalKey<FormState>();
-  String firestoreName;
-  String firestoreNik;
-  String firestoreAddress;
-  String firestoreBirthdate;
-  String firestoreBirthplace;
-  String firestoreMobilePhone;
-  String firestoreEmail;
+  late String firestoreName;
+  late String firestoreNik;
+  late String firestoreAddress;
+  late String firestoreBirthdate;
+  late String firestoreBirthplace;
+  late String firestoreMobilePhone;
+  late String firestoreEmail;
 
   int minPhotoSize=256000; // 250KB
   int maxPhotoSize=512000; // 500KB
@@ -188,7 +188,7 @@ class _EktpFormPageState extends State<EktpFormPage> {
     return InkWell(
       onTap: () {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => SignUpPage()));
+            context, MaterialPageRoute(builder: (context) => SignUpPage(title: '',)));
       },
       child: Container(
         margin: EdgeInsets.symmetric(vertical: 20),
@@ -646,12 +646,12 @@ class _EktpFormPageState extends State<EktpFormPage> {
 
   Future getImage() async {
 
-    File registerSelfieimage;
+    File? registerSelfieimage;
     //Future<bool> faceMatchFound=Future<bool>.value(false);
     bool faceMatchFound1 = false;
     registerSelfieimage= await ImagePicker.pickImage(source: ImageSource.camera);
     if(registerSelfieimage != null) {
-      File cropped = await ImageCropper.cropImage(
+      File? cropped = await ImageCropper.cropImage(
           sourcePath: registerSelfieimage.path,
           aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
           compressQuality: 80,
@@ -671,7 +671,7 @@ class _EktpFormPageState extends State<EktpFormPage> {
     }
 
     setState(() {
-      _imageFile = registerSelfieimage;
+      _imageFile = registerSelfieimage!;
     });
 
   }
@@ -1054,8 +1054,8 @@ class _EktpFormPageState extends State<EktpFormPage> {
   }
 
   void createData() async {
-    if (_formKey.currentState.validate()) {
-      _formKey.currentState.save();
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
       await Firebase.initializeApp();
       await db.collection('form').doc('user').update({'name': '$firestoreName', 'nik': '$firestoreNik', 'address': '$firestoreAddress', 'dob': '$firestoreBirthdate', 'pob': '$firestoreBirthplace', 'mobile': '$firestoreMobilePhone', 'email': '$firestoreEmail'});
       //DocumentReference ref = await db.collection('form').add({'name': '$firestoreName', 'nik': '$firestoreNik', 'address': '$firestoreAddress', 'birthdate': '$firestoreBirthdate', 'birthday': '$firestoreBirthday', 'mobilePhone': '$firestoreMobilePhone', 'email': '$firestoreEmail'});
@@ -1087,7 +1087,7 @@ class _EktpFormPageState extends State<EktpFormPage> {
       //     return 'Please enter some text';
       //   }
       // },
-      onSaved: (value) => firestoreName = value,
+      onSaved: (value) => firestoreName = value!,
     );
   }
 
@@ -1105,7 +1105,7 @@ class _EktpFormPageState extends State<EktpFormPage> {
       //     return 'Please enter some text';
       //   }
       // },
-      onSaved: (value) => firestoreNik = value,
+      onSaved: (value) => firestoreNik = value!,
     );
   }
 
@@ -1122,7 +1122,7 @@ class _EktpFormPageState extends State<EktpFormPage> {
       //     return 'Please enter some text';
       //   }
       // },
-      onSaved: (value) => firestoreAddress = value,
+      onSaved: (value) => firestoreAddress = value!,
     );
   }
 
@@ -1139,7 +1139,7 @@ class _EktpFormPageState extends State<EktpFormPage> {
       //     return 'Please enter some text';
       //   }
       // },
-      onSaved: (value) => firestoreBirthdate = value,
+      onSaved: (value) => firestoreBirthdate = value!,
     );
   }
 
@@ -1156,7 +1156,7 @@ class _EktpFormPageState extends State<EktpFormPage> {
       //     return 'Please enter some text';
       //   }
       // },
-      onSaved: (value) => firestoreBirthplace = value,
+      onSaved: (value) => firestoreBirthplace = value!,
     );
   }
 
@@ -1173,7 +1173,7 @@ class _EktpFormPageState extends State<EktpFormPage> {
       //     return 'Please enter some text';
       //   }
       // },
-      onSaved: (value) => firestoreEmail = value,
+      onSaved: (value) => firestoreEmail = value!,
     );
   }
 
@@ -1190,7 +1190,7 @@ class _EktpFormPageState extends State<EktpFormPage> {
       //     return 'Please enter some text';
       //   }
       // },
-      onSaved: (value) => firestoreMobilePhone = value,
+      onSaved: (value) => firestoreMobilePhone = value!,
     );
   }
 

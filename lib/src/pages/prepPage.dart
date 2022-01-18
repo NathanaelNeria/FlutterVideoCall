@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import '../../Widget/bezierContainer.dart';
 import 'loginPage.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'ektpFormPage.dart';
 import '../nodeflux/screens/nodefluxOcrKtpPage.dart';
 
 
 class PrepPage extends StatefulWidget {
-  PrepPage({Key key, this.title}) : super(key: key);
+  PrepPage({Key? key, required this.title}) : super(key: key);
+
 
   final String title;
 
@@ -16,7 +16,7 @@ class PrepPage extends StatefulWidget {
 }
 
 class _PrepPageState extends State<PrepPage> {
-  var selectedValue = 'Savings Account';
+  String selectedValue = 'Savings Account';
 
   Widget _backButton() {
     return InkWell(
@@ -114,48 +114,15 @@ class _PrepPageState extends State<PrepPage> {
                   )
                 );
               }).toList(),
-              onChanged: (String newValue) {
+              onChanged: (String? newValue) {
                 setState(() {
-                  selectedValue = newValue;
+                  selectedValue = newValue!;
                   print(selectedValue + ' ' + newValue);
                 });
               },
             ),
           )
       );
-  }
-
-  Widget _loginAccountLabel() {
-    return InkWell(
-      onTap: () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => EktpFormPage()));
-      },
-      child: Container(
-        margin: EdgeInsets.symmetric(vertical: 20),
-        padding: EdgeInsets.all(15),
-        alignment: Alignment.bottomCenter,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'Already have an account ?',
-              style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
-            ),
-            SizedBox(
-              width: 10,
-            ),
-            Text(
-              'Login',
-              style: TextStyle(
-                  color: Color(0xfff79c4f),
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600),
-            ),
-          ],
-        ),
-      ),
-    );
   }
 
   Widget _title() {
@@ -211,7 +178,7 @@ class _PrepPageState extends State<PrepPage> {
                 begin: Alignment.bottomLeft,
                 end: Alignment.topRight,
                 // colors: [Color(0xfffbb448), Color(0xffe46b10)]
-                colors: [Colors.green, Colors.green[600], Colors.green[700], Colors.green[800]]
+                colors: [Colors.green, Colors.green.shade700, Colors.green.shade900]
             )
         ),
         height: height,

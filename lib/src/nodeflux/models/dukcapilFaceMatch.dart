@@ -10,9 +10,9 @@ String dukcapilFaceMatchToJson(DukcapilFaceMatch data) => json.encode(data.toJso
 
 class DukcapilFaceMatch {
   DukcapilFaceMatch({
-    this.job,
-    this.message,
-    this.ok,
+    required this.job,
+    required this.message,
+    required this.ok,
   });
 
   Job job;
@@ -34,8 +34,8 @@ class DukcapilFaceMatch {
 
 class Job {
   Job({
-    this.id,
-    this.result,
+    required this.id,
+    required this.result,
   });
 
   String id;
@@ -54,9 +54,9 @@ class Job {
 
 class JobResult {
   JobResult({
-    this.status,
-    this.analyticType,
-    this.result,
+    required this.status,
+    required this.analyticType,
+    required this.result,
   });
 
   String status;
@@ -78,7 +78,7 @@ class JobResult {
 
 class ResultElement {
   ResultElement({
-    this.faceMatch,
+    required this.faceMatch,
   });
 
   FaceMatch faceMatch;
@@ -94,7 +94,7 @@ class ResultElement {
 
 class FaceMatch {
   FaceMatch({
-    this.similarity,
+    required this.similarity,
   });
 
   double similarity;
