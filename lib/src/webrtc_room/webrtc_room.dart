@@ -4,8 +4,8 @@ import 'dart:convert';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
+import 'package:flutter_webrtc_demo/src/pages/displayDataPage.dart';
 import 'webrtc_signaling.dart';
-import '../pages/displayDataPage.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart';
@@ -78,41 +78,7 @@ class _WebrtcRoomState extends State<WebrtcRoom> {
 
     // auto open camera & mic
     signaling.openUserMedia(_localRenderer, _remoteRenderer).whenComplete(() {
-      // var agent1Active = db.collection('isActive').doc('agent1').get();
-      // var agent2Active = db.collection('isActive').doc('agent2').get();
-      // var handle1;
-      // var login1;
-      // var call1;
-      // var handle2;
-      // var login2;
-      // var call2;
-      //
-      // agent1Active.then((doc){
-      //     var jsonData = jsonEncode(doc.data());
-      //     var parsedJson = jsonDecode(jsonData);
-      //     handle1 = parsedJson['VCHandled'];
-      //     login1 = parsedJson['loggedIn'];
-      //     call1 = parsedJson['inCall'];
-      //     // print('a1 >>>>>' + VCHandled1.toString() + loggedIn1.toString() + inCall1.toString());
-      // });
-      //
-      // agent2Active.then((doc){
-      //     var jsonData = jsonEncode(doc.data());
-      //     var parsedJson = jsonDecode(jsonData);
-      //     handle2 = parsedJson['VCHandled'];
-      //     login2 = parsedJson['loggedIn'];
-      //     call2 = parsedJson['inCall'];
-      //     // print('a2 state >>>>> ' + VCHandled2.toString() + loggedIn2.toString() + inCall2.toString());
-      // });
-      // setState(() {
-      //   VCHandled1 = handle1;
-      //   VCHandled2 = handle2;
-      //   loggedIn1 = login1;
-      //   loggedIn2 = login2;
-      //   inCall1 = call1;
-      //   inCall2 = call2;
-      //   passed = true;
-      // });
+      setState(() {});
     } );
 
     signaling.createRoom(_remoteRenderer, db).then((data) {

@@ -10,9 +10,9 @@ String messageModelToJson(MessageModel data) => json.encode(data.toJson());
 
 class MessageModel {
   MessageModel({
-    this.message,
-    this.ok,
-    this.status,
+    required this.message,
+    required this.ok,
+    required this.status,
   });
 
   String message;

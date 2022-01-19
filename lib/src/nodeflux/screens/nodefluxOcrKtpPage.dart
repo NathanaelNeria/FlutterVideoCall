@@ -33,7 +33,7 @@ import '../models/face_pair_not_match.dart';
 import '../models/no_face_detected.dart';
 
 class NodefluxOcrKtpPage extends StatefulWidget {
-  NodefluxOcrKtpPage({Key key, this.title}) : super(key: key);
+  NodefluxOcrKtpPage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
@@ -42,13 +42,13 @@ class NodefluxOcrKtpPage extends StatefulWidget {
 }
 
 class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
-  DateTime selectedbirthdate=null;
-  File _imageFile;
+  DateTime? selectedbirthdate;
+  late File _imageFile;
 
-  File _ektpImage;
-  File _selfieImage;
-  File _npwpImage;
-  File _selfieEktpImage;
+  late File _ektpImage;
+  late File _selfieImage;
+  late File _npwpImage;
+  late File _selfieEktpImage;
 
   TextEditingController nikController = TextEditingController();
   TextEditingController nameController = TextEditingController();
@@ -56,47 +56,47 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
   TextEditingController birthplaceController = TextEditingController();
   TextEditingController mobilePhoneController = TextEditingController();
   TextEditingController emailController = TextEditingController();
-  TextEditingController addressController, genderController, rtrwController, kecamatanController, religionController, maritalStatusController, workfieldController, provinceController, expiryController,
+  late TextEditingController addressController, genderController, rtrwController, kecamatanController, religionController, maritalStatusController, workfieldController, provinceController, expiryController,
     bloodTypeController, kabupatenKotaController, kelurahanDesaController, nationalityController;
 
   //firestore
-  String firestoreId;
+  late String firestoreId;
 
-  FirebaseFirestore db;
+  late FirebaseFirestore db;
   final _formKey = GlobalKey<FormState>();
-  String firestoreName;
-  String firestoreNik;
-  String firestoreAddress;
-  String firestoreBirthdate;
-  String firestoreBirthplace;
-  String firestoreGender;
-  String firestoreRtRw;
-  String firestoreKecamatan;
-  String firestoreReligion;
-  String firestoreMaritalStatus;
-  String firestoreWorkfield;
-  String firestoreProvince;
-  String firestoreExpiry;
-  String firestoreBloodType;
-  String firestoreKabupatenKota;
-  String firestoreKelurahanDesa;
-  String firestoreNationality;
-  String firestoreMobilePhone;
-  String firestoreEmail;
+  late String firestoreName;
+  late String firestoreNik;
+  late String firestoreAddress;
+  late String firestoreBirthdate;
+  late String firestoreBirthplace;
+  late String firestoreGender;
+  late String firestoreRtRw;
+  late String firestoreKecamatan;
+  late String firestoreReligion;
+  late String firestoreMaritalStatus;
+  late String firestoreWorkfield;
+  late String firestoreProvince;
+  late String firestoreExpiry;
+  late String firestoreBloodType;
+  late String firestoreKabupatenKota;
+  late String firestoreKelurahanDesa;
+  late String firestoreNationality;
+  late String firestoreMobilePhone;
+  late String firestoreEmail;
 
   int minPhotoSize=256000; // 250KB
   int maxPhotoSize=512000; // 500KB
 
-  String ocrNama, ocrNik, ocrTempatLahir, ocrTanggalLahir, ocrJenisKelamin, ocrAlamat, ocrRtrw, ocrKecamatan, ocrAgama, ocrStatusPerkawinan,
+  late String ocrNama, ocrNik, ocrTempatLahir, ocrTanggalLahir, ocrJenisKelamin, ocrAlamat, ocrRtrw, ocrKecamatan, ocrAgama, ocrStatusPerkawinan,
       ocrPekerjaan, ocrProvinsi, ocrBerlakuHingga, ocrGolonganDarah, ocrKabupatenKota, ocrKelurahanDesa, ocrKewarganegaraan;
 
   //NodefluxResult2Model nodefluxResult2Model =NodefluxResult2Model();
-  NodefluxResult2Model _nodefluxResult2Model;
-  bool isLive;
-  bool isMatched;
+  late NodefluxResult2Model _nodefluxResult2Model;
+  late bool isLive;
+  late bool isMatched;
   bool nodefluxSelfie = false;
-  double livenessValue;
-  double similarityValue;
+  late double livenessValue;
+  late double similarityValue;
   String matchLivenessFeedback="";
   String message = '';
   bool noFace = false;
@@ -135,14 +135,6 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
     kabupatenKotaController= TextEditingController(text: ocrKabupatenKota!=null? ocrKabupatenKota:"");
     kelurahanDesaController= TextEditingController(text: ocrKelurahanDesa!=null? ocrKelurahanDesa:"");
     nationalityController= TextEditingController(text: ocrKewarganegaraan!=null? ocrKewarganegaraan:"");
-    _ektpImage=null;
-    _selfieImage=null;
-    _nodefluxResult2Model=null;
-    isLive=false;
-    isMatched=false;
-    livenessValue = null;
-    similarityValue= null;
-    matchLivenessFeedback="";
   }
 
   Widget _backButton() {

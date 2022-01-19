@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
-import '../pages/displayDataPage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_webrtc_demo/src/pages/displayDataPage.dart';
 import 'package:intl/intl.dart';
 
 typedef void StreamStateCallback(MediaStream stream);
@@ -447,7 +447,7 @@ class WebrtcSignaling {
   }
 
   Future<void> hangUp(RTCVideoRenderer localVideo) async {
-    List<MediaStreamTrack> tracks = localVideo.srcObject.getTracks();
+    List<MediaStreamTrack> tracks = localVideo.srcObject!.getTracks();
     tracks.forEach((track) {
       track.stop();
     });
