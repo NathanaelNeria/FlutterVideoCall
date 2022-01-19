@@ -10,20 +10,20 @@ String facePairNotMatchToJson(FacePairNotMatch data) => json.encode(data.toJson(
 
 class FacePairNotMatch {
   FacePairNotMatch({
-    required this.analyticType,
-    required this.jobId,
-    required this.message,
-    required this.ok,
-    required this.result,
-    required this.status,
+    this.analyticType,
+    this.jobId,
+    this.message,
+    this.ok,
+    this.result,
+    this.status,
   });
 
-  String analyticType;
-  String jobId;
-  String message;
-  bool ok;
-  List<Result> result;
-  String status;
+  final String? analyticType;
+  final String? jobId;
+  final String? message;
+  final bool? ok;
+  final List<Result>? result;
+  final String? status;
 
   factory FacePairNotMatch.fromJson(Map<String, dynamic> json) => FacePairNotMatch(
     analyticType: json["analytic_type"],
@@ -39,19 +39,19 @@ class FacePairNotMatch {
     "job_id": jobId,
     "message": message,
     "ok": ok,
-    "result": List<dynamic>.from(result.map((x) => x.toJson())),
+    "result": List<dynamic>.from(result!.map((x) => x.toJson())),
     "status": status,
   };
 }
 
 class Result {
   Result({
-    required this.faceLiveness,
-    required this.faceMatch,
+    this.faceLiveness,
+    this.faceMatch,
   });
 
-  FaceLiveness faceLiveness;
-  FaceMatch faceMatch;
+  final FaceLiveness? faceLiveness;
+  final FaceMatch? faceMatch;
 
   factory Result.fromJson(Map<String, dynamic> json) => Result(
     faceLiveness: json["face_liveness"] == null ? null : FaceLiveness.fromJson(json["face_liveness"]),
@@ -59,19 +59,19 @@ class Result {
   );
 
   Map<String, dynamic> toJson() => {
-    "face_liveness": faceLiveness == null ? null : faceLiveness.toJson(),
-    "face_match": faceMatch == null ? null : faceMatch.toJson(),
+    "face_liveness": faceLiveness == null ? null : faceLiveness?.toJson(),
+    "face_match": faceMatch == null ? null : faceMatch?.toJson(),
   };
 }
 
 class FaceLiveness {
   FaceLiveness({
-    required this.live,
-    required this.liveness,
+    this.live,
+    this.liveness,
   });
 
-  bool live;
-  double liveness;
+  final bool? live;
+  final double? liveness;
 
   factory FaceLiveness.fromJson(Map<String, dynamic> json) => FaceLiveness(
     live: json["live"],
@@ -86,12 +86,12 @@ class FaceLiveness {
 
 class FaceMatch {
   FaceMatch({
-    required this.match,
-    required this.similarity,
+    this.match,
+    this.similarity,
   });
 
-  bool match;
-  double similarity;
+  final bool? match;
+  final double? similarity;
 
   factory FaceMatch.fromJson(Map<String, dynamic> json) => FaceMatch(
     match: json["match"],

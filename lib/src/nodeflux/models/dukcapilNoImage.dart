@@ -10,18 +10,18 @@ String dukcapilNoImageToJson(DukcapilNoImage data) => json.encode(data.toJson())
 
 class DukcapilNoImage {
   DukcapilNoImage({
-    required this.analytic,
-    required this.code,
-    required this.errors,
-    required this.message,
-    required this.ok,
+     this.analytic,
+     this.code,
+     this.errors,
+     this.message,
+     this.ok,
   });
 
-  String analytic;
-  String code;
-  List<String> errors;
-  String message;
-  bool ok;
+  final String? analytic;
+  final String? code;
+  final List<String>? errors;
+  final String? message;
+  final bool? ok;
 
   factory DukcapilNoImage.fromJson(Map<String, dynamic> json) => DukcapilNoImage(
     analytic: json["analytic"],
@@ -34,7 +34,7 @@ class DukcapilNoImage {
   Map<String, dynamic> toJson() => {
     "analytic": analytic,
     "code": code,
-    "errors": List<dynamic>.from(errors.map((x) => x)),
+    "errors": List<dynamic>.from(errors!.map((x) => x)),
     "message": message,
     "ok": ok,
   };

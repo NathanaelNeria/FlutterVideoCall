@@ -22,13 +22,8 @@ class DisplayDataPage extends StatefulWidget {
 }
 
 class _DisplayDataPageState extends State<DisplayDataPage> {
-<<<<<<< HEAD
-  DateTime selectedbirthdate = null;
-  File _imageFile = new File('');
-=======
   DateTime? selectedbirthdate = null;
   File _imageFile=new File('');
->>>>>>> 99b0f59c56a773690edaf53b7ace594b233f2514
 
   TextEditingController nikController = TextEditingController();
   TextEditingController nameController = TextEditingController();
@@ -36,6 +31,7 @@ class _DisplayDataPageState extends State<DisplayDataPage> {
   TextEditingController birthplaceController = TextEditingController();
   TextEditingController mobilePhoneController = TextEditingController();
   TextEditingController emailController = TextEditingController();
+  ImagePicker _picker = ImagePicker();
 
   //firestore
   late String firestoreId;
@@ -95,38 +91,42 @@ class _DisplayDataPageState extends State<DisplayDataPage> {
   }
 
   Widget _submitButton() {
-    return InkWell(
-        onTap: () {
-          // Navigator.push(
-          //     context, MaterialPageRoute(builder: (context) => VideoCallPage()));;
 
-          // Navigator.push(
-          //     context,
-          //     MaterialPageRoute(
-          //         builder: (BuildContext context) => CallSample(host: 'demo.cloudwebrtc.com')));
-        },
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          padding: EdgeInsets.symmetric(vertical: 15),
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(5)),
-              boxShadow: <BoxShadow>[
-                BoxShadow(
-                    color: Colors.grey.shade200,
-                    offset: Offset(2, 4),
-                    blurRadius: 5,
-                    spreadRadius: 2)
-              ],
-              gradient: LinearGradient(
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                  colors: [Color(0xfffbb448), Color(0xfff7892b)])),
-          child: Text(
-            'Saya siap melakukan video call',
-            style: TextStyle(fontSize: 20, color: Colors.white),
-          ),
-        ));
+    return
+      InkWell(
+          onTap: () {
+            // Navigator.push(
+            //     context, MaterialPageRoute(builder: (context) => VideoCallPage()));;
+
+            // Navigator.push(
+            //     context,
+            //     MaterialPageRoute(
+            //         builder: (BuildContext context) => CallSample(host: 'demo.cloudwebrtc.com')));
+          },
+          child:
+
+          Container(
+            width: MediaQuery.of(context).size.width,
+            padding: EdgeInsets.symmetric(vertical: 15),
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(5)),
+                boxShadow: <BoxShadow>[
+                  BoxShadow(
+                      color: Colors.grey.shade200,
+                      offset: Offset(2, 4),
+                      blurRadius: 5,
+                      spreadRadius: 2)
+                ],
+                gradient: LinearGradient(
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                    colors: [Color(0xfffbb448), Color(0xfff7892b)])),
+            child: Text(
+              'Saya siap melakukan video call',
+              style: TextStyle(fontSize: 20, color: Colors.white),
+            ),
+          ));
   }
 
   Widget _divider() {
@@ -161,6 +161,8 @@ class _DisplayDataPageState extends State<DisplayDataPage> {
       ),
     );
   }
+
+
 
   Widget _createAccountLabel() {
     return InkWell(
@@ -240,7 +242,7 @@ class _DisplayDataPageState extends State<DisplayDataPage> {
   }
 
   Widget showNikInput(bool isMandatory) {
-    String label = (isMandatory) ? 'NIK *' : 'NIK';
+    String label=(isMandatory)?'NIK *':'NIK';
     return Padding(
       padding: const EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 0.0),
       child: new TextFormField(
@@ -280,7 +282,7 @@ class _DisplayDataPageState extends State<DisplayDataPage> {
   }
 
   Widget showNameInput(bool isMandatory) {
-    String label = (isMandatory) ? 'Name *' : 'Name';
+    String label=(isMandatory)?'Name *':'Name';
     return Padding(
       padding: const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
       child: new TextFormField(
@@ -308,7 +310,7 @@ class _DisplayDataPageState extends State<DisplayDataPage> {
   }
 
   Widget showBirthdateInput(isMandatory) {
-    String label = (isMandatory) ? 'Birthdate *' : 'Birthdate';
+    String label=(isMandatory)?'Birthdate *':'Birthdate';
     return Padding(
       padding: const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
       child: new TextFormField(
@@ -326,25 +328,18 @@ class _DisplayDataPageState extends State<DisplayDataPage> {
             )),
         onTap: () {
           showDatePicker(
-            context: this.context,
+            context:this.context,
             //initialDate:selectedbirthdate==null? DateTime.now():selectedbirthdate,
-            initialDate: DateTime.now(),
+            initialDate:DateTime.now(),
             //firstDate: DateTime.now().add(Duration(years:16)),
             firstDate: DateTime(1900, 1, 1),
-            lastDate: DateTime.now(),
+            lastDate:DateTime.now(),
             //lastDate: Jiffy(DateTime.now()).add(years: -17)
-<<<<<<< HEAD
-          ).then((selectedDate) {
-            selectedbirthdate = selectedDate;
-            birthdateController.text =
-                DateFormat('dd-MM-yyyy').format(selectedDate).toString();
-=======
           ).then((selectedDate){
             selectedbirthdate=selectedDate;
             birthdateController.text= DateFormat('dd-MM-yyyy').format(selectedDate!).toString();
->>>>>>> 99b0f59c56a773690edaf53b7ace594b233f2514
             //new DateFormat.yMMMd().format(selectedDate);
-            ;
+                ;
           });
         },
         onChanged: (value) {
@@ -355,7 +350,7 @@ class _DisplayDataPageState extends State<DisplayDataPage> {
   }
 
   Widget showBirthplaceInput(bool isMandatory) {
-    String label = (isMandatory) ? 'Birthplace *' : 'Birthplace';
+    String label=(isMandatory)?'Birthplace *':'Birthplace';
     return Padding(
       padding: const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
       child: new TextFormField(
@@ -388,9 +383,7 @@ class _DisplayDataPageState extends State<DisplayDataPage> {
   }
 
   Widget showMobilePhoneInput(bool isMandatory) {
-    String label = (isMandatory)
-        ? 'Mobile Phone Number * (e.g. 08xxxxx)'
-        : 'Mobile Phone Number (e.g. 08xxxxx)';
+    String label=(isMandatory)?'Mobile Phone Number * (e.g. 08xxxxx)':'Mobile Phone Number (e.g. 08xxxxx)';
     return Padding(
       padding: const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
       child: new TextFormField(
@@ -425,7 +418,7 @@ class _DisplayDataPageState extends State<DisplayDataPage> {
   }
 
   Widget showEmailInput(bool isMandatory) {
-    String label = (isMandatory) ? 'Email *' : 'Email';
+    String label=(isMandatory)?'Email *':'Email';
     return Padding(
       padding: const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
       child: new TextFormField(
@@ -525,19 +518,12 @@ class _DisplayDataPageState extends State<DisplayDataPage> {
   }
 
   Future getImage() async {
-    File registerSelfieimage;
-<<<<<<< HEAD
-    //Future<bool> faceMatchFound=Future<bool>.value(false);
-    bool faceMatchFound1 = false;
-    registerSelfieimage =
-        await ImagePicker.pickImage(source: ImageSource.camera);
-    if (registerSelfieimage != null) {
-      File cropped = await ImageCropper.cropImage(
-=======
-    registerSelfieimage= (await ImagePicker.pickImage(source: ImageSource.camera)) as File;
+
+    File? registerSelfieimage;
+    // registerSelfieimage= await ImagePicker.pickImage(source: ImageSource.camera);
+    registerSelfieimage = (await _picker.pickImage(source: ImageSource.camera)) as File;
     if(registerSelfieimage != null) {
       File? cropped = await ImageCropper.cropImage(
->>>>>>> 99b0f59c56a773690edaf53b7ace594b233f2514
           sourcePath: registerSelfieimage.path,
           aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
           compressQuality: 80,
@@ -549,36 +535,40 @@ class _DisplayDataPageState extends State<DisplayDataPage> {
             toolbarTitle: "Adjust Like Passport Photo",
             statusBarColor: Colors.blue,
             backgroundColor: Colors.white,
-          ));
+          )
+      );
 
-      registerSelfieimage = cropped;
+      registerSelfieimage=cropped;
       // _errorMessage='';
     }
 
     setState(() {
       _imageFile = registerSelfieimage!;
     });
+
   }
 
-  Widget showUploadPhotoButton(String photoTypeName) {
+  Widget showUploadPhotoButton(String photoTypeName){
     return Padding(
         padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
         child: RaisedButton(
           color: Colors.orange,
           textColor: Colors.white,
-          child: photoTypeName == 'selfie'
-              ? Text(
-                  'Take Selfie',
-                  textScaleFactor: 1.5,
-                )
-              : Text(
-                  'Take eKTP Photo',
-                  textScaleFactor: 1.5,
-                ),
+          child:
+          photoTypeName=='selfie'?
+          Text(
+            'Take Selfie',
+            textScaleFactor: 1.5,
+          ):
+          Text(
+            'Take eKTP Photo',
+            textScaleFactor: 1.5,
+          ),
           onPressed: () {
             getImage;
           },
-        ));
+        )
+    );
   }
 
   // _getImage(BuildContext context, ImageSource source) async{
@@ -660,48 +650,52 @@ class _DisplayDataPageState extends State<DisplayDataPage> {
       return new Padding(
           padding: EdgeInsets.fromLTRB(15.0, 5.0, 0.0, 0.0),
           child: new Center(
-              child: Row(
-            //mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: const <Widget>[
-              Icon(
-                Icons.check_circle,
-                color: Colors.green,
-                size: 24.0,
-                semanticLabel: 'Text to announce in accessibility modes',
-              ),
-              Text(
-                'This photo is successfully uploaded',
-                style: TextStyle(
-                    fontSize: 14.0,
+              child:
+              Row(
+                //mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: const <Widget>[
+                  Icon(
+                    Icons.check_circle,
                     color: Colors.green,
-                    height: 1.0,
-                    fontWeight: FontWeight.bold),
+                    size: 24.0,
+                    semanticLabel: 'Text to announce in accessibility modes',
+                  ),
+                  Text(
+                    'This photo is successfully uploaded',
+                    style: TextStyle(
+                        fontSize: 14.0,
+                        color: Colors.green,
+                        height: 1.0,
+                        fontWeight: FontWeight.bold),
+                  )
+                ],
               )
-            ],
-          )));
+          ));
     } else {
       return new Padding(
           padding: EdgeInsets.fromLTRB(15.0, 5.0, 0.0, 0.0),
           child: new Center(
-              child: Row(
-            //mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: const <Widget>[
-              Icon(
-                Icons.info,
-                color: Colors.lightBlue,
-                size: 20.0,
-                semanticLabel: 'Text to announce in accessibility modes',
-              ),
-              Text(
-                ' Must upload this photo',
-                style: TextStyle(
-                    fontSize: 14.0,
+              child:
+              Row(
+                //mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: const <Widget>[
+                  Icon(
+                    Icons.info,
                     color: Colors.lightBlue,
-                    height: 1.0,
-                    fontWeight: FontWeight.bold),
+                    size: 20.0,
+                    semanticLabel: 'Text to announce in accessibility modes',
+                  ),
+                  Text(
+                    ' Must upload this photo',
+                    style: TextStyle(
+                        fontSize: 14.0,
+                        color: Colors.lightBlue,
+                        height: 1.0,
+                        fontWeight: FontWeight.bold),
+                  )
+                ],
               )
-            ],
-          )));
+          ));
     }
   }
 
@@ -710,33 +704,16 @@ class _DisplayDataPageState extends State<DisplayDataPage> {
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
         body: Container(
-            height: height,
-            child: Stack(children: <Widget>[
-              Positioned(
-                top: -MediaQuery.of(context).size.height * .15,
-                right: -MediaQuery.of(context).size.width * .4,
-                child: BezierContainer(),
-              ),
-              Container(
+          height: height,
+            child: Stack(
+              children: <Widget> [
+                Positioned(
+                  top: -MediaQuery.of(context).size.height * .15,
+                  right: -MediaQuery.of(context).size.width * .4,
+                  child: BezierContainer(),
+                ),
+                Container(
                   padding: EdgeInsets.symmetric(horizontal: 20),
-<<<<<<< HEAD
-                  child: ListView(
-                    padding: EdgeInsets.all(8),
-                    children: <Widget>[
-                      SizedBox(height: 150),
-                      _title(),
-                      SizedBox(height: 100),
-                      StreamBuilder<QuerySnapshot>(
-                          stream: db.collection('form').snapshots(),
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              return Column(
-                                  children: snapshot.data.docs
-                                      .map((doc) => buildItem(doc))
-                                      .toList());
-                            } else {
-                              return SizedBox();
-=======
                     child: ListView(
                       padding: EdgeInsets.all(8),
                       children: <Widget>[
@@ -751,56 +728,23 @@ class _DisplayDataPageState extends State<DisplayDataPage> {
                               } else {
                                 return SizedBox();
                               }
->>>>>>> 99b0f59c56a773690edaf53b7ace594b233f2514
                             }
-                          }),
-                      SizedBox(height: 50),
-                      _showNextButton()
-                    ],
-                  )
+                        ),
+                        SizedBox(height: 50),
+                        _showNextButton()
+                      ],
+                    )
                   // firestore end
-                  )
-            ]))
+            )
+              ]
+            )
+        )
         // firestore start
 
-        );
+    );
   }
 
   Widget _showNextButton() {
-<<<<<<< HEAD
-    return InkWell(
-        onTap: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      CongratulationPage(email: firestoreEmail)));
-          ;
-        },
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          padding: EdgeInsets.symmetric(vertical: 15),
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(5)),
-              boxShadow: <BoxShadow>[
-                BoxShadow(
-                    color: Colors.grey.shade200,
-                    offset: Offset(2, 4),
-                    blurRadius: 5,
-                    spreadRadius: 2)
-              ],
-              gradient: LinearGradient(
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                  colors: [Color(0xfffbb448), Color(0xfff7892b)])),
-          child: Text(
-            //'Langkah Berikutnya',
-            'Next Step',
-            style: TextStyle(fontSize: 20, color: Colors.white),
-          ),
-        ));
-=======
     return
       InkWell(
           onTap: () {
@@ -832,7 +776,6 @@ class _DisplayDataPageState extends State<DisplayDataPage> {
           )
       );
 
->>>>>>> 99b0f59c56a773690edaf53b7ace594b233f2514
   }
 
   Widget buildItem(DocumentSnapshot doc) {
@@ -840,19 +783,31 @@ class _DisplayDataPageState extends State<DisplayDataPage> {
         padding: const EdgeInsets.all(8.0),
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text('Name: ${(doc.data() as dynamic)['name']}',
-                  style: TextStyle(fontSize: 18)),
-              Text('NIK: ${(doc.data() as dynamic)['nik']}',
-                  style: TextStyle(fontSize: 18)),
-              Text('Birthdate: ${(doc.data() as dynamic)['dob']}',
-                  style: TextStyle(fontSize: 18)),
-              Text('Birth Place: ${(doc.data() as dynamic)['pob']}',
-                  style: TextStyle(fontSize: 18)),
-              Text('Email: ${(doc.data() as dynamic)['email']}',
-                  style: TextStyle(fontSize: 18)),
-              Text('Mobile Phone Number: ${(doc.data() as dynamic)['mobile']}',
-                  style: TextStyle(fontSize: 18)),
+            children:<Widget> [
+              Text(
+                  'Name: ${(doc.data() as dynamic)['name']}',
+                  style: TextStyle(fontSize: 18)
+              ),
+              Text(
+                  'NIK: ${(doc.data() as dynamic)['nik']}',
+                  style: TextStyle(fontSize: 18)
+              ),
+              Text(
+                  'Birthdate: ${(doc.data() as dynamic)['dob']}',
+                  style: TextStyle(fontSize: 18)
+              ),
+              Text(
+                  'Birth Place: ${(doc.data() as dynamic)['pob']}',
+                  style: TextStyle(fontSize: 18)
+              ),
+              Text(
+                  'Email: ${(doc.data() as dynamic)['email']}',
+                  style: TextStyle(fontSize: 18)
+              ),
+              Text(
+                  'Mobile Phone Number: ${(doc.data() as dynamic)['mobile']}',
+                  style: TextStyle(fontSize: 18)
+              ),
               SizedBox(height: 12),
               // Row(
               //   mainAxisAlignment: MainAxisAlignment.end,
@@ -862,102 +817,90 @@ class _DisplayDataPageState extends State<DisplayDataPage> {
               //     )
               //   ],
               // )
-            ]));
+            ]
+        )
+    );
   }
 
   Widget build2(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
         body: Container(
-      height: height,
-      child: Stack(
-        children: <Widget>[
-          Positioned(
-              top: -height * .15,
-              right: -MediaQuery.of(context).size.width * .4,
-              child: BezierContainer()),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 20),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  SizedBox(height: height * .2),
-                  _title(),
-                  SizedBox(height: 50),
-                  _ektpFormWidget(),
-                  SizedBox(height: 20),
-                  _submitButton(),
-                  SizedBox(height: 20)
-                  // Container(
-                  //   padding: EdgeInsets.symmetric(vertical: 10),
-                  //   alignment: Alignment.centerRight,
-                  //   child: Text('Forgot Password ?',
-                  //       style: TextStyle(
-                  //           fontSize: 14, fontWeight: FontWeight.w500)),
-                  // ),
-                  //_divider(),
-                  //_facebookButton(),
-                  //SizedBox(height: height * .055),
-                  //_createAccountLabel(),
-                ],
-              ),
-            ),
-          ),
-          Positioned(top: 40, left: 0, child: _backButton()),
-          // firestore start
-          ListView(
-            padding: EdgeInsets.all(8),
+          height: height,
+          child: Stack(
             children: <Widget>[
-              Form(
-                key: _formKey,
-                child: buildTextFormFieldName(),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  RaisedButton(
-                    onPressed: createData,
-                    child:
-                        Text('Create', style: TextStyle(color: Colors.black)),
-                    color: Colors.green,
+              Positioned(
+                  top: -height * .15,
+                  right: -MediaQuery.of(context).size.width * .4,
+                  child: BezierContainer()),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      SizedBox(height: height * .2),
+                      _title(),
+                      SizedBox(height: 50),
+                      _ektpFormWidget(),
+                      SizedBox(height: 20),
+                      _submitButton(),
+                      SizedBox(height: 20)
+                      // Container(
+                      //   padding: EdgeInsets.symmetric(vertical: 10),
+                      //   alignment: Alignment.centerRight,
+                      //   child: Text('Forgot Password ?',
+                      //       style: TextStyle(
+                      //           fontSize: 14, fontWeight: FontWeight.w500)),
+                      // ),
+                      //_divider(),
+                      //_facebookButton(),
+                      //SizedBox(height: height * .055),
+                      //_createAccountLabel(),
+                    ],
                   ),
-                  RaisedButton(
-                    onPressed: firestoreId != null ? readData : null,
-                    child: Text('Read', style: TextStyle(color: Colors.black)),
-                    color: Colors.blue,
-                  )
-                ],
+                ),
               ),
+              Positioned(top: 40, left: 0, child: _backButton()),
+              // firestore start
+              ListView(
+                padding: EdgeInsets.all(8),
+                children: <Widget>[
+                  Form(
+                    key: _formKey,
+                    child: buildTextFormFieldName(),
+                  ),
+                  Row (
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      RaisedButton(
+                        onPressed: createData,
+                        child: Text('Create', style: TextStyle(color: Colors.black)),
+                        color: Colors.green,
+                      ),
+                      RaisedButton(
+                        onPressed: firestoreId != null? readData: null,
+                        child: Text('Read', style: TextStyle(color: Colors.black)),
+                        color: Colors.blue,
+                      )
+
+                    ],
+                  ),
+                ],
+              )
+              // firestore end
             ],
-          )
-          // firestore end
-        ],
-      ),
-    ));
+          ),
+        ));
   }
 
   void createData() async {
-<<<<<<< HEAD
-    if (_formKey.currentState.validate()) {
-      _formKey.currentState.save();
-      DocumentReference ref = await db.collection('form').add({
-        'name': '$firestoreName',
-        'nik': '$firestoreNik',
-        'address': '$firestoreAddress',
-        'birthdate': '$firestoreBirthdate',
-        'birthday': '$firestoreBirthday',
-        'mobilePhone': '$firestoreMobilePhone',
-        'email': '$firestoreEmail'
-      });
-=======
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       DocumentReference ref = await db.collection('form').add({'name': '$firestoreName', 'nik': '$firestoreNik', 'address': '$firestoreAddress', 'birthdate': '$firestoreBirthdate', 'birthday': '$firestoreBirthday', 'mobilePhone': '$firestoreMobilePhone', 'email': '$firestoreEmail'});
->>>>>>> 99b0f59c56a773690edaf53b7ace594b233f2514
       setState(() => firestoreId = ref.id);
-      print(ref.id);
+      print (ref.id);
       // Navigator.push(
       //     context,
       //     MaterialPageRoute(
@@ -966,13 +909,12 @@ class _DisplayDataPageState extends State<DisplayDataPage> {
   }
 
   void readData() async {
-    DocumentSnapshot snapshot =
-        await db.collection('form').doc(firestoreId).get();
-    print((snapshot.data as dynamic)['name']);
+    DocumentSnapshot snapshot = await db.collection('form').doc(firestoreId).get();
+    print ((snapshot.data as dynamic)['name']);
   }
 
-  TextFormField buildTextFormFieldName() {
-    return TextFormField(
+  TextFormField buildTextFormFieldName(){
+    return TextFormField (
       decoration: new InputDecoration(
           hintText: 'Name',
           icon: new Icon(
@@ -988,8 +930,8 @@ class _DisplayDataPageState extends State<DisplayDataPage> {
     );
   }
 
-  TextFormField buildTextFormFieldNik() {
-    return TextFormField(
+  TextFormField buildTextFormFieldNik(){
+    return TextFormField (
       decoration: new InputDecoration(
           hintText: 'NIK',
           icon: new Icon(
@@ -1005,8 +947,8 @@ class _DisplayDataPageState extends State<DisplayDataPage> {
     );
   }
 
-  TextFormField buildTextFormFieldAddress() {
-    return TextFormField(
+  TextFormField buildTextFormFieldAddress(){
+    return TextFormField (
       decoration: new InputDecoration(
           hintText: 'Address',
           icon: new Icon(
@@ -1022,8 +964,8 @@ class _DisplayDataPageState extends State<DisplayDataPage> {
     );
   }
 
-  TextFormField buildTextFormFieldBirthdate() {
-    return TextFormField(
+  TextFormField buildTextFormFieldBirthdate(){
+    return TextFormField (
       decoration: new InputDecoration(
           hintText: 'Birthdate',
           icon: new Icon(
@@ -1039,8 +981,8 @@ class _DisplayDataPageState extends State<DisplayDataPage> {
     );
   }
 
-  TextFormField buildTextFormFieldBirthday() {
-    return TextFormField(
+  TextFormField buildTextFormFieldBirthday(){
+    return TextFormField (
       decoration: new InputDecoration(
           hintText: 'Birthday',
           icon: new Icon(
@@ -1056,8 +998,8 @@ class _DisplayDataPageState extends State<DisplayDataPage> {
     );
   }
 
-  TextFormField buildTextFormFieldEmail() {
-    return TextFormField(
+  TextFormField buildTextFormFieldEmail(){
+    return TextFormField (
       decoration: new InputDecoration(
           hintText: 'Email',
           icon: new Icon(
@@ -1073,8 +1015,8 @@ class _DisplayDataPageState extends State<DisplayDataPage> {
     );
   }
 
-  TextFormField buildTextFormFieldMobilePhone() {
-    return TextFormField(
+  TextFormField buildTextFormFieldMobilePhone(){
+    return TextFormField (
       decoration: new InputDecoration(
           hintText: 'Mobile Phone Number (e.g. 08xxxx)',
           icon: new Icon(
@@ -1090,9 +1032,9 @@ class _DisplayDataPageState extends State<DisplayDataPage> {
     );
   }
 
-  void updatebirthdate() {
+
+  void updatebirthdate(){
     //note.title = titleController.text;
-    birthdateController.text =
-        (selectedbirthdate == null ? '' : selectedbirthdate.toString());
+    birthdateController.text= (selectedbirthdate==null? '':selectedbirthdate.toString());
   }
 }

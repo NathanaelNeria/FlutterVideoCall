@@ -10,14 +10,14 @@ String dukcapilFaceMatchToJson(DukcapilFaceMatch data) => json.encode(data.toJso
 
 class DukcapilFaceMatch {
   DukcapilFaceMatch({
-    required this.job,
-    required this.message,
-    required this.ok,
+     this.job,
+     this.message,
+     this.ok,
   });
 
-  Job job;
-  String message;
-  bool ok;
+  final Job? job;
+  final String? message;
+  final bool? ok;
 
   factory DukcapilFaceMatch.fromJson(Map<String, dynamic> json) => DukcapilFaceMatch(
     job: Job.fromJson(json["job"]),
@@ -26,7 +26,7 @@ class DukcapilFaceMatch {
   );
 
   Map<String, dynamic> toJson() => {
-    "job": job.toJson(),
+    "job": job?.toJson(),
     "message": message,
     "ok": ok,
   };
@@ -34,12 +34,12 @@ class DukcapilFaceMatch {
 
 class Job {
   Job({
-    required this.id,
-    required this.result,
+     this.id,
+     this.result,
   });
 
-  String id;
-  JobResult result;
+  final String? id;
+  final JobResult? result;
 
   factory Job.fromJson(Map<String, dynamic> json) => Job(
     id: json["id"],
@@ -48,20 +48,20 @@ class Job {
 
   Map<String, dynamic> toJson() => {
     "id": id,
-    "result": result.toJson(),
+    "result": result?.toJson(),
   };
 }
 
 class JobResult {
   JobResult({
-    required this.status,
-    required this.analyticType,
-    required this.result,
+     this.status,
+     this.analyticType,
+     this.result,
   });
 
-  String status;
-  String analyticType;
-  List<ResultElement> result;
+  final String? status;
+  final String? analyticType;
+  final List<ResultElement>? result;
 
   factory JobResult.fromJson(Map<String, dynamic> json) => JobResult(
     status: json["status"],
@@ -72,32 +72,32 @@ class JobResult {
   Map<String, dynamic> toJson() => {
     "status": status,
     "analytic_type": analyticType,
-    "result": List<dynamic>.from(result.map((x) => x.toJson())),
+    "result": List<dynamic>.from(result!.map((x) => x.toJson())),
   };
 }
 
 class ResultElement {
   ResultElement({
-    required this.faceMatch,
+     this.faceMatch,
   });
 
-  FaceMatch faceMatch;
+  final FaceMatch? faceMatch;
 
   factory ResultElement.fromJson(Map<String, dynamic> json) => ResultElement(
     faceMatch: FaceMatch.fromJson(json["face_match"]),
   );
 
   Map<String, dynamic> toJson() => {
-    "face_match": faceMatch.toJson(),
+    "face_match": faceMatch?.toJson(),
   };
 }
 
 class FaceMatch {
   FaceMatch({
-    required this.similarity,
+     this.similarity,
   });
 
-  double similarity;
+  final double? similarity;
 
   factory FaceMatch.fromJson(Map<String, dynamic> json) => FaceMatch(
     similarity: json["similarity"].toDouble(),

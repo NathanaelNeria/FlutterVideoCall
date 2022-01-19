@@ -10,20 +10,20 @@ String livenessModelUnderqualifiedToJson(LivenessModelUnderqualified data) => js
 
 class LivenessModelUnderqualified {
   LivenessModelUnderqualified({
-    required this.analyticType,
-    required this.jobId,
-    required this.message,
-    required this.ok,
-    required this.result,
-    required this.status,
+     this.analyticType,
+     this.jobId,
+     this.message,
+     this.ok,
+     this.result,
+     this.status,
   });
 
-  String analyticType;
-  String jobId;
-  String message;
-  bool ok;
-  List<Result> result;
-  String status;
+  final String? analyticType;
+  final String? jobId;
+  final String? message;
+  final bool? ok;
+  final List<Result>? result;
+  final String? status;
 
   factory LivenessModelUnderqualified.fromJson(Map<String, dynamic> json) => LivenessModelUnderqualified(
     analyticType: json["analytic_type"],
@@ -39,35 +39,35 @@ class LivenessModelUnderqualified {
     "job_id": jobId,
     "message": message,
     "ok": ok,
-    "result": List<dynamic>.from(result.map((x) => x.toJson())),
+    "result": List<dynamic>.from(result!.map((x) => x.toJson())),
     "status": status,
   };
 }
 
 class Result {
   Result({
-    required this.faceLiveness,
+     this.faceLiveness,
   });
 
-  FaceLiveness faceLiveness;
+  final FaceLiveness? faceLiveness;
 
   factory Result.fromJson(Map<String, dynamic> json) => Result(
     faceLiveness: FaceLiveness.fromJson(json["face_liveness"]),
   );
 
   Map<String, dynamic> toJson() => {
-    "face_liveness": faceLiveness.toJson(),
+    "face_liveness": faceLiveness?.toJson(),
   };
 }
 
 class FaceLiveness {
   FaceLiveness({
-    required this.live,
-    required this.liveness,
+     this.live,
+     this.liveness,
   });
 
-  bool live;
-  double liveness;
+  final bool? live;
+  final double? liveness;
 
   factory FaceLiveness.fromJson(Map<String, dynamic> json) => FaceLiveness(
     live: json["live"],

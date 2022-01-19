@@ -10,14 +10,14 @@ String dukcapilFailToJson(DukcapilFail data) => json.encode(data.toJson());
 
 class DukcapilFail {
   DukcapilFail({
-    required this.job,
-    required this.message,
-    required this.ok,
+     this.job,
+     this.message,
+     this.ok,
   });
 
-  Job job;
-  String message;
-  bool ok;
+  final Job? job;
+  final String? message;
+  final bool? ok;
 
   factory DukcapilFail.fromJson(Map<String, dynamic> json) => DukcapilFail(
     job: Job.fromJson(json["job"]),
@@ -26,7 +26,7 @@ class DukcapilFail {
   );
 
   Map<String, dynamic> toJson() => {
-    "job": job.toJson(),
+    "job": job?.toJson(),
     "message": message,
     "ok": ok,
   };
@@ -34,12 +34,12 @@ class DukcapilFail {
 
 class Job {
   Job({
-    required this.id,
-    required this.result,
+     this.id,
+     this.result,
   });
 
-  String id;
-  Result result;
+  final String? id;
+  final Result? result;
 
   factory Job.fromJson(Map<String, dynamic> json) => Job(
     id: json["id"],
@@ -48,20 +48,20 @@ class Job {
 
   Map<String, dynamic> toJson() => {
     "id": id,
-    "result": result.toJson(),
+    "result": result?.toJson(),
   };
 }
 
 class Result {
   Result({
-    required this.status,
-    required this.analyticType,
-    required this.result,
+     this.status,
+     this.analyticType,
+     this.result,
   });
 
-  String status;
-  String analyticType;
-  List<dynamic> result;
+  final String? status;
+  final String? analyticType;
+  final List<dynamic>? result;
 
   factory Result.fromJson(Map<String, dynamic> json) => Result(
     status: json["status"],
@@ -72,6 +72,6 @@ class Result {
   Map<String, dynamic> toJson() => {
     "status": status,
     "analytic_type": analyticType,
-    "result": List<dynamic>.from(result.map((x) => x)),
+    "result": List<dynamic>.from(result!.map((x) => x)),
   };
 }

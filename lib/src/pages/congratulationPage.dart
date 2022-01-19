@@ -12,6 +12,7 @@ class CongratulationPage extends StatefulWidget {
   final String title;
   final String email;
 
+
   @override
   _CongratulationPageState createState() => _CongratulationPageState();
 }
@@ -43,10 +44,7 @@ class _CongratulationPageState extends State<CongratulationPage> {
               child: Icon(Icons.keyboard_arrow_left, color: Colors.white),
             ),
             Text('Back',
-                style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.white))
+                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: Colors.white))
           ],
         ),
       ),
@@ -54,25 +52,28 @@ class _CongratulationPageState extends State<CongratulationPage> {
   }
 
   Widget _submitButton() {
-    return InkWell(
-        onTap: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => WelcomePage()));
-        },
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          padding: EdgeInsets.symmetric(vertical: 15),
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(5)),
-            border: Border.all(color: Colors.white, width: 2),
-          ),
-          child: Text(
-            //'Selesai',
-            'Done',
-            style: TextStyle(fontSize: 20, color: Colors.white),
-          ),
-        ));
+    return
+      InkWell(
+          onTap: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => WelcomePage()));
+          },
+          child:Container(
+            width: MediaQuery.of(context).size.width,
+            padding: EdgeInsets.symmetric(vertical: 15),
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(5)),
+              border: Border.all(color: Colors.white, width: 2),
+            ),
+            child: Text(
+              //'Selesai',
+              'Done',
+              style: TextStyle(fontSize: 20, color: Colors.white),
+            ),
+          )
+      );
+
   }
 
   Widget _title() {
@@ -100,9 +101,10 @@ class _CongratulationPageState extends State<CongratulationPage> {
   }
 
   Widget buildItem(DocumentSnapshot doc) {
-    return Text('${(doc.data() as dynamic)['email']}',
-        style: TextStyle(
-            fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white));
+    return Text(
+        '${(doc.data() as dynamic)['email']}',
+        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)
+    );
   }
 
   @override
@@ -127,18 +129,9 @@ class _CongratulationPageState extends State<CongratulationPage> {
                 begin: Alignment.bottomLeft,
                 end: Alignment.topRight,
                 // colors: [Color(0xfffbb448), Color(0xffe46b10)]
-<<<<<<< HEAD
-                colors: [
-                  Colors.green,
-                  Colors.green[600],
-                  Colors.green[700],
-                  Colors.green[800]
-                ])),
-=======
                 colors: [Colors.green, Colors.green.shade700, Colors.green.shade900]
             )
         ),
->>>>>>> 99b0f59c56a773690edaf53b7ace594b233f2514
         child: Stack(
           children: <Widget>[
             // Positioned(
@@ -161,11 +154,7 @@ class _CongratulationPageState extends State<CongratulationPage> {
                     Text(
                       //'Selamat! Anda telah berhasil membuka rekening di Bank IST!',
                       'Congratulation! You have successfully registered for a Savings Account in NTB Syariah Bank',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 17,
-                          fontWeight: FontWeight.bold),
-                      textAlign: TextAlign.left,
+                      style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.bold), textAlign: TextAlign.left,
                     ),
                     //_emailPasswordWidget(),
                     SizedBox(
@@ -174,36 +163,28 @@ class _CongratulationPageState extends State<CongratulationPage> {
                     Text(
                       //'Proses verifikasi bapak/ibu sudah selesai. Pemberitahuan akan kami kirimkan melalui email:',
                       'Your verification process has been done. We are sending you confirmation email to:',
-                      style: TextStyle(color: Colors.white, fontSize: 17),
-                      textAlign: TextAlign.left,
+                      style: TextStyle(color: Colors.white, fontSize: 17), textAlign: TextAlign.left,
                     ),
                     SizedBox(
                       height: 20,
                     ),
                     StreamBuilder<QuerySnapshot>(
                         stream: db.collection('form').snapshots(),
-                        builder: (context, snapshot) {
+                        builder: (context, snapshot){
                           if (snapshot.hasData) {
-<<<<<<< HEAD
-                            return Column(
-                                children: snapshot.data.docs
-                                    .map((doc) => buildItem(doc))
-                                    .toList());
-=======
                             return Column(children:snapshot.data!.docs.map((doc)=> buildItem(doc)).toList());
->>>>>>> 99b0f59c56a773690edaf53b7ace594b233f2514
                           } else {
                             return SizedBox();
                           }
-                        }),
+                        }
+                    ),
                     SizedBox(
                       height: 20,
                     ),
                     Text(
                       //'Silahkan bapak/ibu cek di email tsb untuk melihat hasil verifikasi dari pihak Bank dalam 24 jam',
                       'Please keep checking your email above to follow up NTBS verification process within 24 hours',
-                      style: TextStyle(color: Colors.white, fontSize: 17),
-                      textAlign: TextAlign.left,
+                      style: TextStyle(color: Colors.white, fontSize: 17), textAlign: TextAlign.left,
                     ),
                     SizedBox(
                       height: 20,

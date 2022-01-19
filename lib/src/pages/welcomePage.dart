@@ -40,9 +40,10 @@ class _WelcomePageState extends State<WelcomePage> {
         ),
         child: Text(
           'Open Account Now',
-          style: TextStyle(fontSize: 20, color: Colors.white
-              // color: Color(0xfff7892b)
-              ),
+          style: TextStyle(fontSize: 20,
+              color: Colors.white
+            // color: Color(0xfff7892b)
+          ),
         ),
       ),
     );
@@ -125,8 +126,8 @@ class _WelcomePageState extends State<WelcomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
+      body:SingleChildScrollView(
+        child:Container(
           padding: EdgeInsets.symmetric(horizontal: 20),
           height: MediaQuery.of(context).size.height,
           decoration: BoxDecoration(
@@ -142,18 +143,9 @@ class _WelcomePageState extends State<WelcomePage> {
                   begin: Alignment.bottomLeft,
                   end: Alignment.topRight,
                   // colors: [Color(0xfffbb448), Color(0xffe46b10)]
-<<<<<<< HEAD
-                  colors: [
-                    Colors.green,
-                    Colors.green[600],
-                    Colors.green[700],
-                    Colors.green[800]
-                  ])),
-=======
-                colors: [Colors.green, Colors.green.shade700, Colors.green.shade900]
+                  colors: [Colors.green, Colors.green.shade700, Colors.green.shade900]
               )
           ),
->>>>>>> 99b0f59c56a773690edaf53b7ace594b233f2514
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -167,11 +159,7 @@ class _WelcomePageState extends State<WelcomePage> {
               ),
               Text(
                 'Bank NTB Syariah',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 23,
-                    fontWeight: FontWeight.bold),
-                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white, fontSize: 23, fontWeight: FontWeight.bold), textAlign: TextAlign.center,
               ),
               SizedBox(
                 height: 25,
@@ -179,8 +167,7 @@ class _WelcomePageState extends State<WelcomePage> {
               Text(
                 //'Selamat datang di IST Bank Mobile. Kemudahan bertransaksi dalam genggaman Anda',
                 'Welcome to NTB Syariah Mobile Banking. Ease of transaction in your hand',
-                style: TextStyle(color: Colors.white, fontSize: 17),
-                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white, fontSize: 17), textAlign: TextAlign.center,
               ),
               SizedBox(
                 height: 80,
@@ -188,8 +175,7 @@ class _WelcomePageState extends State<WelcomePage> {
               Text(
                 //'Apakah kamu sudah memiliki rekening IST Mobile?',
                 'Do you have NTB Syariah Mobile Banking Account?',
-                style: TextStyle(color: Colors.white, fontSize: 17),
-                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white, fontSize: 17), textAlign: TextAlign.center,
               ),
               SizedBox(
                 height: 20,
@@ -201,8 +187,7 @@ class _WelcomePageState extends State<WelcomePage> {
               Text(
                 //'Belum memiliki rekening IST Mobile.\nMau buka rekening kamu sekarang juga?',
                 'I don\'t have NTB Syariah Mobile Banking Account. \nWant to open account now?',
-                style: TextStyle(color: Colors.white, fontSize: 17),
-                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white, fontSize: 17), textAlign: TextAlign.center,
               ),
               SizedBox(
                 height: 20,

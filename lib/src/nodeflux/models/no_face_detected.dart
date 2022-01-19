@@ -10,20 +10,20 @@ String noFaceDetectedToJson(NoFaceDetected data) => json.encode(data.toJson());
 
 class NoFaceDetected {
   NoFaceDetected({
-    required this.analyticType,
-    required this.jobId,
-    required this.message,
-    required this.ok,
-    required this.result,
-    required this.status,
+     this.analyticType,
+     this.jobId,
+     this.message,
+     this.ok,
+     this.result,
+     this.status,
   });
 
-  String analyticType;
-  String jobId;
-  String message;
-  bool ok;
-  List<dynamic> result;
-  String status;
+  final String? analyticType;
+  final String? jobId;
+  final String? message;
+  final bool? ok;
+  final List<dynamic>? result;
+  final String? status;
 
   factory NoFaceDetected.fromJson(Map<String, dynamic> json) => NoFaceDetected(
     analyticType: json["analytic_type"],
@@ -39,7 +39,7 @@ class NoFaceDetected {
     "job_id": jobId,
     "message": message,
     "ok": ok,
-    "result": List<dynamic>.from(result.map((x) => x)),
+    "result": List<dynamic>.from(result!.map((x) => x)),
     "status": status,
   };
 }

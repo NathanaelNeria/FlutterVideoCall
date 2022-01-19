@@ -1,45 +1,20 @@
-//import 'package:simple_app/nodeflux/models/nodeflux_result_model.dart';
-import 'nodeflux_job_model.dart';
-import 'package:json_annotation/json_annotation.dart';
 import 'nodeflux_result2_model.dart';
 
 class NodefluxDataModelSync2 {
-  @JsonKey(defaultValue: null)
-  @JsonKey(required: false)
-  String analytic_type;
-
-  @JsonKey(defaultValue: null)
-  @JsonKey(required: false)
-  String job_id;
-
-  @JsonKey(defaultValue: null)
-  @JsonKey(required: false)
-  String message;
-
-  @JsonKey(defaultValue: null)
-  @JsonKey(required: false)
-  bool ok;
-
-  @JsonKey(defaultValue: null)
-  @JsonKey(required: false)
-  List<NodefluxResult2Model> result;
-
-  @JsonKey(defaultValue: null)
-  @JsonKey(required: false)
-  String status;
-
-  // @JsonKey(defaultValue: null)
-  // @JsonKey(required: false)
-  // String code;
+  final String?  analytic_type;
+  final String? job_id;
+  final String? message;
+  final bool? ok;
+  final List<NodefluxResult2Model>? result;
+  final  String? status;
 
   NodefluxDataModelSync2({
-    required this.analytic_type,
-    required this.job_id,
-    required this.message,
-    required this.ok,
-    required this.status,
-    required this.result,
-    //this.code
+    this.analytic_type,
+    this.job_id,
+    this.message,
+    this.ok,
+    this.status,
+    this.result,
   });
 
   // fourth, if step 3 passed (face liveness: true), check face_match
@@ -59,7 +34,7 @@ class NodefluxDataModelSync2 {
     "message": message,
     "ok": ok,
     "status": status,
-    "result": List<dynamic>.from(result.map((x) => x.toJsonForMatchLiveness())), // jalan (tp gak jalan kalo kosong)
+    "result": List<dynamic>.from(result!.map((x) => x.toJsonForMatchLiveness())), // jalan (tp gak jalan kalo kosong)
   };
 
   // third, check liveness > live
@@ -81,7 +56,7 @@ class NodefluxDataModelSync2 {
     "message": message,
     "ok": ok,
     "status": status,
-    "result": List<dynamic>.from(result.map((x) => x.toJsonForMatchLiveness())), // jalan (tp gak jalan kalo kosong)
+    "result": List<dynamic>.from(result!.map((x) => x.toJsonForMatchLiveness())), // jalan (tp gak jalan kalo kosong)
   };
 
   factory NodefluxDataModelSync2.fromJson1(Map<String, dynamic> json) => NodefluxDataModelSync2(
@@ -100,7 +75,7 @@ class NodefluxDataModelSync2 {
     "message": message,
     "ok": ok,
     "status": status,
-    "result": List<dynamic>.from(result.map((x) => x.toJsonForLiveness())), // jalan (tp gak jalan kalo kosong)
+    "result": List<dynamic>.from(result!.map((x) => x.toJsonForLiveness())), // jalan (tp gak jalan kalo kosong)
   };
 
   // second, check status
