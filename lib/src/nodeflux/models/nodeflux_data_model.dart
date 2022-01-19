@@ -16,9 +16,9 @@ class NodefluxDataModel {
   bool ok;
 
   NodefluxDataModel({
-    this.job,
-    this.message,
-    this.ok,
+    required this.job,
+    required this.message,
+    required this.ok,
   });
 
   factory NodefluxDataModel.fromJson(Map<String, dynamic> json) => NodefluxDataModel(
@@ -52,7 +52,7 @@ class NodefluxDataModel {
   factory NodefluxDataModel.fromJson00(Map<String, dynamic> json) => NodefluxDataModel(
     message: json["message"],
     ok: json["ok"],
-    //job: NodefluxJobModel.fromJson0(json["job"]),
+    job: NodefluxJobModel.fromJson0(json["job"]),
   );
 
   Map<String, dynamic> toJson00() => {

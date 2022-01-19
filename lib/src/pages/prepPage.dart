@@ -68,7 +68,7 @@ class _PrepPageState extends State<PrepPage> {
       InkWell(
           onTap: () {
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => NodefluxOcrKtpPage()));
+                context, MaterialPageRoute(builder: (context) => NodefluxOcrKtpPage(title: '',)));
           },
           child:Container(
             width: MediaQuery.of(context).size.width,

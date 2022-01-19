@@ -10,10 +10,13 @@ String dukcapilOngoingToJson(DukcapilOngoing data) => json.encode(data.toJson())
 
 class DukcapilOngoing {
   DukcapilOngoing({
-    this.job,
-    this.message,
-    this.ok,
-  });
+    required this.job,
+    required this.message,
+    required this.ok,
+  }) {
+    // TODO: implement
+    throw UnimplementedError();
+  }
 
   Job job;
   String message;
@@ -34,8 +37,8 @@ class DukcapilOngoing {
 
 class Job {
   Job({
-    this.id,
-    this.result,
+    required this.id,
+    required this.result,
   });
 
   String id;
@@ -54,8 +57,8 @@ class Job {
 
 class Result {
   Result({
-    this.status,
-    this.analyticType,
+    required this.status,
+    required this.analyticType,
   });
 
   String status;

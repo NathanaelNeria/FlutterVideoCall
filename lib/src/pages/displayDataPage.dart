@@ -518,10 +518,8 @@ class _DisplayDataPageState extends State<DisplayDataPage> {
 
   Future getImage() async {
 
-    File? registerSelfieimage;
-    //Future<bool> faceMatchFound=Future<bool>.value(false);
-    bool faceMatchFound1 = false;
-    registerSelfieimage= await ImagePicker.pickImage(source: ImageSource.camera);
+    File registerSelfieimage;
+    registerSelfieimage= (await ImagePicker.pickImage(source: ImageSource.camera)) as File;
     if(registerSelfieimage != null) {
       File? cropped = await ImageCropper.cropImage(
           sourcePath: registerSelfieimage.path,
@@ -566,11 +564,6 @@ class _DisplayDataPageState extends State<DisplayDataPage> {
           ),
           onPressed: () {
             getImage;
-            //_getImage(this.context, ImageSource.camera);
-//        setState(() {
-//          debugPrint("Photo button clicked");
-//
-//        });
           },
         )
     );

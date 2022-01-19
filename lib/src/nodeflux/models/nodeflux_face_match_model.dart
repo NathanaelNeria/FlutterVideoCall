@@ -10,8 +10,8 @@ class NodefluxFaceMatchModel {
   double similarity;
 
   NodefluxFaceMatchModel({
-    this.match,
-    this.similarity,
+    required this.match,
+    required this.similarity,
   });
 
   factory NodefluxFaceMatchModel.fromJson(Map<String, dynamic> json) => NodefluxFaceMatchModel(
