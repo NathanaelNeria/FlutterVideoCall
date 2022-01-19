@@ -10,9 +10,9 @@ typedef void OnOpenCallback();
 class SimpleWebSocket {
   String _url;
   var _socket;
-  OnOpenCallback onOpen;
-  OnMessageCallback onMessage;
-  OnCloseCallback onClose;
+  OnOpenCallback? onOpen;
+  OnMessageCallback? onMessage;
+  OnCloseCallback? onClose;
   SimpleWebSocket(this._url);
 
   connect() async {

@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_webrtc_demo/src/nodeflux/models/dukcapilFail.dart';
+import 'package:flutter_webrtc_demo/src/nodeflux/models/dukcapilOngoing.dart';
+import 'package:flutter_webrtc_demo/src/nodeflux/screens/coreBankingPageNTBS.dart';
 import 'package:flutter_webrtc_demo/src/pages/congratulationPage.dart';
+import 'package:flutter_webrtc_demo/src/pages/welcomePage.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../Widget/bezierContainer.dart';
@@ -29,13 +33,21 @@ import 'package:intl/intl.dart';
 
 import '../../../Widget/datetime_picker_widget.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import '../models/livenessUnderqualified.dart';
+import '../models/messageModel.dart';
+import '../models/modelLivenessNathan.dart';
+import '../models/face_pair_not_match.dart';
+import '../models/no_face_detected.dart';
+import '../models/dukcapilFaceMatch.dart';
 
 class NodefluxOcrKtpResultPage extends StatefulWidget {
   final NodefluxResult2Model model;
-  File _ektpImage;
-  File _selfieImage;
+  File ektpImage;
+  // File _selfieImage;
 
-  NodefluxOcrKtpResultPage(this.model, this._ektpImage, this._selfieImage);
+  // NodefluxOcrKtpResultPage(this.model, this.ektpImage);
+
+  NodefluxOcrKtpResultPage({Key key, @required this.ektpImage, this.model}) : super(key: key);
 
   @override
   _NodefluxOcrKtpResultPageState createState() =>
@@ -46,8 +58,8 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
   DateTime selectedbirthdate = null;
   File _imageFile;
 
-  // File _ektpImage;
-  // File _selfieImage;
+  File ektpImage;
+  File _selfieImage;
   File _npwpImage;
   File _selfieEktpImage;
 
@@ -121,6 +133,23 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
   TextEditingController scheduledDateTimeController =
       new TextEditingController(text: 'Anonymous');
   DatetimePickerWidget datetimePickerWidget = DatetimePickerWidget();
+
+  NodefluxResult2Model _nodefluxResult2Model = null;
+  bool isLive;
+  bool isMatched;
+  bool nodefluxSelfie = false;
+  double livenessValue;
+  double similarityValue;
+  String matchLivenessFeedback="";
+  String message = '';
+  bool noFace = false;
+  bool underQualified = false;
+  bool changeColor = false;
+  String ktpDetected = '';
+  Color textColorRed = Colors.red;
+  String messageDukcapil = '';
+  bool dukcapil = true;
+  String selfieProcessed = '';
 
   @override
   void initState() {
@@ -279,11 +308,20 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
       text: TextSpan(
           text: 'eKTP & Contact ',
           style: GoogleFonts.portLligatSans(
+<<<<<<< HEAD
               textStyle: Theme.of(context).textTheme.headline4,
               fontSize: 30,
               fontWeight: FontWeight.w700,
               // color: Color(0xffe46b10),
               color: Colors.black),
+=======
+            textStyle: Theme.of(context).textTheme.headline4,
+            fontSize: 30,
+            fontWeight: FontWeight.w700,
+            // color: Color(0xffe46b10),
+            color: Colors.black
+          ),
+>>>>>>> 99b0f59c56a773690edaf53b7ace594b233f2514
           children: [
             TextSpan(
               text: 'Information',
@@ -300,23 +338,28 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
   Widget showUploadSelfieButton() {
     return new Padding(
         padding: EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 0.0),
-        child: SizedBox(
+        child: Container(
           height: 40.0,
-          child: new RaisedButton(
-            elevation: 5.0,
-            shape: new RoundedRectangleBorder(
-                borderRadius: new BorderRadius.circular(30.0)),
-            color: Colors.lightBlue,
-            child: new Text('Ambil Foto Selfie',
-                style: new TextStyle(fontSize: 12.0, color: Colors.white)),
-            //onPressed: () { navigateToPage('Login Face');}
-            onPressed: () {
-              _getSelfieImage(this.context, ImageSource.camera);
-            },
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(5)),
+            border: Border.all(color: Colors.white, width: 2),
+          ),
+          child: new ElevatedButton(
+              child: new Text(
+                  'Take Selfie Photo',
+                  style: new TextStyle(fontSize: 12.0, color: Colors.white)),
+              onPressed: () {
+                // nodefluxSelfie? changeColor :
+                _getSelfieImage(this.context, ImageSource.camera);
+              },
+              style: ElevatedButton.styleFrom(
+                  primary: changeColor? Colors.grey : Colors.green[700]
+              )
           ),
         ));
   }
 
+<<<<<<< HEAD
   Widget showUploadSelfie2Button() {
     return Padding(
         padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
@@ -377,6 +420,24 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
   }
 
   _getEktpImage(BuildContext context, ImageSource source) async {
+=======
+  createAlertDialog(BuildContext context, String title, String message) {
+    Widget okButton = FlatButton(
+      child: Text("Close"),
+      onPressed: () {Navigator.of(context).pop(); },
+    );
+
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(title: Text(title), content: Text(message),  actions: [
+            okButton,
+          ],);
+        });
+  }
+
+  _getSelfieImage(BuildContext context, ImageSource source) async{
+>>>>>>> 99b0f59c56a773690edaf53b7ace594b233f2514
     this.setState(() {
       //loading = true;
     });
@@ -393,6 +454,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
 
       var picture = await ImagePicker.pickImage(source: source);
 
+<<<<<<< HEAD
       int appFileDirectory = picture.path.lastIndexOf('/');
       String resultDirectory = picture.path
           .substring(0, appFileDirectory + 1); // = appdocdir+'/Pictures/'
@@ -403,6 +465,14 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
 
       int photoQuality = 80;
       if (picture != null) {
+=======
+      int appFileDirectory=picture.path.lastIndexOf('/');
+      String resultDirectory=picture.path.substring(0,appFileDirectory+1); // = appdocdir+'/Pictures/'
+      String resultPath=resultDirectory+DateFormat('yyyyMMddHHmmss').format(DateTime.now())+'.jpg';
+
+      int photoQuality=90;
+      if(picture != null) {
+>>>>>>> 99b0f59c56a773690edaf53b7ace594b233f2514
         try {
           var result = await FlutterImageCompress.compressAndGetFile(
             picture.absolute.path,
@@ -439,7 +509,8 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
           await picture.delete();
           this.setState(() {
             //_imageFileProfile = cropped;
-            widget._ektpImage = result;
+            _selfieImage = result;
+            selfieProcessed = 'lagi proses';
             //loading = false;
           });
         } catch (e) {
@@ -455,12 +526,118 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
       print(e);
       debugPrint("Error $e");
     }
-    //Navigator.of(context).pop();
-    //uploadImage(_ektpImage, "ektp");
-    await nodefluxOcrKtpProcess(context);
+    await nodefluxSelfieMatchLivenessProcess(context);
+    // await nodefluxDukcapilProcess(context);
+    await uploadImage(_selfieImage, "selfie");
   }
 
+<<<<<<< HEAD
   nodefluxOcrKtpProcess(BuildContext context) async {
+=======
+  nodefluxDukcapilProcess(BuildContext context) async{
+    String authorization = 'NODEFLUX-HMAC-SHA256 Credential=ZP027QNHTVI7Z72JN8HWZQXOJ/20220110/nodeflux.api.v1beta1.ImageAnalytic/StreamImageAnalytic, SignedHeaders=x-nodeflux-timestamp, Signature= a2ccd7d7a08a19454a52dbcb043ef28f9c6ac06ba9af58aa97b6aa53d7cbb362';
+    String nodefluxTimestamp = '20220110T034835Z';
+    final imageBytesSelfie = _selfieImage.readAsBytesSync();
+    String base64ImageSelfie = 'data:image/jpeg;base64,'+base64Encode(imageBytesSelfie);
+    String currentStatus = '';
+    String contentType = 'application/json';
+    String accept = 'application/json';
+    DukcapilFaceMatch dukcapilFaceMatch = DukcapilFaceMatch();
+    DukcapilFail dukcapilFail = DukcapilFail();
+    DukcapilOngoing dukcapilOngoing = DukcapilOngoing();
+    bool okValue;
+    String url = 'https://api.cloud.nodeflux.io/v1/analytics/dukcapil-validation';
+    var response;
+
+    try{
+      while (currentStatus == 'on going' || currentStatus == '') {
+        response = await http.post(
+            Uri.parse(url),
+            body: json.encode({
+              "additional_params": {
+                "nik": widget.model.nik,
+                "transaction_id": "{random digit}",
+                "transaction_source": "{device}",
+                "dukcapil": {
+                  "user_id": "{encrypted_user_id}",
+                  "password": "{encrypted_password}",
+                  "image": base64ImageSelfie
+                }
+              },
+              "images": [
+                base64ImageSelfie
+              ]
+            }),
+            headers: {
+              'Accept': accept,
+              'Content-Type': contentType,
+              'Authorization': authorization,
+              'x-nodeflux-timestamp': nodefluxTimestamp
+            }
+        );
+
+        print(response.body);
+        print(widget.model.nik);
+
+        dukcapilOngoing = DukcapilOngoing.fromJson(jsonDecode(response.body));
+        okValue = dukcapilOngoing.ok;
+        var status = dukcapilOngoing.job.result.status;
+        if(okValue){
+          currentStatus = status;
+        }
+      }
+
+          if(currentStatus == "success"){
+            dukcapilFaceMatch = DukcapilFaceMatch.fromJson(jsonDecode(response.body));
+            setState(() {
+              similarityValue = dukcapilFaceMatch.job.result.result[0].faceMatch.similarity;
+              messageDukcapil = dukcapilFaceMatch.message;
+              nodefluxSelfie = true;
+              changeColor = true;
+              dukcapil = false;
+              selfieProcessed = 'selfie ada';
+            });
+
+            double similarityPercentage=similarityValue*100;
+            String isMatchedString = (similarityPercentage>=75)? "matched": "not matched";
+            matchLivenessFeedback += "\neKTP photo is " + isMatchedString +" with selfie ("+similarityPercentage.toStringAsFixed(2)+" %)";
+          }
+          else if(currentStatus == 'failed' || currentStatus == 'incompleted'){
+            dukcapilFail = DukcapilFail.fromJson(jsonDecode(response.body));
+            setState(() {
+              messageDukcapil = dukcapilFail.message;
+              nodefluxSelfie = true;
+              changeColor = true;
+              similarityValue = 0.0;
+              dukcapil = false;
+              selfieProcessed = 'selfie ada';
+            });
+
+            if(messageDukcapil == 'Please ensure image format is JPEG, or NIK is registered on Dukcapil'){
+              matchLivenessFeedback += "\nNIK doesn't match with face or NIK not registered on Dukcapil";
+            }
+            else if(messageDukcapil == "NIK is not found, please check your NIK"){
+              matchLivenessFeedback += '\n$messageDukcapil';
+            }
+            else if(messageDukcapil == 'NIK data not found'){
+              matchLivenessFeedback += '\n$messageDukcapil';
+            }
+            else if(messageDukcapil == 'Invalid Response from Gateway'){
+              matchLivenessFeedback += 'Face doesn\'t match with Dukcapil';
+            }
+            else if(messageDukcapil == 'Gateway not Responding'){
+              matchLivenessFeedback += 'Dukcapil verification server error';
+            }
+          }
+          // await nodefluxSelfieMatchLivenessProcess(context);
+    }
+    catch(e){
+      print('Error: $e');
+    }
+  }
+
+  nodefluxSelfieMatchLivenessProcess(BuildContext context) async{
+>>>>>>> 99b0f59c56a773690edaf53b7ace594b233f2514
     setState(() {
       //loading = true;
     });
@@ -468,6 +645,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
     String authorization =
         'NODEFLUX-HMAC-SHA256 Credential=ZZC8MB2EHH01G3FX60ZNZS7KA/20201110/nodeflux.api.v1beta1.ImageAnalytic/StreamImageAnalytic, SignedHeaders=x-nodeflux-timestamp, Signature=5a6b903b95b8f3c9677169d69b13b4f790799ffba897405b7826770f51fd4a21';
     String contentType = 'application/json';
+<<<<<<< HEAD
     String xnodefluxtimestamp = '20201110T135945Z';
     final imageBytes = widget._ektpImage.readAsBytesSync();
     String base64Image = 'data:image/jpeg;base64,' + base64Encode(imageBytes);
@@ -564,12 +742,131 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
           "The image might be in wrong orientation") {
         // if photo not ktp/ wrong orientation
         dialog = nodefluxDataModel.message + " or photo is not KTP";
+=======
+    String xnodefluxtimestamp='20201110T135945Z';
+    final imageBytesSelfie = _selfieImage.readAsBytesSync();
+    String base64ImageSelfie = 'data:image/jpeg;base64,'+base64Encode(imageBytesSelfie);
+    final imageBytesEktp = widget.ektpImage.readAsBytesSync();
+    String base64ImageEktp = 'data:image/jpeg;base64,'+base64Encode(imageBytesEktp);
+    String dialog = "";
+    bool isPassed=false;
+    String currentStatus='';
+    LivenessModelUnderqualified livenessModelUnderqualified = LivenessModelUnderqualified();
+    MessageModel messageModel = MessageModel();
+    LivenessModel livenessModel = LivenessModel();
+    FacePairNotMatch facePairNotMatch = FacePairNotMatch();
+    NoFaceDetected noFaceDetected = NoFaceDetected();
+    bool okValue=false;
+
+    try{
+      var url='https://api.cloud.nodeflux.io/syncv2/analytics/face-match-liveness';
+      List<String> photoBase64List=List<String>();
+      photoBase64List.add(base64ImageEktp);
+      photoBase64List.add(base64ImageSelfie);
+
+      var response;
+      // while (currentStatus!='success' && okValue) {
+      response = await http
+          .post(Uri.parse(url), body: json.encode({
+        "images":photoBase64List
+          }),
+          headers: {"Accept": "application/json",  "Content-Type": "application/json",
+        "x-nodeflux-timestamp": "20201110T135945Z",
+        "Authorization": authorization
+          });
+
+      print(response.body);
+
+      var respbody=response.body;
+      messageModel = MessageModel.fromJson(jsonDecode(response.body));
+      message = messageModel.message;
+      okValue = messageModel.ok;
+      var status = messageModel.status;
+      print(message + ' ' + okValue.toString());
+      if (okValue) {
+        currentStatus= status;
+
+        if (currentStatus == "success") {
+          if(message == 'Face Liveness Underqualified'){
+            livenessModelUnderqualified = LivenessModelUnderqualified.fromJson(jsonDecode(response.body));
+            setState(() {
+              livenessValue = livenessModelUnderqualified.result[0].faceLiveness.liveness;
+              isLive = livenessModelUnderqualified.result[0].faceLiveness.live;
+              underQualified = true;
+              nodefluxSelfie = true;
+              changeColor = true;
+              selfieProcessed = 'selfie ada';
+              messageDukcapil = ' ';
+            });
+
+            double livenessPercentage=livenessValue*100;
+            String isLiveString = (livenessPercentage>=75)? "from live ": "not from live ";
+            matchLivenessFeedback= "Selfie is taken " + isLiveString +"person!";
+            matchLivenessFeedback+= '\nOR';
+            matchLivenessFeedback+= '\nLow photo quality';
+          }
+          else if(message == 'Face Match Liveness Success'){
+            livenessModel = LivenessModel.fromJson(jsonDecode(response.body));
+            setState(() {
+              similarityValue = livenessModel.result[1].faceMatch.similarity;
+              isMatched = livenessModel.result[1].faceMatch.match;
+              livenessValue = livenessModel.result[0].faceLiveness.liveness;
+              isLive = livenessModel.result[0].faceLiveness.live;
+              nodefluxSelfie = true;
+              changeColor = true;
+            });
+
+            double similarityPercentage=similarityValue*100;
+            double livenessPercentage=livenessValue*100;
+            String isLiveString = (livenessPercentage>=75)? "from live ": "not from live ";
+            // String isMatchedString = (similarityPercentage>=75)? "matched": "not matched";
+            matchLivenessFeedback = "Selfie is taken " + isLiveString +"person ("+livenessPercentage.toStringAsFixed(2)+" %)";
+            // matchLivenessFeedback+= "\neKTP photo is " + isMatchedString +" with selfie ("+similarityPercentage.toStringAsFixed(2)+" %)";
+            nodefluxDukcapilProcess(context);
+          }
+          else if(message == "The Face Pair Not Match"){
+            facePairNotMatch = FacePairNotMatch.fromJson(jsonDecode(response.body));
+            setState(() {
+              similarityValue = facePairNotMatch.result[1].faceMatch.similarity;
+              livenessValue = facePairNotMatch.result[0].faceLiveness.liveness;
+              isMatched = facePairNotMatch.result[1].faceMatch.match;
+              isLive = facePairNotMatch.result[0].faceLiveness.live;
+              nodefluxSelfie = true;
+              changeColor = true;
+            });
+
+            double similarityPercentage = similarityValue*100;
+            double livenessPercentage = livenessValue*100;
+            String isLiveString = (livenessPercentage>=75)? "from live ": "not from live ";
+            // String isMatchedString = (similarityPercentage>=75)? "matched": "not matched";
+            matchLivenessFeedback = "Selfie is taken " + isLiveString +"person ("+livenessPercentage.toStringAsFixed(2)+" %)";
+            // matchLivenessFeedback+= "\neKTP photo is " + isMatchedString +" with selfie ("+similarityPercentage.toStringAsFixed(2)+" %)";
+            nodefluxDukcapilProcess(context);
+          }
+        } else {
+          noFaceDetected = NoFaceDetected.fromJson(jsonDecode(response.body));
+          matchLivenessFeedback = noFaceDetected.message;
+          setState(() {
+            message = noFaceDetected.message;
+            noFace = true;
+            changeColor = true;
+            selfieProcessed = 'selfie ada';
+            livenessValue = 0.0;
+          });
+        }
+      } else {
+        dialog= messageModel.message;
+        matchLivenessFeedback= messageModel.message;
+        isPassed=false;
+        print(ektpImage.exists());
+>>>>>>> 99b0f59c56a773690edaf53b7ace594b233f2514
       }
     } catch (e) {
       debugPrint('Error $e');
       dialog = e;
     }
     setState(() {
+<<<<<<< HEAD
       //loading = false;
     });
     //createAlertDialog(context,isPassed?'Success!':'Failed',dialog);
@@ -760,6 +1057,10 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
     }
     //Navigator.of(context).pop();
     uploadImage(widget._selfieImage, "selfie");
+=======
+      print(matchLivenessFeedback);
+    });
+>>>>>>> 99b0f59c56a773690edaf53b7ace594b233f2514
   }
 
   _getSelfieEktpImage(BuildContext context, ImageSource source) async {
@@ -845,6 +1146,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
     uploadImage(_selfieEktpImage, "selfieEktp");
   }
 
+<<<<<<< HEAD
   Widget showUploadEktpButton() {
     return new Padding(
         padding: EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 0.0),
@@ -865,11 +1167,14 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
         ));
   }
 
+=======
+>>>>>>> 99b0f59c56a773690edaf53b7ace594b233f2514
   Widget showUploadSelfieEktpButton() {
     return new Padding(
         padding: EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 0.0),
         child: SizedBox(
           height: 40.0,
+<<<<<<< HEAD
           child: new RaisedButton(
             elevation: 5.0,
             shape: new RoundedRectangleBorder(
@@ -903,6 +1208,21 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
             onPressed: () {
               _getNpwpImage(this.context, ImageSource.camera);
             },
+=======
+          child: new ElevatedButton(
+              child: new Text(
+                //'Ambil Foto Selfie',
+                  'Take Selfie With eKTP Photo',
+                  style: new TextStyle(fontSize: 12.0, color: Colors.white)),
+              //onPressed: () { navigateToPage('Login Face');}
+              onPressed: () {
+                nodefluxSelfie? changeColor :
+                _getSelfieEktpImage(this.context, ImageSource.camera);
+              },
+              style: ElevatedButton.styleFrom(
+                  primary: changeColor? Colors.grey : Colors.green[700]
+              )
+>>>>>>> 99b0f59c56a773690edaf53b7ace594b233f2514
           ),
         ));
   }
@@ -963,80 +1283,6 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
         ));
   }
 
-  // _getImage(BuildContext context, ImageSource source) async{
-  //   this.setState(() {
-  //     loading = true;
-  //   });
-  //   try{
-  //     Directory tempDir = await getTemporaryDirectory();
-  //     String tempPath = tempDir.path;
-  //
-  //     if (await tempDir.exists())
-  //       tempDir.delete(recursive: false);
-  //
-  //     Directory appdocdir= await getApplicationSupportDirectory();
-  //     String test=appdocdir.path;
-  //
-  //     if (await appdocdir.exists())
-  //       appdocdir.delete(recursive: false);
-  //
-  //     var picture =  await ImagePicker.pickImage(source: source);
-  //
-  //     int appFileDirectory=picture.path.lastIndexOf('/');
-  //     String resultDirectory=picture.path.substring(0,appFileDirectory+1); // = appdocdir+'/Pictures/'
-  //     String resultPath=resultDirectory+DateFormat('yyyyMMddHHmmss').format(DateTime.now())+'.jpg';
-  //     //String resultPath='/storage/emulated/0/Android/data/com.smartherd.flutter_app_section2/files/Pictures/'+DateFormat('yyyyMMddHHmmss').format(DateTime.now())+'.jpg';
-  //
-  //     int photoQuality=50;
-  //     if(picture != null) {
-  //       try {
-  //         var result = await FlutterImageCompress.compressAndGetFile(
-  //           picture.absolute.path, resultPath,
-  //           quality: photoQuality,
-  //         );
-  //
-  //         int pictureLength=picture.lengthSync();
-  //         int resultLength=result.lengthSync();
-  //
-  //         var i = 1;
-  //
-  //         while ((resultLength < professionalMinPhotoSize || resultLength > professionalMaxPhotoSize) && photoQuality>0 && photoQuality<100) {
-  //           if (result!=null)
-  //             await result.delete();
-  //           resultPath=resultDirectory+DateFormat('yyyyMMddHHmmss').format(DateTime.now())+'.jpg';
-  //           photoQuality=(resultLength>professionalMaxPhotoSize)? photoQuality-10:photoQuality+10;
-  //           result = await FlutterImageCompress.compressAndGetFile(
-  //             picture.absolute.path, resultPath,
-  //             quality: photoQuality,
-  //           );
-  //           resultLength=result.lengthSync();
-  //         }
-  //
-  //         double sizeinKb=resultLength.toDouble()/1024;
-  //         debugPrint('Photo compressed size is '+sizeinKb.toString()+' kb');
-  //         //print(pictureLength+resultLength);
-  //         await picture.delete();
-  //         this.setState(() {
-  //           //_imageFileProfile = cropped;
-  //           _professionalImage = result;
-  //           loading = false;
-  //         });
-  //       } catch (e) {
-  //         print (e);
-  //         debugPrint("Error $e");
-  //       }
-  //     }else{
-  //       this.setState(() {
-  //         loading = false;
-  //       });
-  //     }
-  //   } catch (e) {
-  //     print (e);
-  //     debugPrint("Error $e");
-  //   }
-  //   //Navigator.of(context).pop();
-  // }
-
   Widget showPhotoUploadedInfo() {
     if (_imageFile != null) {
       return new Padding(
@@ -1087,11 +1333,38 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
     }
   }
 
+  Widget tryAgainButton(){
+    return new Padding(
+        padding: EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 0.0),
+        child: Container(
+          height: 40.0,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(5)),
+            border: Border.all(color: Colors.white, width: 2),
+          ),
+          child: new ElevatedButton(
+            child: new Text(
+              //'Ambil Foto eKTP',
+                'Try again',
+                style: new TextStyle(fontSize: 12.0, color: Colors.white)),
+            //onPressed: () { navigateToPage('Login Face');}
+            onPressed:  () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => WebrtcRoom()));
+            },
+            style: ElevatedButton.styleFrom(
+                primary: changeColor? Colors.red : Colors.red
+            ),
+          ),
+        ));
+  }
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
         body:
+<<<<<<< HEAD
             // firestore start
             ListView(
       padding: EdgeInsets.all(8),
@@ -1218,6 +1491,215 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
     )
         // firestore end
         );
+=======
+        // firestore start
+        ListView(
+          padding: EdgeInsets.all(8),
+          children: <Widget>[
+            Form(
+                key: _formKey,
+                child: Column (
+                  children: <Widget>[
+                    SizedBox(height: 60),
+                    _title(),
+                    SizedBox(height: 50),
+                    buildTextFormFieldName(),
+                    SizedBox(height: 15),
+                    buildTextFormFieldNik(),
+                    buildTextFormFieldBirthplace(),
+                    SizedBox(height: 15),
+                    buildTextFormFieldBirthdate(),
+                    SizedBox(height: 15),
+                    buildTextFormFieldGender(),
+                    SizedBox(height: 15),
+                    buildTextFormFieldAddress(),
+                    SizedBox(height: 15),
+                    buildTextFormFieldRtRw(),
+                    SizedBox(height: 15),
+                    buildTextFormFieldKelurahanDesa(),
+                    SizedBox(height: 15),
+                    buildTextFormFieldKecamatan(),
+                    SizedBox(height: 15),
+                    buildTextFormFieldKabupatenKota(),
+                    SizedBox(height: 15),
+                    buildTextFormFieldProvince(),
+                    SizedBox(height: 15),
+                    buildTextFormFieldReligion(),
+                    SizedBox(height: 15),
+                    buildTextFormFieldMaritalStatus(),
+                    SizedBox(height: 15),
+                    buildTextFormFieldWorkfield(),
+                    SizedBox(height: 15),
+                    buildTextFormFieldExpiry(),
+                    SizedBox(height: 15),
+                    buildTextFormFieldBloodType(),
+                    SizedBox(height: 15),
+                    buildTextFormFieldNationality(),
+                    SizedBox(height: 15),
+                    buildTextFormFieldEmail(),
+                    SizedBox(height: 15),
+                    buildTextFormFieldMobilePhone(),
+                    Column (
+                        children: <Widget> [
+                          showUploadSelfieEktpButton(),
+                          (_selfieEktpImage != null)? showUploadSelfieButton() : Container(),
+                          (selfieProcessed == 'lagi proses')? Text('Processing.. Please wait a moment..',
+                              style: new TextStyle(fontSize: 12.0, color: Colors.black)):Container(),
+                          (selfieProcessed == 'selfie ada')? Text('Processed',
+                              style: new TextStyle(fontSize: 12.0, color: Colors.black)):Container(),
+                          SizedBox(height: 10),
+                          (matchLivenessFeedback!="")?
+                          Container(
+                            child: (messageDukcapil != '' || selfieProcessed == 'selfie ada')? Container(
+                                child: (message == 'Face Match Liveness Success' && messageDukcapil == 'Dukcapil Validation Success')? Text(matchLivenessFeedback,
+                                  style: new TextStyle(fontSize: 12.0, color: Colors.black),
+                                  textAlign: TextAlign.center,
+                                ) : Text(matchLivenessFeedback,
+                                  style: new TextStyle(fontSize: 12.0, color: textColorRed),
+                                  textAlign: TextAlign.center,
+                                )
+                            ):Container(),
+                          ):Container(),
+                          (similarityValue != null && livenessValue != null && messageDukcapil != '' &&
+                              _selfieImage != null && similarityValue >= 0.75 && livenessValue >= 0.55
+                          )?
+                          InkWell(
+                              onTap: createData,
+                              child:Container(
+                                width: MediaQuery.of(context).size.width,
+                                padding: EdgeInsets.symmetric(vertical: 15),
+                                margin: EdgeInsets.only(top: 10),
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(Radius.circular(5)),
+                                  border: Border.all(color: Colors.black, width: 2),
+                                ),
+                                child: Text(
+                                  //'Selesai',
+                                  'Submit Registration Data',
+                                  style: TextStyle(fontSize: 20, color: Colors.black),
+                                ),
+                              )
+                          )
+                              :
+                          Container(
+                              child: (noFace && message == 'No face detected')? tryAgainButton()
+                                  :
+                              ((nodefluxSelfie)?
+                              ((underQualified)? tryAgainButton()
+                                  :
+                              ((similarityValue < 75 && livenessValue < 75 && messageDukcapil != '')? Column(
+                                children: [
+                                  SizedBox(height: 5),
+                                  Text('Liveness or face match do not pass the requirement',
+                                    style: TextStyle(fontSize: 15.0, color: Colors.red),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  SizedBox(height: 10),
+                                  // tryAgainButton()
+                                  InkWell(
+                                      onTap: createData,
+                                      child:Container(
+                                        width: MediaQuery.of(context).size.width,
+                                        padding: EdgeInsets.symmetric(vertical: 15),
+                                        margin: EdgeInsets.only(top: 10),
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.all(Radius.circular(5)),
+                                          border: Border.all(color: Colors.black, width: 2),
+                                        ),
+                                        child: Text(
+                                          //'Selesai',
+                                          'Submit Registration Data',
+                                          style: TextStyle(fontSize: 20, color: Colors.black),
+                                        ),
+                                      )
+                                  )
+                                ],
+                              ):Container())) : Container())
+                          ),
+                        ]
+                    ),
+                  ],
+                )
+
+
+            ),
+            SizedBox(height: 15),
+            // (_selfieEktpImage != null) ?
+            // Column (
+            //   crossAxisAlignment: CrossAxisAlignment.center,
+            //   children: <Widget>[
+            //     RaisedButton(
+            //       onPressed: createData,
+            //       child: Text(
+            //           'Submit registration data',
+            //           style: TextStyle(color: Colors.white, fontSize: 20)),
+            //       color: Colors.green,
+            //     ),
+                //SizedBox(height: 10),
+                //     Text("- or -"),
+                // //SizedBox(height: 10),
+                // Text("Please choose date and time when we will contact you:"),
+                // DatetimePickerWidget(),
+                // RaisedButton(
+                //   onPressed: createData, // MAYA: SCHEDULE
+                //   child: Text(
+                //     //'Ok Saya Siap Melakukan Video Call',
+                //     //'OK, I am ready to have Video Call',
+                //       'Yes, call me at above time',
+                //       style: TextStyle(color: Colors.white, fontSize: 20)),
+                //   color: Colors.orange,
+                // ),
+                //(DateTimePickerWidget!=null)?Text(DateTimePickerWidget.toString()):Container(),
+                //Text(scheduledDateTimeController.text),
+                //     RaisedButton(
+                //       onPressed: () {
+                //         showDatePicker(
+                //           context:this.context,
+                //           initialDate:DateTime.now(),
+                //           firstDate: DateTime.now(),
+                //           lastDate: DateTime(DateTime.now().month+1),
+                //           //lastDate:DateTime.now(),
+                //         ).then((selectedDate){
+                //           //selectedcertificatedate=selectedDate;
+                //           scheduledDateTimeController.text= DateFormat('dd-MM-yyyy').format(selectedDate).toString();
+                //           //new DateFormat.yMMMd().format(selectedDate);
+                //
+                //         });
+                //
+                //       },
+                //       //onPressed:
+                //       // DateTimePicker(
+                //       //   type: DateTimePickerType.dateTime,
+                //       //   dateMask: 'd MMMM yyyy - hh:mm',
+                //       //   controller: _scheduledDateTimeController,
+                //       //   //initialValue: _initialValue,
+                //       //   firstDate: DateTime(2000),
+                //       //   lastDate: DateTime(2100),
+                //       //   //icon: Icon(Icons.event),
+                //       //   dateLabelText: 'Date Time',
+                //       //   use24HourFormat: false,
+                //       //   locale: Locale('en', 'US'),
+                //       //   onChanged: (val) => setState(() => _scheduledDateTimeValueChanged = val),
+                //       //   validator: (val) {
+                //       //     setState(() => _scheduledDateTimeValueToValidate = val ?? '');
+                //       //     return null;
+                //       //   },
+                //       //   onSaved: (val) => setState(() => _scheduledDateTimeValueSaved = val ?? ''),
+                //       // )
+                //       child: Text(
+                //           'Call me at my chosen date and time',
+                //           style: TextStyle(color: Colors.white, fontSize: 20)),
+                //       color: Colors.orange,
+                //     ),
+              // ],
+            // ) : Container()
+          ],
+        )
+      // firestore end
+    );
+>>>>>>> 99b0f59c56a773690edaf53b7ace594b233f2514
   }
 
   Card buildItem(DocumentSnapshot doc) {
@@ -1351,7 +1833,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (BuildContext context) => CongratulationPage()));
+              builder: (BuildContext context) => coreBanking()));
     }
   }
 
@@ -1384,6 +1866,10 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
     return TextFormField(
       maxLength: 16,
       controller: nikController,
+      onChanged: (value){
+        widget.model.nik = value;
+        print(value);
+      },
       keyboardType: TextInputType.number,
       decoration: new InputDecoration(
           hintText: 'NIK',

@@ -10,12 +10,12 @@ String livenessModelUnderqualifiedToJson(LivenessModelUnderqualified data) => js
 
 class LivenessModelUnderqualified {
   LivenessModelUnderqualified({
-    this.analyticType,
-    this.jobId,
-    this.message,
-    this.ok,
-    this.result,
-    this.status,
+    required this.analyticType,
+    required this.jobId,
+    required this.message,
+    required this.ok,
+    required this.result,
+    required this.status,
   });
 
   String analyticType;
@@ -46,7 +46,7 @@ class LivenessModelUnderqualified {
 
 class Result {
   Result({
-    this.faceLiveness,
+    required this.faceLiveness,
   });
 
   FaceLiveness faceLiveness;
@@ -62,8 +62,8 @@ class Result {
 
 class FaceLiveness {
   FaceLiveness({
-    this.live,
-    this.liveness,
+    required this.live,
+    required this.liveness,
   });
 
   bool live;

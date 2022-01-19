@@ -2,16 +2,16 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
-import '../pages/displayDataPage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_webrtc_demo/src/pages/displayDataPage.dart';
 import 'package:intl/intl.dart';
 
 typedef void StreamStateCallback(MediaStream stream);
 
 class WebrtcSignaling {
-  WebrtcSignaling({this.context});
+  // WebrtcSignaling({required this.context});
 
-  final BuildContext context;
+  late final BuildContext context;
 
   Map<String, dynamic> configuration = {
     'iceServers': [
@@ -24,12 +24,12 @@ class WebrtcSignaling {
     ]
   };
 
-  RTCPeerConnection peerConnection;
-  MediaStream localStream;
-  MediaStream remoteStream;
-  String roomId;
-  String currentRoomText;
-  StreamStateCallback onAddRemoteStream;
+  late RTCPeerConnection peerConnection;
+  late MediaStream localStream;
+  late MediaStream remoteStream;
+  late String roomId;
+  late String currentRoomText;
+  late StreamStateCallback onAddRemoteStream;
 
   var VCHandled1;
   var VCHandled2;
@@ -37,10 +37,6 @@ class WebrtcSignaling {
   var loggedIn2;
   var inCall1;
   var inCall2;
-
-  void route() async{
-
-  }
 
 
   Future<String> createRoom(RTCVideoRenderer remoteRenderer, FirebaseFirestore db) async {
@@ -51,8 +47,6 @@ class WebrtcSignaling {
     var agent1Active = db.collection('isActive').doc('agent1').get();
     var agent2Active = db.collection('isActive').doc('agent2').get();
 
-    print('isi json ' + VCHandled1.toString());
-
     agent1Active.then((doc){
       var jsonData = jsonEncode(doc.data());
       var parsedJson = jsonDecode(jsonData);
@@ -61,14 +55,14 @@ class WebrtcSignaling {
       inCall1 = parsedJson['inCall'];
       print('a1 >>>>>' + VCHandled1.toString() + loggedIn1.toString() + inCall1.toString());
     });
-
+//buat condition lagi
     agent2Active.then((doc){
       var jsonData = jsonEncode(doc.data());
       var parsedJson = jsonDecode(jsonData);
       VCHandled2 = parsedJson['VCHandled'];
       loggedIn2 = parsedJson['loggedIn'];
       inCall2 = parsedJson['inCall'];
-      print('a2 state >>>>> ' + VCHandled2.toString() + loggedIn2.toString() + inCall2.toString());
+      print('a2 >>>>> ' + VCHandled2.toString() + loggedIn2.toString() + inCall2.toString());
     });
 
     print('Create PeerConnection with configuration: $configuration');
@@ -453,7 +447,7 @@ class WebrtcSignaling {
   }
 
   Future<void> hangUp(RTCVideoRenderer localVideo) async {
-    List<MediaStreamTrack> tracks = localVideo.srcObject.getTracks();
+    List<MediaStreamTrack> tracks = localVideo.srcObject!.getTracks();
     tracks.forEach((track) {
       track.stop();
     });
@@ -488,7 +482,7 @@ class WebrtcSignaling {
       print('Connection state change: $state');
       if (state==RTCPeerConnectionState.RTCPeerConnectionStateDisconnected) {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => DisplayDataPage()));
+            context, MaterialPageRoute(builder: (context) => DisplayDataPage(title: '',)));
       }
     };
 

@@ -10,12 +10,12 @@ String facePairNotMatchToJson(FacePairNotMatch data) => json.encode(data.toJson(
 
 class FacePairNotMatch {
   FacePairNotMatch({
-    this.analyticType,
-    this.jobId,
-    this.message,
-    this.ok,
-    this.result,
-    this.status,
+    required this.analyticType,
+    required this.jobId,
+    required this.message,
+    required this.ok,
+    required this.result,
+    required this.status,
   });
 
   String analyticType;
@@ -46,8 +46,8 @@ class FacePairNotMatch {
 
 class Result {
   Result({
-    this.faceLiveness,
-    this.faceMatch,
+    required this.faceLiveness,
+    required this.faceMatch,
   });
 
   FaceLiveness faceLiveness;
@@ -66,8 +66,8 @@ class Result {
 
 class FaceLiveness {
   FaceLiveness({
-    this.live,
-    this.liveness,
+    required this.live,
+    required this.liveness,
   });
 
   bool live;
@@ -86,8 +86,8 @@ class FaceLiveness {
 
 class FaceMatch {
   FaceMatch({
-    this.match,
-    this.similarity,
+    required this.match,
+    required this.similarity,
   });
 
   bool match;

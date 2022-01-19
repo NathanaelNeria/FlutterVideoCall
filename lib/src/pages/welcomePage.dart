@@ -1,14 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_webrtc_demo/src/nodeflux/screens/activeLiveness.dart';
 import 'loginPage.dart';
 // import 'signup.dart';
 import 'prepPage.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class WelcomePage extends StatefulWidget {
-  WelcomePage({Key key, this.title}) : super(key: key);
+  // WelcomePage({required Key key, required this.title}) : super(key: key);
 
-  final String title;
+  // final String title;
 
   @override
   _WelcomePageState createState() => _WelcomePageState();
@@ -19,7 +20,7 @@ class _WelcomePageState extends State<WelcomePage> {
     return InkWell(
       onTap: () {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => PrepPage()));
+            context, MaterialPageRoute(builder: (context) => PrepPage(title: '',)));
       },
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -51,7 +52,7 @@ class _WelcomePageState extends State<WelcomePage> {
     return InkWell(
       onTap: () {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => LoginPage()));
+            context, MaterialPageRoute(builder: (context) => PlatformChannel()));
       },
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -141,12 +142,18 @@ class _WelcomePageState extends State<WelcomePage> {
                   begin: Alignment.bottomLeft,
                   end: Alignment.topRight,
                   // colors: [Color(0xfffbb448), Color(0xffe46b10)]
+<<<<<<< HEAD
                   colors: [
                     Colors.green,
                     Colors.green[600],
                     Colors.green[700],
                     Colors.green[800]
                   ])),
+=======
+                colors: [Colors.green, Colors.green.shade700, Colors.green.shade900]
+              )
+          ),
+>>>>>>> 99b0f59c56a773690edaf53b7ace594b233f2514
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,

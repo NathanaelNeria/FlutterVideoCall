@@ -33,7 +33,7 @@ import '../models/face_pair_not_match.dart';
 import '../models/no_face_detected.dart';
 
 class NodefluxOcrKtpPage extends StatefulWidget {
-  NodefluxOcrKtpPage({Key key, this.title}) : super(key: key);
+  NodefluxOcrKtpPage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
@@ -42,13 +42,18 @@ class NodefluxOcrKtpPage extends StatefulWidget {
 }
 
 class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
+<<<<<<< HEAD
   DateTime selectedbirthdate = null;
   File _imageFile;
+=======
+  DateTime? selectedbirthdate;
+  late File _imageFile;
+>>>>>>> 99b0f59c56a773690edaf53b7ace594b233f2514
 
-  File _ektpImage;
-  File _selfieImage;
-  File _npwpImage;
-  File _selfieEktpImage;
+  late File _ektpImage;
+  late File _selfieImage;
+  late File _npwpImage;
+  late File _selfieEktpImage;
 
   TextEditingController nikController = TextEditingController();
   TextEditingController nameController = TextEditingController();
@@ -56,6 +61,7 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
   TextEditingController birthplaceController = TextEditingController();
   TextEditingController mobilePhoneController = TextEditingController();
   TextEditingController emailController = TextEditingController();
+<<<<<<< HEAD
   TextEditingController addressController,
       genderController,
       rtrwController,
@@ -69,32 +75,37 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
       kabupatenKotaController,
       kelurahanDesaController,
       nationalityController;
+=======
+  late TextEditingController addressController, genderController, rtrwController, kecamatanController, religionController, maritalStatusController, workfieldController, provinceController, expiryController,
+    bloodTypeController, kabupatenKotaController, kelurahanDesaController, nationalityController;
+>>>>>>> 99b0f59c56a773690edaf53b7ace594b233f2514
 
   //firestore
-  String firestoreId;
+  late String firestoreId;
 
-  FirebaseFirestore db;
+  late FirebaseFirestore db;
   final _formKey = GlobalKey<FormState>();
-  String firestoreName;
-  String firestoreNik;
-  String firestoreAddress;
-  String firestoreBirthdate;
-  String firestoreBirthplace;
-  String firestoreGender;
-  String firestoreRtRw;
-  String firestoreKecamatan;
-  String firestoreReligion;
-  String firestoreMaritalStatus;
-  String firestoreWorkfield;
-  String firestoreProvince;
-  String firestoreExpiry;
-  String firestoreBloodType;
-  String firestoreKabupatenKota;
-  String firestoreKelurahanDesa;
-  String firestoreNationality;
-  String firestoreMobilePhone;
-  String firestoreEmail;
+  late String firestoreName;
+  late String firestoreNik;
+  late String firestoreAddress;
+  late String firestoreBirthdate;
+  late String firestoreBirthplace;
+  late String firestoreGender;
+  late String firestoreRtRw;
+  late String firestoreKecamatan;
+  late String firestoreReligion;
+  late String firestoreMaritalStatus;
+  late String firestoreWorkfield;
+  late String firestoreProvince;
+  late String firestoreExpiry;
+  late String firestoreBloodType;
+  late String firestoreKabupatenKota;
+  late String firestoreKelurahanDesa;
+  late String firestoreNationality;
+  late String firestoreMobilePhone;
+  late String firestoreEmail;
 
+<<<<<<< HEAD
   int minPhotoSize = 256000; // 250KB
   int maxPhotoSize = 512000; // 500KB
 
@@ -115,19 +126,34 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
       ocrKabupatenKota,
       ocrKelurahanDesa,
       ocrKewarganegaraan;
+=======
+  int minPhotoSize=256000; // 250KB
+  int maxPhotoSize=512000; // 500KB
+
+  late String ocrNama, ocrNik, ocrTempatLahir, ocrTanggalLahir, ocrJenisKelamin, ocrAlamat, ocrRtrw, ocrKecamatan, ocrAgama, ocrStatusPerkawinan,
+      ocrPekerjaan, ocrProvinsi, ocrBerlakuHingga, ocrGolonganDarah, ocrKabupatenKota, ocrKelurahanDesa, ocrKewarganegaraan;
+>>>>>>> 99b0f59c56a773690edaf53b7ace594b233f2514
 
   //NodefluxResult2Model nodefluxResult2Model =NodefluxResult2Model();
-  NodefluxResult2Model _nodefluxResult2Model;
-  bool isLive;
-  bool isMatched;
+  late NodefluxResult2Model _nodefluxResult2Model;
+  late bool isLive;
+  late bool isMatched;
   bool nodefluxSelfie = false;
+<<<<<<< HEAD
   double livenessValue;
   double similarityValue;
   String matchLivenessFeedback = "";
+=======
+  late double livenessValue;
+  late double similarityValue;
+  String matchLivenessFeedback="";
+>>>>>>> 99b0f59c56a773690edaf53b7ace594b233f2514
   String message = '';
   bool noFace = false;
   bool underQualified = false;
   bool changeColor = false;
+  String ktpDetected = '';
+  bool ktpProcessed = false;
 
   @override
   void initState() {
@@ -141,6 +167,7 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
   }
 
   setup() {
+<<<<<<< HEAD
     nikController = TextEditingController(text: ocrNik != null ? ocrNik : "");
     nameController =
         TextEditingController(text: ocrNama != null ? ocrNama : "");
@@ -182,6 +209,25 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
     livenessValue = null;
     similarityValue = null;
     matchLivenessFeedback = "";
+=======
+    nikController= TextEditingController(text: ocrNik!=null? ocrNik:"");
+    nameController= TextEditingController(text: ocrNama!=null? ocrNama:"");
+    birthdateController= TextEditingController(text: ocrTanggalLahir!=null? ocrTanggalLahir:"");
+    birthplaceController= TextEditingController(text: ocrTempatLahir!=null? ocrTempatLahir:"");
+    genderController= TextEditingController(text: ocrJenisKelamin!=null? ocrJenisKelamin:"");
+    addressController= TextEditingController(text: ocrAlamat!=null? ocrAlamat:"");
+    rtrwController= TextEditingController(text: ocrRtrw!=null? ocrRtrw:"");
+    kecamatanController= TextEditingController(text: ocrKecamatan!=null? ocrKecamatan:"");
+    religionController= TextEditingController(text: ocrAgama!=null? ocrAgama:"");
+    maritalStatusController= TextEditingController(text: ocrStatusPerkawinan!=null? ocrStatusPerkawinan:"");
+    workfieldController= TextEditingController(text: ocrPekerjaan!=null? ocrPekerjaan:"");
+    provinceController= TextEditingController(text: ocrProvinsi!=null? ocrProvinsi:"");
+    expiryController= TextEditingController(text: ocrBerlakuHingga!=null? ocrBerlakuHingga:"");
+    bloodTypeController= TextEditingController(text: ocrGolonganDarah!=null? ocrGolonganDarah:"");
+    kabupatenKotaController= TextEditingController(text: ocrKabupatenKota!=null? ocrKabupatenKota:"");
+    kelurahanDesaController= TextEditingController(text: ocrKelurahanDesa!=null? ocrKelurahanDesa:"");
+    nationalityController= TextEditingController(text: ocrKewarganegaraan!=null? ocrKewarganegaraan:"");
+>>>>>>> 99b0f59c56a773690edaf53b7ace594b233f2514
   }
 
   Widget _backButton() {
@@ -304,11 +350,20 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
       text: TextSpan(
           text: 'eKTP & Contact ',
           style: GoogleFonts.portLligatSans(
+<<<<<<< HEAD
               textStyle: Theme.of(context).textTheme.headline4,
               fontSize: 30,
               fontWeight: FontWeight.w700,
               // color: Color(0xffe46b10),
               color: Colors.white),
+=======
+            textStyle: Theme.of(context).textTheme.headline4,
+            fontSize: 30,
+            fontWeight: FontWeight.w700,
+            // color: Color(0xffe46b10),
+            color: Colors.white
+          ),
+>>>>>>> 99b0f59c56a773690edaf53b7ace594b233f2514
           children: [
             TextSpan(
               text: 'Information',
@@ -363,6 +418,7 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
         ));
   }
 
+<<<<<<< HEAD
   _getEktpImage0(BuildContext context, ImageSource source) async {
     this.setState(() {
       //loading = true;
@@ -401,6 +457,8 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
 
     Navigator.of(context).pop();
   }
+=======
+>>>>>>> 99b0f59c56a773690edaf53b7ace594b233f2514
 
   _getEktpImage(BuildContext context, ImageSource source) async {
     this.setState(() {
@@ -432,6 +490,7 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
       if (picture != null) {
         try {
           var result = await FlutterImageCompress.compressAndGetFile(
+<<<<<<< HEAD
             picture.absolute.path,
             resultPath,
             quality: photoQuality,
@@ -439,6 +498,13 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
 
           int pictureLength = picture.lengthSync();
           int resultLength = result.lengthSync();
+=======
+            picture.path, resultPath,
+            quality: photoQuality,
+          );
+
+          int resultLength=result.lengthSync();
+>>>>>>> 99b0f59c56a773690edaf53b7ace594b233f2514
 
           var i = 1;
 
@@ -469,6 +535,9 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
           this.setState(() {
             //_imageFileProfile = cropped;
             _ektpImage = result;
+            ktpDetected = 'lagi proses';
+            nodefluxSelfie = true;
+            changeColor = true;
             //loading = false;
           });
         } catch (e) {
@@ -508,6 +577,7 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
     NodefluxJobModel nodefluxJobModel = NodefluxJobModel();
     NodefluxResultModel nodefluxResultModel = NodefluxResultModel();
     // NodefluxResult2Model nodefluxResult2Model =NodefluxResult2Model();
+<<<<<<< HEAD
     bool okValue = true;
     try {
       // var data = "images: ["+ base64Image +"]";
@@ -520,6 +590,13 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
       //       "Authorization": authorization,
       // }, body:data).then((http.Response response) {});
       List<String> photoBase64List = List<String>();
+=======
+    bool okValue=true;
+    try{
+
+      var url='https://api.cloud.nodeflux.io/v1/analytics/ocr-ktp';
+      List<String> photoBase64List=List<String>();
+>>>>>>> 99b0f59c56a773690edaf53b7ace594b233f2514
       photoBase64List.add(base64Image);
 
       var response;
@@ -545,7 +622,12 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
           nodefluxJobModel = nodefluxDataModel.job;
           nodefluxResultModel = nodefluxJobModel.result;
 
+<<<<<<< HEAD
           currentStatus = nodefluxResultModel.status;
+=======
+          currentStatus=nodefluxResultModel.status;
+          message = nodefluxDataModel.message;
+>>>>>>> 99b0f59c56a773690edaf53b7ace594b233f2514
         } else {
           dialog = nodefluxDataModel.message;
           isPassed = false;
@@ -561,6 +643,7 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
       }
 
       // decipherin result
+<<<<<<< HEAD
       if (nodefluxResultModel.status == "success" &&
           nodefluxDataModel.message == "OCR_KTP Service Success") {
         // if photo ktp
@@ -600,6 +683,46 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
         dialog = nodefluxDataModel.message + " or photo is not KTP";
       }
     } catch (e) {
+=======
+      if(nodefluxResultModel.status != 'on going' && nodefluxDataModel.message != 'Job successfully submitted'){
+        if (nodefluxResultModel.status=="success" && nodefluxDataModel.message=="OCR_KTP Service Success") { // if photo ktp
+          dialog="OCR Process success";
+          isPassed=true;
+          setState(() {
+            ocrNik = _nodefluxResult2Model.nik;
+            ocrNama= _nodefluxResult2Model.nama;
+            ocrTempatLahir = _nodefluxResult2Model.tempat_lahir;
+            ocrTanggalLahir = _nodefluxResult2Model.tanggal_lahir;
+            ocrJenisKelamin = _nodefluxResult2Model.jenis_kelamin;
+            ocrAlamat = _nodefluxResult2Model.alamat;
+            ocrRtrw = _nodefluxResult2Model.rt_rw;
+            ocrKecamatan = _nodefluxResult2Model.kecamatan;
+            ocrAgama = _nodefluxResult2Model.agama;
+            ocrStatusPerkawinan = _nodefluxResult2Model.status_perkawinan;
+            ocrPekerjaan = _nodefluxResult2Model.pekerjaan;
+            ocrProvinsi = _nodefluxResult2Model.provinsi;
+            ocrBerlakuHingga = _nodefluxResult2Model.berlaku_hingga;
+            ocrGolonganDarah = _nodefluxResult2Model.golongan_darah;
+            ocrKabupatenKota = _nodefluxResult2Model.kabupaten_kota;
+            ocrKelurahanDesa = _nodefluxResult2Model.kelurahan_desa;
+            ocrKewarganegaraan= _nodefluxResult2Model.kewarganegaraan;
+            ktpDetected = 'ktp ada';
+            ktpProcessed = true;
+          });
+        }
+        else if(nodefluxResultModel.status == 'incompleted' && nodefluxDataModel.message != "OCR_KTP Service Success"){
+          setState(() {
+            ktpDetected = 'ktp ga ada';
+            ktpProcessed = true;
+          });
+        }
+      }
+      // else if (nodefluxDataModel.message=="The image might be in wrong orientation"){ // if photo not ktp/ wrong orientation
+      //   dialog=nodefluxDataModel.message+" or photo is not KTP";
+      // }
+    }
+    catch(e){
+>>>>>>> 99b0f59c56a773690edaf53b7ace594b233f2514
       debugPrint('Error $e');
       dialog = e;
     }
@@ -777,6 +900,7 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
           this.setState(() {
             //_imageFileProfile = cropped;
             _selfieImage = result;
+            ktpDetected = 'lagi proses';
             //loading = false;
           });
         } catch (e) {
@@ -875,6 +999,7 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
               changeColor = true;
             });
 
+<<<<<<< HEAD
             double livenessPercentage = livenessValue * 100;
             String isLiveString =
                 (livenessPercentage >= 75) ? "from live " : "not from live ";
@@ -884,6 +1009,77 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
             matchLivenessFeedback += '\nLow photo quality';
           } else if (message == 'Face Match Liveness Success') {
             livenessModel = LivenessModel.fromJson(jsonDecode(response.body));
+=======
+        var respbody=response.body;
+        // first check ok value
+        messageModel = MessageModel.fromJson(jsonDecode(response.body));
+        message = messageModel.message;
+        okValue = messageModel.ok;
+        var status = messageModel.status;
+        print(message + ' ' + okValue.toString());
+        // second, if ok false, exit; if ok true, check status [success or incompleted]
+        if (okValue) {
+          currentStatus= status;
+          // third, if status: success, ada liveness -> check liveness > live
+
+
+          if (currentStatus == "success") {
+            if(message == 'Face Liveness Underqualified'){
+              livenessModelUnderqualified = LivenessModelUnderqualified.fromJson(jsonDecode(response.body));
+              setState(() {
+                livenessValue = livenessModelUnderqualified.result[0].faceLiveness.liveness;
+                isLive = livenessModelUnderqualified.result[0].faceLiveness.live;
+                underQualified = true;
+                nodefluxSelfie = true;
+                changeColor = true;
+              });
+
+              double livenessPercentage=livenessValue*100;
+              String isLiveString = (livenessPercentage>=75)? "from live ": "not from live ";
+              matchLivenessFeedback= "Selfie is taken " + isLiveString +"person!";
+              matchLivenessFeedback+= '\nOR';
+              matchLivenessFeedback+= '\nLow photo quality';
+            }
+            else if(message == 'Face Match Liveness Success'){
+              livenessModel = LivenessModel.fromJson(jsonDecode(response.body));
+              setState(() {
+                similarityValue = livenessModel.result[1].faceMatch.similarity;
+                isMatched = livenessModel.result[1].faceMatch.match;
+                livenessValue = livenessModel.result[0].faceLiveness.liveness;
+                isLive = livenessModel.result[0].faceLiveness.live;
+                nodefluxSelfie = true;
+                changeColor = true;
+              });
+
+              double similarityPercentage=similarityValue*100;
+              double livenessPercentage=livenessValue*100;
+              String isLiveString = (livenessPercentage>=75)? "from live ": "not from live ";
+              String isMatchedString = (similarityPercentage>=75)? "matched": "not matched";
+              matchLivenessFeedback = "Selfie is taken " + isLiveString +"person ("+livenessPercentage.toStringAsFixed(2)+" %)";
+              matchLivenessFeedback+= "\neKTP photo is " + isMatchedString +" with selfie ("+similarityPercentage.toStringAsFixed(2)+" %)";
+            }
+            else if(message == "The Face Pair Not Match"){
+              facePairNotMatch = FacePairNotMatch.fromJson(jsonDecode(response.body));
+              setState(() {
+                similarityValue = facePairNotMatch.result[1].faceMatch.similarity;
+                livenessValue = facePairNotMatch.result[0].faceLiveness.liveness;
+                isMatched = facePairNotMatch.result[1].faceMatch.match;
+                isLive = facePairNotMatch.result[0].faceLiveness.live;
+                nodefluxSelfie = true;
+                changeColor = true;
+              });
+
+              double similarityPercentage = similarityValue*100;
+              double livenessPercentage = livenessValue*100;
+              String isLiveString = (livenessPercentage>=75)? "from live ": "not from live ";
+              String isMatchedString = (similarityPercentage>=75)? "matched": "not matched";
+              matchLivenessFeedback = "Selfie is taken " + isLiveString +"person ("+livenessPercentage.toStringAsFixed(2)+" %)";
+              matchLivenessFeedback+= "\neKTP photo is " + isMatchedString +" with selfie ("+similarityPercentage.toStringAsFixed(2)+" %)";
+            }
+          } else {
+            noFaceDetected = NoFaceDetected.fromJson(jsonDecode(response.body));
+            matchLivenessFeedback = noFaceDetected.message;
+>>>>>>> 99b0f59c56a773690edaf53b7ace594b233f2514
             setState(() {
               similarityValue = livenessModel.result[1].faceMatch.similarity;
               isMatched = livenessModel.result[1].faceMatch.match;
@@ -1018,6 +1214,7 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
             changeColor = true;
           });
         }
+<<<<<<< HEAD
       } else {
         dialog = nodefluxDataModelSync2.message;
         matchLivenessFeedback = nodefluxDataModelSync2.message;
@@ -1064,13 +1261,20 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
       //   dialog = nodefluxDataModelSync2.message; // e.g. invalid base64 jpeg/jpg string..
       // }
     } catch (e) {
+=======
+    }
+    catch(e){
+>>>>>>> 99b0f59c56a773690edaf53b7ace594b233f2514
       debugPrint('Error $e');
       dialog = e;
     }
     setState(() {
       //loading = false;
     });
+<<<<<<< HEAD
     //createAlertDialog(context,isPassed?'Success!':'Failed',dialog);
+=======
+>>>>>>> 99b0f59c56a773690edaf53b7ace594b233f2514
   }
 
   _getSelfieEktpImage(BuildContext context, ImageSource source) async {
@@ -1182,6 +1386,31 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
         ));
   }
 
+  Widget tryAgainButton(){
+    return new Padding(
+        padding: EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 0.0),
+        child: Container(
+          height: 40.0,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(5)),
+            border: Border.all(color: Colors.white, width: 2),
+          ),
+          child: new ElevatedButton(
+            child: new Text(
+              //'Ambil Foto eKTP',
+                'Try again',
+                style: new TextStyle(fontSize: 12.0, color: Colors.white)),
+            //onPressed: () { navigateToPage('Login Face');}
+            onPressed:  () {
+              Navigator.pop(context);
+            },
+            style: ElevatedButton.styleFrom(
+                primary: changeColor? Colors.red : Colors.red
+            ),
+          ),
+        ));
+  }
+
   Widget showUploadSelfieEktpButton() {
     return new Padding(
         padding: EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 0.0),
@@ -1275,80 +1504,6 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
         ));
   }
 
-  // _getImage(BuildContext context, ImageSource source) async{
-  //   this.setState(() {
-  //     loading = true;
-  //   });
-  //   try{
-  //     Directory tempDir = await getTemporaryDirectory();
-  //     String tempPath = tempDir.path;
-  //
-  //     if (await tempDir.exists())
-  //       tempDir.delete(recursive: false);
-  //
-  //     Directory appdocdir= await getApplicationSupportDirectory();
-  //     String test=appdocdir.path;
-  //
-  //     if (await appdocdir.exists())
-  //       appdocdir.delete(recursive: false);
-  //
-  //     var picture =  await ImagePicker.pickImage(source: source);
-  //
-  //     int appFileDirectory=picture.path.lastIndexOf('/');
-  //     String resultDirectory=picture.path.substring(0,appFileDirectory+1); // = appdocdir+'/Pictures/'
-  //     String resultPath=resultDirectory+DateFormat('yyyyMMddHHmmss').format(DateTime.now())+'.jpg';
-  //     //String resultPath='/storage/emulated/0/Android/data/com.smartherd.flutter_app_section2/files/Pictures/'+DateFormat('yyyyMMddHHmmss').format(DateTime.now())+'.jpg';
-  //
-  //     int photoQuality=50;
-  //     if(picture != null) {
-  //       try {
-  //         var result = await FlutterImageCompress.compressAndGetFile(
-  //           picture.absolute.path, resultPath,
-  //           quality: photoQuality,
-  //         );
-  //
-  //         int pictureLength=picture.lengthSync();
-  //         int resultLength=result.lengthSync();
-  //
-  //         var i = 1;
-  //
-  //         while ((resultLength < professionalMinPhotoSize || resultLength > professionalMaxPhotoSize) && photoQuality>0 && photoQuality<100) {
-  //           if (result!=null)
-  //             await result.delete();
-  //           resultPath=resultDirectory+DateFormat('yyyyMMddHHmmss').format(DateTime.now())+'.jpg';
-  //           photoQuality=(resultLength>professionalMaxPhotoSize)? photoQuality-10:photoQuality+10;
-  //           result = await FlutterImageCompress.compressAndGetFile(
-  //             picture.absolute.path, resultPath,
-  //             quality: photoQuality,
-  //           );
-  //           resultLength=result.lengthSync();
-  //         }
-  //
-  //         double sizeinKb=resultLength.toDouble()/1024;
-  //         debugPrint('Photo compressed size is '+sizeinKb.toString()+' kb');
-  //         //print(pictureLength+resultLength);
-  //         await picture.delete();
-  //         this.setState(() {
-  //           //_imageFileProfile = cropped;
-  //           _professionalImage = result;
-  //           loading = false;
-  //         });
-  //       } catch (e) {
-  //         print (e);
-  //         debugPrint("Error $e");
-  //       }
-  //     }else{
-  //       this.setState(() {
-  //         loading = false;
-  //       });
-  //     }
-  //   } catch (e) {
-  //     print (e);
-  //     debugPrint("Error $e");
-  //   }
-  //   //Navigator.of(context).pop();
-  // }
-
   Widget showPhotoUploadedInfo() {
     if (_imageFile != null) {
       return new Padding(
@@ -1399,6 +1554,27 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
     }
   }
 
+  Widget nextButton(){
+    return InkWell(
+        onTap: goToResultPage,
+        child:Container(
+          margin: EdgeInsets.only(top: 60),
+          width: MediaQuery.of(context).size.width,
+          padding: EdgeInsets.symmetric(vertical: 15),
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(5)),
+            border: Border.all(color: Colors.white, width: 2),
+          ),
+          child: Text(
+            //'Selesai',
+            'Next',
+            style: TextStyle(fontSize: 20, color: Colors.white),
+          ),
+        )
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -1430,6 +1606,7 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
               key: _formKey,
               child: Column(
                 children: <Widget>[
+<<<<<<< HEAD
                   SizedBox(height: 60),
                   _title(),
                   showUploadEktpButton(),
@@ -1541,6 +1718,82 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
                                             )
                                           : Container()))
                                   : Container())),
+=======
+                  Form(
+                      key: _formKey,
+                      child: Column (
+                        children: <Widget>[
+                          SizedBox(height: 60),
+                          _title(),
+
+                          showUploadEktpButton(),
+                          (ktpDetected == 'lagi proses')?Text('Processing.. Please wait a moment..',
+                              style: new TextStyle(fontSize: 12.0, color: Colors.white)):Container(),
+
+                          (ktpDetected == 'ktp ada')?Text('eKTP Processed',
+                              style: new TextStyle(fontSize: 12.0, color: Colors.white)):Container(),
+
+                          SizedBox(height: 20),
+                          (ktpDetected == 'ktp ga ada')?
+                          Text('eKTP not found', style: new TextStyle(fontSize: 12.0, color: Colors.red[200])) : Container(),
+                          (ktpDetected == 'ktp ga ada')? tryAgainButton() : Container(
+                              child: (ktpProcessed)? nextButton() : Container()
+                          ),
+                          // (ktpDetected == 'ktp ada' && ktpProcessed && _ektpImage != null)?
+
+
+
+                          SizedBox(height: 20),
+                          // (_ektpImage!=null && _nodefluxResult2Model!=null)?showUploadSelfieButton():Container(),
+                          SizedBox(height: 20),
+                          (matchLivenessFeedback!="")?
+                          Text(matchLivenessFeedback,
+                            style: new TextStyle(fontSize: 12.0, color: Colors.white),
+                            textAlign: TextAlign.center,
+                          ):Container(),
+                          SizedBox(height:20),
+                          // (similarityValue != null && livenessValue != null && _ektpImage!=null && _nodefluxResult2Model!=null
+                          //     && _selfieImage != null && similarityValue >= 0.75 && livenessValue >= 0.75
+                          // )?
+                          // InkWell(
+                          //     onTap: goToResultPage,
+                          //     child:Container(
+                          //       width: MediaQuery.of(context).size.width,
+                          //       padding: EdgeInsets.symmetric(vertical: 15),
+                          //       alignment: Alignment.center,
+                          //       decoration: BoxDecoration(
+                          //         borderRadius: BorderRadius.all(Radius.circular(5)),
+                          //         border: Border.all(color: Colors.white, width: 2),
+                          //       ),
+                          //       child: Text(
+                          //         //'Selesai',
+                          //         'Next',
+                          //         style: TextStyle(fontSize: 20, color: Colors.white),
+                          //       ),
+                          //     )
+                          // )
+                          //     :
+                          // Container(
+                          //     child: (noFace && message == 'No face detected')? tryAgainButton()
+                          //         :
+                          //     ((nodefluxSelfie)?
+                          //     ((underQualified)? tryAgainButton()
+                          //         :
+                          //     ((similarityValue < 75 && livenessValue < 75)? Column(
+                          //       children: [
+                          //         Text('Liveness or face match do not pass the requirement',
+                          //           style: TextStyle(fontSize: 15.0, color: Colors.red),
+                          //           textAlign: TextAlign.center,
+                          //         ),
+                          //         SizedBox(height: 10),
+                          //         tryAgainButton()
+                          //       ],
+                          //     ):Container())) : Container())
+                          // ),
+                        ],
+                      )
+                  ),
+>>>>>>> 99b0f59c56a773690edaf53b7ace594b233f2514
                 ],
               )),
         ],
@@ -1682,9 +1935,14 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
       //await db.collection('form').document('user').updateData({'name': '$firestoreName', 'nik': '$firestoreNik', 'address': '$firestoreAddress', 'dob': '$firestoreBirthdate', 'pob': '$firestoreBirthplace', 'mobile': '$firestoreMobilePhone', 'email': '$firestoreEmail'});
 
       Navigator.of(context).push(MaterialPageRoute(
+<<<<<<< HEAD
           // builder: (context) => NodefluxOcrKtpResult(nodefluxResultModel.result[0])));
           builder: (context) => NodefluxOcrKtpResultPage(
               _nodefluxResult2Model, _ektpImage, _selfieImage)));
+=======
+        // builder: (context) => NodefluxOcrKtpResult(nodefluxResultModel.result[0])));
+          builder: (context) => NodefluxOcrKtpResultPage(model: _nodefluxResult2Model, ektpImage: _ektpImage,)));
+>>>>>>> 99b0f59c56a773690edaf53b7ace594b233f2514
     }
   }
 

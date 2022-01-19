@@ -33,12 +33,12 @@ class NodefluxDataModelSync2 {
   // String code;
 
   NodefluxDataModelSync2({
-    this.analytic_type,
-    this.job_id,
-    this.message,
-    this.ok,
-    this.status,
-    this.result,
+    required this.analytic_type,
+    required this.job_id,
+    required this.message,
+    required this.ok,
+    required this.status,
+    required this.result,
     //this.code
   });
 
@@ -112,7 +112,7 @@ class NodefluxDataModelSync2 {
     message: json["message"],
     ok: json["ok"],
     status: json["status"],
-    //result: List<NodefluxResult2Model>.from(json["result"].map((x) => NodefluxResult2Model.fromJsonForLiveness(x))), // jalan (tp gak jalan kalo kosong)
+    result: List<NodefluxResult2Model>.from(json["result"].map((x) => NodefluxResult2Model.fromJsonForLiveness(x))), // jalan (tp gak jalan kalo kosong)
   );
 
   Map<String, dynamic> toJson00() => {

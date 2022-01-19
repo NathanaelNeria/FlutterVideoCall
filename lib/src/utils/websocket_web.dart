@@ -8,9 +8,9 @@ typedef void OnOpenCallback();
 class SimpleWebSocket {
   String _url;
   var _socket;
-  OnOpenCallback onOpen;
-  OnMessageCallback onMessage;
-  OnCloseCallback onClose;
+  OnOpenCallback? onOpen;
+  OnMessageCallback? onMessage;
+  OnCloseCallback? onClose;
 
   SimpleWebSocket(this._url) {
     _url = _url.replaceAll('https:', 'wss:');

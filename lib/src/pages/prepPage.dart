@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import '../../Widget/bezierContainer.dart';
 import 'loginPage.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'ektpFormPage.dart';
 import '../nodeflux/screens/nodefluxOcrKtpPage.dart';
 
 class PrepPage extends StatefulWidget {
-  PrepPage({Key key, this.title}) : super(key: key);
+  PrepPage({Key? key, required this.title}) : super(key: key);
+
 
   final String title;
 
@@ -15,7 +15,7 @@ class PrepPage extends StatefulWidget {
 }
 
 class _PrepPageState extends State<PrepPage> {
-  var selectedValue = 'Savings Account';
+  String selectedValue = 'Savings Account';
 
   Widget _backButton() {
     return InkWell(
@@ -66,6 +66,7 @@ class _PrepPageState extends State<PrepPage> {
   }
 
   Widget _submitButton() {
+<<<<<<< HEAD
     return InkWell(
         onTap: () {
           Navigator.push(context,
@@ -85,6 +86,29 @@ class _PrepPageState extends State<PrepPage> {
             style: TextStyle(fontSize: 20, color: Colors.white),
           ),
         ));
+=======
+    return
+      InkWell(
+          onTap: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => NodefluxOcrKtpPage(title: '',)));
+          },
+          child:Container(
+            width: MediaQuery.of(context).size.width,
+            padding: EdgeInsets.symmetric(vertical: 15),
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(5)),
+                border: Border.all(color: Colors.white, width: 2),
+            ),
+            child: Text(
+         //     'OK, Semua sudah siap',
+              'OK, I am ready',
+              style: TextStyle(fontSize: 20, color: Colors.white),
+            ),
+          )
+      );
+>>>>>>> 99b0f59c56a773690edaf53b7ace594b233f2514
   }
 
   Widget selectProduct() {
@@ -92,23 +116,35 @@ class _PrepPageState extends State<PrepPage> {
     return Container(
         width: MediaQuery.of(context).size.width,
         padding: EdgeInsets.symmetric(vertical: 15),
+        margin: EdgeInsets.only(bottom: 35),
         alignment: Alignment.center,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(5)),
           border: Border.all(color: Colors.white, width: 2),
         ),
+<<<<<<< HEAD
         child: DropdownButtonHideUnderline(
           child: DropdownButton<String>(
             value: selectedValue,
             isDense: true,
             items: product.map((String value) {
               return DropdownMenuItem<String>(
+=======
+          child: DropdownButtonHideUnderline(
+            child: DropdownButton<String>(
+              dropdownColor: Colors.white.withOpacity(0.15),
+              value: selectedValue,
+              isDense: true,
+              items: product.map((String value) {
+                return DropdownMenuItem<String>(
+>>>>>>> 99b0f59c56a773690edaf53b7ace594b233f2514
                   value: value,
                   child: new Theme(
                     data: Theme.of(context).copyWith(
                       canvasColor: Colors.blue.shade200,
                     ),
                     child: Text(value, style: TextStyle(color: Colors.white)),
+<<<<<<< HEAD
                   ));
             }).toList(),
             onChanged: (String newValue) {
@@ -119,39 +155,20 @@ class _PrepPageState extends State<PrepPage> {
             },
           ),
         ));
-  }
-
-  Widget _loginAccountLabel() {
-    return InkWell(
-      onTap: () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => EktpFormPage()));
-      },
-      child: Container(
-        margin: EdgeInsets.symmetric(vertical: 20),
-        padding: EdgeInsets.all(15),
-        alignment: Alignment.bottomCenter,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'Already have an account ?',
-              style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+=======
+                  )
+                );
+              }).toList(),
+              onChanged: (String? newValue) {
+                setState(() {
+                  selectedValue = newValue!;
+                  print(selectedValue + ' ' + newValue);
+                });
+              },
             ),
-            SizedBox(
-              width: 10,
-            ),
-            Text(
-              'Login',
-              style: TextStyle(
-                  color: Color(0xfff79c4f),
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600),
-            ),
-          ],
-        ),
-      ),
-    );
+          )
+      );
+>>>>>>> 99b0f59c56a773690edaf53b7ace594b233f2514
   }
 
   Widget _title() {
@@ -160,11 +177,20 @@ class _PrepPageState extends State<PrepPage> {
       text: TextSpan(
           text: 'NTB Syariah',
           style: GoogleFonts.portLligatSans(
+<<<<<<< HEAD
               textStyle: Theme.of(context).textTheme.headline4,
               fontSize: 30,
               fontWeight: FontWeight.w700,
               // color: Color(0xffe46b10),
               color: Colors.white),
+=======
+            textStyle: Theme.of(context).textTheme.headline4,
+            fontSize: 30,
+            fontWeight: FontWeight.w700,
+            // color: Color(0xffe46b10),
+            color: Colors.white
+          ),
+>>>>>>> 99b0f59c56a773690edaf53b7ace594b233f2514
           children: [
             TextSpan(
               text: ' Bank',
@@ -206,12 +232,18 @@ class _PrepPageState extends State<PrepPage> {
                 begin: Alignment.bottomLeft,
                 end: Alignment.topRight,
                 // colors: [Color(0xfffbb448), Color(0xffe46b10)]
+<<<<<<< HEAD
                 colors: [
                   Colors.green,
                   Colors.green[600],
                   Colors.green[700],
                   Colors.green[800]
                 ])),
+=======
+                colors: [Colors.green, Colors.green.shade700, Colors.green.shade900]
+            )
+        ),
+>>>>>>> 99b0f59c56a773690edaf53b7ace594b233f2514
         height: height,
         child: Stack(
           children: <Widget>[

@@ -10,12 +10,12 @@ String livenessModelToJson(LivenessModel data) => json.encode(data.toJson());
 
 class LivenessModel {
   LivenessModel({
-    this.analyticType,
-    this.jobId,
-    this.message,
-    this.ok,
-    this.result,
-    this.status,
+    required this.analyticType,
+    required this.jobId,
+    required this.message,
+    required this.ok,
+    required this.result,
+    required this.status,
   });
 
   String analyticType;
@@ -46,8 +46,8 @@ class LivenessModel {
 
 class ResultLive {
   ResultLive({
-    this.faceLiveness,
-    this.faceMatch,
+    required this.faceLiveness,
+    required this.faceMatch,
   });
 
   FaceLiveness faceLiveness;
@@ -86,8 +86,8 @@ class FaceLiveness {
 
 class FaceMatch {
   FaceMatch({
-    this.match,
-    this.similarity,
+    required this.match,
+    required this.similarity,
   });
 
   bool match;

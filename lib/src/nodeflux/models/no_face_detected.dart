@@ -10,12 +10,12 @@ String noFaceDetectedToJson(NoFaceDetected data) => json.encode(data.toJson());
 
 class NoFaceDetected {
   NoFaceDetected({
-    this.analyticType,
-    this.jobId,
-    this.message,
-    this.ok,
-    this.result,
-    this.status,
+    required this.analyticType,
+    required this.jobId,
+    required this.message,
+    required this.ok,
+    required this.result,
+    required this.status,
   });
 
   String analyticType;
