@@ -4,7 +4,7 @@ import 'nodeflux_face_match_model.dart';
 class NodefluxResult2Model {
   final NodefluxFaceLivenessModel? face_liveness;
   final NodefluxFaceMatchModel? face_match;
-  final String? nik;
+  late final String? nik;
   final String? nama;
   final String? agama;
   final String? rt_rw;

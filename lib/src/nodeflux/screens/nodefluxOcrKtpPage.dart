@@ -450,9 +450,9 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
         if (okValue) {
           nodefluxDataModel=NodefluxDataModel.fromJson0(jsonDecode(response.body));
           nodefluxJobModel=nodefluxDataModel.job!;
-          nodefluxResultModel = nodefluxJobModel.result;
+          nodefluxResultModel = nodefluxJobModel.result!;
 
-          currentStatus=nodefluxResultModel.status;
+          currentStatus=nodefluxResultModel.status!;
           message = nodefluxDataModel.message!;
         } else {
           dialog=nodefluxDataModel.message!;
@@ -463,8 +463,8 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
       if (response!=null && currentStatus=="success") {
         nodefluxDataModel=NodefluxDataModel.fromJson(jsonDecode(response.body));
         nodefluxJobModel=nodefluxDataModel.job!;
-        nodefluxResultModel = nodefluxJobModel.result;
-        _nodefluxResult2Model = nodefluxResultModel.result[0];
+        nodefluxResultModel = nodefluxJobModel.result!;
+        _nodefluxResult2Model = nodefluxResultModel.result![0];
       }
 
       // decipherin result
@@ -1367,7 +1367,7 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
 
       Navigator.of(context).push(MaterialPageRoute(
         // builder: (context) => NodefluxOcrKtpResult(nodefluxResultModel.result[0])));
-          builder: (context) => NodefluxOcrKtpResultPage(model: _nodefluxResult2Model!, ektpImage: _ektpImage!,)));
+          builder: (context) => NodefluxOcrKtpResultPage(model: _nodefluxResult2Model!, ektpImage: _ektpImage!)));
     }
   }
 

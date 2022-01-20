@@ -41,13 +41,13 @@ import '../models/no_face_detected.dart';
 import '../models/dukcapilFaceMatch.dart';
 
 class NodefluxOcrKtpResultPage extends StatefulWidget {
-  final NodefluxResult2Model? model;
-  final File? ektpImage;
+  final NodefluxResult2Model model;
+  final File ektpImage;
   // File _selfieImage;
 
   // NodefluxOcrKtpResultPage(this.model, this.ektpImage);
 
-  NodefluxOcrKtpResultPage({required Key key, this.ektpImage, this.model}) : super(key: key);
+  NodefluxOcrKtpResultPage({ Key? key, required this.ektpImage, required this.model}) : super(key: key);
 
   @override
   _NodefluxOcrKtpResultPageState createState() => _NodefluxOcrKtpResultPageState();
@@ -62,7 +62,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
    File? _npwpImage;
    File? _selfieEktpImage;
 
- final  bool? isEmail = false;
+ late  bool? isEmail = false;
 
   TextEditingController nikController = TextEditingController();
   TextEditingController nameController = TextEditingController();
@@ -110,18 +110,18 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
   final NodefluxResult2Model? _nodefluxResult2Model = null;
    bool? isLive;
    bool? isMatched;
-   bool? nodefluxSelfie = false;
+   bool nodefluxSelfie = false;
    double? livenessValue;
    double? similarityValue;
-   String? matchLivenessFeedback="";
-   String? message = '';
-   bool? noFace = false;
-   bool? underQualified = false;
-   bool? changeColor = false;
-   String? ktpDetected = '';
-   Color? textColorRed = Colors.red;
-   String? messageDukcapil = '';
-   bool? dukcapil = true;
+   String  matchLivenessFeedback="";
+   String  message = '';
+   bool noFace = false;
+   bool  underQualified = false;
+   bool changeColor = false;
+   String  ktpDetected = '';
+   Color  textColorRed = Colors.red;
+   String  messageDukcapil = '';
+   bool  dukcapil = true;
    String? selfieProcessed = '';
 
   @override
@@ -315,7 +315,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
                 _getSelfieImage(this.context, ImageSource.camera);
               },
               style: ElevatedButton.styleFrom(
-                  primary: changeColor? Colors.grey : Colors.green[700]
+                  primary: changeColor ? Colors.grey : Colors.green[700]
               )
           ),
         ));
@@ -459,32 +459,32 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
         print(widget.model?.nik);
 
         dukcapilOngoing = DukcapilOngoing.fromJson(jsonDecode(response.body));
-        okValue = dukcapilOngoing.ok;
-        var status = dukcapilOngoing.job.result.status;
+        okValue = dukcapilOngoing.ok!;
+        var status = dukcapilOngoing.job!.result!.status;
         if(okValue){
-          currentStatus = status;
+          currentStatus = status!;
         }
       }
 
           if(currentStatus == "success"){
             dukcapilFaceMatch = DukcapilFaceMatch.fromJson(jsonDecode(response.body));
             setState(() {
-              similarityValue = dukcapilFaceMatch.job.result.result[0].faceMatch.similarity;
-              messageDukcapil = dukcapilFaceMatch.message;
+              similarityValue = dukcapilFaceMatch.job!.result!.result![0].faceMatch!.similarity;
+              messageDukcapil = dukcapilFaceMatch.message!;
               nodefluxSelfie = true;
               changeColor = true;
               dukcapil = false;
               selfieProcessed = 'selfie ada';
             });
 
-            double similarityPercentage=similarityValue*100;
+            double similarityPercentage=similarityValue!*100;
             String isMatchedString = (similarityPercentage>=75)? "matched": "not matched";
             matchLivenessFeedback = "\neKTP photo is " + isMatchedString +" with selfie ("+similarityPercentage.toStringAsFixed(2)+" %)";
           }
           else if(currentStatus == 'failed' || currentStatus == 'incompleted'){
             dukcapilFail = DukcapilFail.fromJson(jsonDecode(response.body));
             setState(() {
-              messageDukcapil = dukcapilFail.message;
+              messageDukcapil = dukcapilFail.message!;
               nodefluxSelfie = true;
               changeColor = true;
               similarityValue = 0.0;
@@ -530,7 +530,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
     String? dialog = "";
     bool isPassed=false;
     String currentStatus='';
-    LivenessModelUnderqualified livenessModelUnderqualified = LivenessModelUnderqualified(result: [ ok: null);
+    LivenessModelUnderqualified livenessModelUnderqualified = LivenessModelUnderqualified();
     MessageModel messageModel = MessageModel();
     LivenessModel livenessModel = LivenessModel();
     FacePairNotMatch facePairNotMatch = FacePairNotMatch();
@@ -539,7 +539,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
 
     try{
       var url='https://api.cloud.nodeflux.io/syncv2/analytics/face-match-liveness';
-      List<String> photoBase64List=List<String>();
+      List<String> photoBase64List=<String>[];
       photoBase64List.add(base64ImageEktp);
       photoBase64List.add(base64ImageSelfie);
 
@@ -558,19 +558,19 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
 
       var respbody=response.body;
       messageModel = MessageModel.fromJson(jsonDecode(response.body));
-      message = messageModel.message;
-      okValue = messageModel.ok;
+      message = messageModel.message!;
+      okValue = messageModel.ok!;
       var status = messageModel.status;
       print(message! + ' ' + okValue.toString());
       if (okValue) {
-        currentStatus= status;
+        currentStatus= status!;
 
         if (currentStatus == "success") {
           if(message == 'Face Liveness Underqualified'){
             livenessModelUnderqualified = LivenessModelUnderqualified.fromJson(jsonDecode(response.body));
             setState(() {
-              livenessValue = livenessModelUnderqualified.result[0].faceLiveness.liveness;
-              isLive = livenessModelUnderqualified.result[0].faceLiveness.live;
+              livenessValue = livenessModelUnderqualified.result![0].faceLiveness!.liveness;
+              isLive = livenessModelUnderqualified.result![0].faceLiveness!.live;
               underQualified = true;
               nodefluxSelfie = true;
               changeColor = true;
@@ -587,10 +587,10 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
           else if(message == 'Face Match Liveness Success'){
             livenessModel = LivenessModel.fromJson(jsonDecode(response.body));
             setState(() {
-              similarityValue = livenessModel.result[1]?.faceMatch.similarity;
-              isMatched = livenessModel.result[1]?.faceMatch.match;
-              livenessValue = livenessModel.result[0]?.faceLiveness.liveness;
-              isLive = livenessModel.result[0]?.faceLiveness.live;
+              similarityValue = livenessModel.result![1].faceMatch!.similarity;
+              isMatched = livenessModel.result![1].faceMatch!.match;
+              livenessValue = livenessModel.result![0].faceLiveness!.liveness;
+              isLive = livenessModel.result![0].faceLiveness!.live;
               nodefluxSelfie = true;
               changeColor = true;
             });
@@ -606,10 +606,10 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
           else if(message == "The Face Pair Not Match"){
             facePairNotMatch = FacePairNotMatch.fromJson(jsonDecode(response.body));
             setState(() {
-              similarityValue = facePairNotMatch.result[1].faceMatch.similarity;
-              livenessValue = facePairNotMatch.result[0].faceLiveness.liveness;
-              isMatched = facePairNotMatch.result[1].faceMatch.match;
-              isLive = facePairNotMatch.result[0].faceLiveness.live;
+              similarityValue = facePairNotMatch.result![1].faceMatch!.similarity;
+              livenessValue = facePairNotMatch.result![0].faceLiveness!.liveness;
+              isMatched = facePairNotMatch.result![1].faceMatch!.match;
+              isLive = facePairNotMatch.result![0].faceLiveness!.live;
               nodefluxSelfie = true;
               changeColor = true;
             });
@@ -624,9 +624,9 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
           }
         } else {
           noFaceDetected = NoFaceDetected.fromJson(jsonDecode(response.body));
-          matchLivenessFeedback = noFaceDetected.message;
+          matchLivenessFeedback = noFaceDetected.message!;
           setState(() {
-            message = noFaceDetected.message;
+            message = noFaceDetected.message!;
             noFace = true;
             changeColor = true;
             selfieProcessed = 'selfie ada';
@@ -635,7 +635,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
         }
       } else {
         dialog= messageModel.message;
-        matchLivenessFeedback= messageModel.message;
+        matchLivenessFeedback= messageModel.message!;
         isPassed=false;
         print(ektpImage?.exists());
       }
@@ -670,7 +670,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
 
       File picture =  await _picker.pickImage(source: source)as File;
       int? appFileDirectory=picture?.path.lastIndexOf('/');
-      String? resultDirectory=picture?.path.substring(0,appFileDirectory+1); // = appdocdir+'/Pictures/'
+      String? resultDirectory=picture?.path.substring(0,appFileDirectory!+1); // = appdocdir+'/Pictures/'
       String resultPath=resultDirectory!+DateFormat('yyyyMMddHHmmss').format(DateTime.now())+'.jpg';
       //String resultPath='/storage/emulated/0/Android/data/com.smartherd.flutter_app_section2/files/Pictures/'+DateFormat('yyyyMMddHHmmss').format(DateTime.now())+'.jpg';
 
@@ -691,12 +691,16 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
             if (result!=null)
               await result.delete();
             resultPath=resultDirectory+DateFormat('yyyyMMddHHmmss').format(DateTime.now())+'.jpg';
-            photoQuality=(resultLength!>maxPhotoSize!)? photoQuality-10:photoQuality+10;
+            if ((resultLength! > maxPhotoSize!)) {
+              photoQuality = photoQuality-10;
+            } else {
+              photoQuality = photoQuality+10;
+            }
             result = await FlutterImageCompress.compressAndGetFile(
               picture.path, resultPath,
               quality: photoQuality,
             );
-            int ? resultLength=result?.lengthSync();
+             resultLength=result?.lengthSync();
           }
 
           double sizeinKb=resultLength.toDouble()/1024;
@@ -722,7 +726,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
       debugPrint("Error $e");
     }
     //Navigator.of(context).pop();
-    uploadImage(_selfieEktpImage, "selfieEktp");
+    uploadImage(_selfieEktpImage!, "selfieEktp");
   }
 
   Widget showUploadSelfieEktpButton() {
@@ -737,7 +741,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
                   style: new TextStyle(fontSize: 12.0, color: Colors.white)),
               //onPressed: () { navigateToPage('Login Face');}
               onPressed: () {
-                nodefluxSelfie? changeColor :
+                nodefluxSelfie ? changeColor :
                 _getSelfieEktpImage(this.context, ImageSource.camera);
               },
               style: ElevatedButton.styleFrom(
@@ -752,7 +756,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
     File? registerSelfieimage;
     //Future<bool> faceMatchFound=Future<bool>.value(false);
     bool faceMatchFound1 = false;
-    registerSelfieimage= (await ImagePicker.pickImage(source: ImageSource.camera)) as File;
+    registerSelfieimage= (await _picker.pickImage(source: ImageSource.camera)) as File;
     if(registerSelfieimage != null) {
       File? cropped = await ImageCropper.cropImage(
           sourcePath: registerSelfieimage.path,
@@ -983,12 +987,12 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
                           )
                               :
                           Container(
-                              child: (noFace && (message == 'No face detected')!!!!)? tryAgainButton()
+                              child: (noFace && (message == 'No face detected'))? tryAgainButton()
                                   :
                               ((nodefluxSelfie)?
                               ((underQualified)? tryAgainButton()
                                   :
-                              ((similarityValue < 75 && livenessValue < 75 && messageDukcapil != '')? Column(
+                              ((similarityValue! < 75 && livenessValue! < 75 && messageDukcapil != '')? Column(
                                 children: [
                                   SizedBox(height: 5),
                                   Text('Liveness or face match do not pass the requirement',
@@ -1221,7 +1225,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
   }
 
   void createData() async {
-    if (_formKey.currentState?.validate()) {
+    if (_formKey.currentState!.validate()) {
       _formKey.currentState?.save();
       await db.collection('form').doc('user').update({
         'name': '$firestoreName',
@@ -1279,7 +1283,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
       maxLength: 16,
       controller: nikController,
       onChanged: (value){
-        widget.model?.nik = value;
+        widget.model!.nik = value;
         print(value);
       },
       keyboardType: TextInputType.number,
@@ -1328,7 +1332,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
             color: Colors.grey,
           )),
       validator: (value) {
-        if (value.isEmpty) {
+        if (value!.isEmpty) {
           return 'Please input tanggal lahir';
         }
         return null;
@@ -1347,7 +1351,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
             color: Colors.grey,
           )),
       validator: (value) {
-        if (value.isEmpty) {
+        if (value!.isEmpty) {
           return 'Please input tempat lahir';
         }
         return null;
@@ -1366,7 +1370,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
             color: Colors.grey,
           )),
       validator: (value) {
-        if (value.isEmpty) {
+        if (value!.isEmpty) {
           return 'Please input gender';
         }
         return null;
@@ -1386,7 +1390,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
             color: Colors.grey,
           )),
       validator: (value) {
-        if (value.isEmpty) {
+        if (value!.isEmpty) {
           return 'Please input RT/RW';
         }
         return null;
@@ -1406,7 +1410,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
             color: Colors.grey,
           )),
       validator: (value) {
-        if (value.isEmpty) {
+        if (value!.isEmpty) {
           return 'Please input Kecamatan';
         }
         return null;
@@ -1426,7 +1430,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
             color: Colors.grey,
           )),
       validator: (value) {
-        if (value.isEmpty) {
+        if (value!.isEmpty) {
           return 'Please input agama';
         }
         return null;
@@ -1446,7 +1450,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
             color: Colors.grey,
           )),
       validator: (value) {
-        if (value.isEmpty) {
+        if (value!.isEmpty) {
           return 'Please input status perkawinan';
         }
         return null;
@@ -1466,7 +1470,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
             color: Colors.grey,
           )),
       validator: (value) {
-        if (value.isEmpty) {
+        if (value!.isEmpty) {
           return 'Please input pekerjaan';
         }
         return null;
@@ -1486,7 +1490,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
             color: Colors.grey,
           )),
       validator: (value) {
-        if (value.isEmpty) {
+        if (value!.isEmpty) {
           return 'Please input provinsi';
         }
         return null;
@@ -1506,7 +1510,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
             color: Colors.grey,
           )),
       validator: (value) {
-        if (value.isEmpty) {
+        if (value!.isEmpty) {
           return 'Please input tanggal berlaku';
         }
         return null;
@@ -1526,7 +1530,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
             color: Colors.grey,
           )),
       validator: (value) {
-        if (value.isEmpty) {
+        if (value!.isEmpty) {
           return 'Please gol. darah';
         }
         return null;
@@ -1546,7 +1550,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
             color: Colors.grey,
           )),
       validator: (value) {
-        if (value.isEmpty) {
+        if (value!.isEmpty) {
           return 'Please input kabupaten/kota';
         }
         return null;
@@ -1566,7 +1570,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
             color: Colors.grey,
           )),
       validator: (value) {
-        if (value.isEmpty) {
+        if (value!.isEmpty) {
           return 'Please input kelurahan/desa';
         }
         return null;
@@ -1587,7 +1591,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
             color: Colors.grey,
           )),
       validator: (value) {
-        if (value.isEmpty) {
+        if (value!.isEmpty) {
           return 'Please input kewarganegaraan';
         }
         return null;
@@ -1608,9 +1612,9 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
             color: Colors.grey,
           )),
       validator: (value){
-        isEmail = EmailValidator.validate(value);
+        isEmail = EmailValidator.validate(value!);
 
-        if (value.isEmpty || !isEmail) {
+        if (value!.isEmpty || isEmail!) {
           return 'Please input a valid email address';
         }
         return null;
@@ -1630,7 +1634,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
             color: Colors.grey,
           )),
       validator: (value) {
-        if (value.isEmpty || value.length < 11 || value.length > 12) {
+        if (value!.isEmpty || value.length < 11 || value.length > 12) {
           return 'Input a proper phone number';
         }
         return null;
