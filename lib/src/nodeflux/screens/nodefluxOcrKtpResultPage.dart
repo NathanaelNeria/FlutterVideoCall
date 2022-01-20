@@ -100,7 +100,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
   final int? minPhotoSize=256000; // 250KB
   final int? maxPhotoSize=512000; // 500KB
 
- late String ocrNama, ocrNik, ocrTempatLahir, ocrTanggalLahir, ocrJenisKelamin, ocrAlamat, ocrRtrw, ocrKecamatan, ocrAgama, ocrStatusPerkawinan,
+ String? ocrNama, ocrNik, ocrTempatLahir, ocrTanggalLahir, ocrJenisKelamin, ocrAlamat, ocrRtrw, ocrKecamatan, ocrAgama, ocrStatusPerkawinan,
       ocrPekerjaan, ocrProvinsi, ocrBerlakuHingga, ocrGolonganDarah, ocrKabupatenKota, ocrKelurahanDesa, ocrKewarganegaraan;
 
 
@@ -113,16 +113,16 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
    bool nodefluxSelfie = false;
    double? livenessValue;
    double? similarityValue;
-   String  matchLivenessFeedback="";
-   String  message = '';
+   var matchLivenessFeedback="";
+   String message = '';
    bool noFace = false;
-   bool  underQualified = false;
+   bool underQualified = false;
    bool changeColor = false;
-   String  ktpDetected = '';
-   Color  textColorRed = Colors.red;
-   String  messageDukcapil = '';
-   bool  dukcapil = true;
-   String? selfieProcessed = '';
+   String ktpDetected = '';
+   Color textColorRed = Colors.red;
+   String messageDukcapil = '';
+   bool dukcapil = true;
+   String selfieProcessed = '';
 
   @override
   void initState() {
@@ -132,23 +132,23 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
   }
 
   setup() {
-    nikController= TextEditingController(text: widget.model?.nik);
-    nameController= TextEditingController(text: widget.model?.nama);
-    birthdateController= TextEditingController(text: widget.model?.tanggal_lahir);
-    birthplaceController= TextEditingController(text: widget.model?.tempat_lahir);
-    genderController= TextEditingController(text: widget.model?.jenis_kelamin);
-    addressController= TextEditingController(text: widget.model?.alamat);
-    rtrwController= TextEditingController(text: widget.model?.rt_rw);
-    kecamatanController= TextEditingController(text: widget.model?.kecamatan);
-    religionController= TextEditingController(text: widget.model?.agama);
-    maritalStatusController= TextEditingController(text: widget.model?.status_perkawinan);
-    workfieldController= TextEditingController(text: widget.model?.pekerjaan);
-    provinceController= TextEditingController(text: widget.model?.provinsi);
-    expiryController= TextEditingController(text: widget.model?.berlaku_hingga);
-    bloodTypeController= TextEditingController(text: widget.model?.golongan_darah);
-    kabupatenKotaController= TextEditingController(text: widget.model?.kabupaten_kota);
-    kelurahanDesaController= TextEditingController(text: widget.model?.kelurahan_desa);
-    nationalityController= TextEditingController(text: widget.model?.kewarganegaraan);
+    nikController= TextEditingController(text: widget.model.nik);
+    nameController= TextEditingController(text: widget.model.nama);
+    birthdateController= TextEditingController(text: widget.model.tanggal_lahir);
+    birthplaceController= TextEditingController(text: widget.model.tempat_lahir);
+    genderController= TextEditingController(text: widget.model.jenis_kelamin);
+    addressController= TextEditingController(text: widget.model.alamat);
+    rtrwController= TextEditingController(text: widget.model.rt_rw);
+    kecamatanController= TextEditingController(text: widget.model.kecamatan);
+    religionController= TextEditingController(text: widget.model.agama);
+    maritalStatusController= TextEditingController(text: widget.model.status_perkawinan);
+    workfieldController= TextEditingController(text: widget.model.pekerjaan);
+    provinceController= TextEditingController(text: widget.model.provinsi);
+    expiryController= TextEditingController(text: widget.model.berlaku_hingga);
+    bloodTypeController= TextEditingController(text: widget.model.golongan_darah);
+    kabupatenKotaController= TextEditingController(text: widget.model.kabupaten_kota);
+    kelurahanDesaController= TextEditingController(text: widget.model.kelurahan_desa);
+    nationalityController= TextEditingController(text: widget.model.kewarganegaraan);
 
     //datetimePickerWidget = DatetimePickerWidget();
     initializeDateFormatting();
@@ -355,9 +355,9 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
 
       File picture =  await _picker.pickImage(source: source)as File;
 
-      int? appFileDirectory=picture?.path.lastIndexOf('/');
-      String? resultDirectory=picture?.path.substring(0,appFileDirectory!+1); // = appdocdir+'/Pictures/'
-      String resultPath=resultDirectory!+DateFormat('yyyyMMddHHmmss').format(DateTime.now())+'.jpg';
+      int appFileDirectory=picture.path.lastIndexOf('/');
+      String resultDirectory=picture.path.substring(0,appFileDirectory+1); // = appdocdir+'/Pictures/'
+      String resultPath=resultDirectory+DateFormat('yyyyMMddHHmmss').format(DateTime.now())+'.jpg';
 
       int photoQuality=90;
       if(picture != null) {
@@ -368,10 +368,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
             quality: photoQuality,
           );
 
-          int? pictureLength=picture?.lengthSync();
           int? resultLength=result?.lengthSync();
-
-          var i = 1;
 
           while ((resultLength! < minPhotoSize! || resultLength > maxPhotoSize!) && photoQuality>0 && photoQuality<100) {
             if (result!=null)
@@ -434,7 +431,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
             Uri.parse(url),
             body: json.encode({
               "additional_params": {
-                "nik": widget.model?.nik,
+                "nik": widget.model.nik,
                 "transaction_id": "{random digit}",
                 "transaction_source": "{device}",
                 "dukcapil": {
@@ -456,7 +453,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
         );
 
         print(response.body);
-        print(widget.model?.nik);
+        print(widget.model.nik);
 
         dukcapilOngoing = DukcapilOngoing.fromJson(jsonDecode(response.body));
         okValue = dukcapilOngoing.ok!;
@@ -525,8 +522,8 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
     String xnodefluxtimestamp='20201110T135945Z';
     final imageBytesSelfie = _selfieImage?.readAsBytesSync();
     String base64ImageSelfie = 'data:image/jpeg;base64,'+base64Encode(imageBytesSelfie!);
-    final imageBytesEktp = widget.ektpImage?.readAsBytesSync();
-    String base64ImageEktp = 'data:image/jpeg;base64,'+base64Encode(imageBytesEktp!);
+    final imageBytesEktp = widget.ektpImage.readAsBytesSync();
+    String base64ImageEktp = 'data:image/jpeg;base64,'+base64Encode(imageBytesEktp);
     String? dialog = "";
     bool isPassed=false;
     String currentStatus='';
@@ -561,7 +558,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
       message = messageModel.message!;
       okValue = messageModel.ok!;
       var status = messageModel.status;
-      print(message! + ' ' + okValue.toString());
+      print(message + ' ' + okValue.toString());
       if (okValue) {
         currentStatus= status!;
 
@@ -669,9 +666,9 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
 ;
 
       File picture =  await _picker.pickImage(source: source)as File;
-      int? appFileDirectory=picture?.path.lastIndexOf('/');
-      String? resultDirectory=picture?.path.substring(0,appFileDirectory!+1); // = appdocdir+'/Pictures/'
-      String resultPath=resultDirectory!+DateFormat('yyyyMMddHHmmss').format(DateTime.now())+'.jpg';
+      int? appFileDirectory=picture.path.lastIndexOf('/');
+      String? resultDirectory=picture.path.substring(0,appFileDirectory+1); // = appdocdir+'/Pictures/'
+      String resultPath=resultDirectory+DateFormat('yyyyMMddHHmmss').format(DateTime.now())+'.jpg';
       //String resultPath='/storage/emulated/0/Android/data/com.smartherd.flutter_app_section2/files/Pictures/'+DateFormat('yyyyMMddHHmmss').format(DateTime.now())+'.jpg';
 
       int photoQuality=50;
@@ -682,16 +679,13 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
             quality: photoQuality,
           );
 
-          int? pictureLength=picture?.lengthSync();
-          int? resultLength=result?.lengthSync();
+          int resultLength=result!.lengthSync();
 
-          var i = 1;
-
-          while ((resultLength! < minPhotoSize! || resultLength! > maxPhotoSize!) && photoQuality>0 && photoQuality<100) {
+          while ((resultLength < minPhotoSize! || resultLength > maxPhotoSize!) && photoQuality>0 && photoQuality<100) {
             if (result!=null)
               await result.delete();
             resultPath=resultDirectory+DateFormat('yyyyMMddHHmmss').format(DateTime.now())+'.jpg';
-            if ((resultLength! > maxPhotoSize!)) {
+            if ((resultLength > maxPhotoSize!)) {
               photoQuality = photoQuality-10;
             } else {
               photoQuality = photoQuality+10;
@@ -700,7 +694,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
               picture.path, resultPath,
               quality: photoQuality,
             );
-             resultLength=result?.lengthSync();
+             resultLength=result!.lengthSync();
           }
 
           double sizeinKb=resultLength.toDouble()/1024;
@@ -801,11 +795,6 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
           ),
           onPressed: () {
             getImage;
-            //_getImage(this.context, ImageSource.camera);
-//        setState(() {
-//          debugPrint("Photo button clicked");
-//
-//        });
           },
         )
     );
@@ -952,13 +941,13 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
                           (selfieProcessed == 'selfie ada')? Text('Processed',
                               style: new TextStyle(fontSize: 12.0, color: Colors.black)):Container(),
                           SizedBox(height: 10),
-                          (matchLivenessFeedback!="")?
+                          (matchLivenessFeedback = "") ?
                           Container(
                             child: (messageDukcapil != '' || selfieProcessed == 'selfie ada')? Container(
-                                child: (message == 'Face Match Liveness Success' && messageDukcapil == 'Dukcapil Validation Success')? Text(matchLivenessFeedback!,
+                                child: (message == 'Face Match Liveness Success' && messageDukcapil == 'Dukcapil Validation Success')? Text(matchLivenessFeedback,
                                   style: new TextStyle(fontSize: 12.0, color: Colors.black),
                                   textAlign: TextAlign.center,
-                                ) : Text(matchLivenessFeedback!,
+                                ) : Text(matchLivenessFeedback,
                                   style: new TextStyle(fontSize: 12.0, color: textColorRed),
                                   textAlign: TextAlign.center,
                                 )
@@ -1283,7 +1272,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
       maxLength: 16,
       controller: nikController,
       onChanged: (value){
-        widget.model!.nik = value;
+        widget.model.nik = value;
         print(value);
       },
       keyboardType: TextInputType.number,

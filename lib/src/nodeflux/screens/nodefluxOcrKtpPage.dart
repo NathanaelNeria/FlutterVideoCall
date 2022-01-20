@@ -345,9 +345,9 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
 
       File picture = await _picker.pickImage(source: source) as File;
 
-      int? appFileDirectory=picture?.path.lastIndexOf('/');
-      String? resultDirectory=picture?.path.substring(0,appFileDirectory!+1); // = appdocdir+'/Pictures/'
-      String resultPath=resultDirectory!+DateFormat('yyyyMMddHHmmss').format(DateTime.now())+'.jpg';
+      int appFileDirectory=picture.path.lastIndexOf('/');
+      String resultDirectory=picture.path.substring(0,appFileDirectory+1); // = appdocdir+'/Pictures/'
+      String resultPath=resultDirectory+DateFormat('yyyyMMddHHmmss').format(DateTime.now())+'.jpg';
       //String resultPath='/storage/emulated/0/Android/data/com.smartherd.flutter_app_section2/files/Pictures/'+DateFormat('yyyyMMddHHmmss').format(DateTime.now())+'.jpg';
 
       int photoQuality=90;
@@ -355,16 +355,16 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
 
       if(picture != null) {
         try {
-          var result = await FlutterImageCompress.compressAndGetFile(
+          File? result = await FlutterImageCompress.compressAndGetFile(
             picture.path, resultPath,
             quality: photoQuality,
           );
 
-          int? resultLength= result?.lengthSync();
+          int resultLength= result!.lengthSync();
 
           var i = 1;
 
-          while ((resultLength! < minPhotoSize || resultLength! > maxPhotoSize) && photoQuality>0 && photoQuality<100) {
+          while ((resultLength < minPhotoSize || resultLength > maxPhotoSize) && photoQuality>0 && photoQuality<100) {
             if (result!=null)
               await result.delete();
             resultPath=resultDirectory+DateFormat('yyyyMMddHHmmss').format(DateTime.now())+'.jpg';
@@ -373,7 +373,7 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
               picture.path, resultPath,
               quality: photoQuality,
             );
-            resultLength=result?.lengthSync();
+            resultLength=result!.lengthSync();
           }
 
           //comment end
@@ -558,17 +558,17 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
       int photoQuality=50;
       if(picture != null) {
         try {
-          var result = await FlutterImageCompress.compressAndGetFile(
+          File? result = await FlutterImageCompress.compressAndGetFile(
             picture.absolute.path, resultPath,
             quality: photoQuality,
           );
 
           int pictureLength=picture.lengthSync();
-          int? resultLength= result?.lengthSync();
+          int resultLength= result!.lengthSync();
 
           var i = 1;
 
-          while ((resultLength! < minPhotoSize || resultLength! > maxPhotoSize) && photoQuality>0 && photoQuality<100) {
+          while ((resultLength < minPhotoSize || resultLength > maxPhotoSize) && photoQuality>0 && photoQuality<100) {
             if (result!=null)
               await result.delete();
             resultPath=resultDirectory+DateFormat('yyyyMMddHHmmss').format(DateTime.now())+'.jpg';
@@ -577,7 +577,7 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
               picture.absolute.path, resultPath,
               quality: photoQuality,
             );
-            resultLength=result?.lengthSync();
+            resultLength=result!.lengthSync();
           }
 
           double sizeinKb=resultLength.toDouble()/1024;
@@ -633,17 +633,17 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
       int photoQuality=90;
       if(picture != null) {
         try {
-          var result = await FlutterImageCompress.compressAndGetFile(
+          File? result = await FlutterImageCompress.compressAndGetFile(
             picture.absolute.path, resultPath,
             quality: photoQuality,
           );
 
           int pictureLength=picture.lengthSync();
-          int? resultLength=result?.lengthSync();
+          int resultLength=result!.lengthSync();
 
           var i = 1;
 
-          while ((resultLength! < minPhotoSize || resultLength! > maxPhotoSize) && photoQuality>0 && photoQuality<100) {
+          while ((resultLength < minPhotoSize || resultLength > maxPhotoSize) && photoQuality>0 && photoQuality<100) {
             if (result!=null)
               await result.delete();
             resultPath=resultDirectory+DateFormat('yyyyMMddHHmmss').format(DateTime.now())+'.jpg';
@@ -652,7 +652,7 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
               picture.absolute.path, resultPath,
               quality: photoQuality,
             );
-            resultLength=result?.lengthSync();
+            resultLength=result!.lengthSync();
           }
 
           double sizeinKb=resultLength.toDouble()/1024;
@@ -805,7 +805,7 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
             });
           }
         } else {
-          dialog=nodefluxDataModelSync2.message;
+          dialog=nodefluxDataModelSync2.message!;
           matchLivenessFeedback=nodefluxDataModelSync2.message!;
           isPassed=false;
         }
@@ -847,17 +847,17 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
       int photoQuality=50;
       if(picture != null) {
         try {
-          var result = await FlutterImageCompress.compressAndGetFile(
+          File? result = await FlutterImageCompress.compressAndGetFile(
             picture.absolute.path, resultPath,
             quality: photoQuality,
           );
 
           int pictureLength=picture.lengthSync();
-          int? resultLength=result?.lengthSync();
+          int resultLength=result!.lengthSync();
 
           var i = 1;
 
-          while ((resultLength! < minPhotoSize || resultLength! > maxPhotoSize) && photoQuality>0 && photoQuality<100) {
+          while ((resultLength < minPhotoSize || resultLength > maxPhotoSize) && photoQuality>0 && photoQuality<100) {
             if (result!=null)
               await result.delete();
             resultPath=resultDirectory+DateFormat('yyyyMMddHHmmss').format(DateTime.now())+'.jpg';
@@ -866,10 +866,10 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
               picture.absolute.path, resultPath,
               quality: photoQuality,
             );
-            resultLength=result?.lengthSync();
+            resultLength=result!.lengthSync();
           }
 
-          double sizeinKb=resultLength!.toDouble()/1024;
+          double sizeinKb=resultLength.toDouble()/1024;
           debugPrint('Photo compressed size is '+sizeinKb.toString()+' kb');
           //print(pictureLength+resultLength);
           await picture.delete();
