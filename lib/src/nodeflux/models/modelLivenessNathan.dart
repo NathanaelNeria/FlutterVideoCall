@@ -10,20 +10,20 @@ String livenessModelToJson(LivenessModel data) => json.encode(data.toJson());
 
 class LivenessModel {
   LivenessModel({
-    required this.analyticType,
-    required this.jobId,
-    required this.message,
-    required this.ok,
-    required this.result,
-    required this.status,
+     this.analyticType,
+     this.jobId,
+     this.message,
+     this.ok,
+     this.result,
+     this.status,
   });
 
-  String analyticType;
-  String jobId;
-  String message;
-  bool ok;
-  List<ResultLive> result;
-  String status;
+  final String? analyticType;
+  final String? jobId;
+  final String? message;
+  final bool? ok;
+  final List<ResultLive>? result;
+  final String? status;
 
   factory LivenessModel.fromJson(Map<String, dynamic> json) => LivenessModel(
     analyticType: json["analytic_type"],
@@ -39,7 +39,7 @@ class LivenessModel {
     "job_id": jobId,
     "message": message,
     "ok": ok,
-    "result": List<dynamic>.from(result.map((x) => x.toJson())),
+    "result": List<dynamic>.from(result!.map((x) => x.toJson())),
     "status": status,
   };
 }

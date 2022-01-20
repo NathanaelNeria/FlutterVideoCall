@@ -1,13 +1,11 @@
 import 'package:json_annotation/json_annotation.dart';
 
 class NodefluxFaceLivenessModel {
-  @JsonKey(defaultValue: null)
-  @JsonKey(required: false)
-  bool live;
 
-  @JsonKey(defaultValue: null)
-  @JsonKey(required: false)
-  double liveness;
+ final bool? live;
+
+
+  final double? liveness;
 
   NodefluxFaceLivenessModel({
     this.live,

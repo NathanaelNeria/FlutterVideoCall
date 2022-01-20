@@ -10,20 +10,20 @@ String facePairNotMatchToJson(FacePairNotMatch data) => json.encode(data.toJson(
 
 class FacePairNotMatch {
   FacePairNotMatch({
-    required this.analyticType,
-    required this.jobId,
-    required this.message,
-    required this.ok,
-    required this.result,
-    required this.status,
+     this.analyticType,
+     this.jobId,
+     this.message,
+     this.ok,
+     this.result,
+     this.status,
   });
 
-  String analyticType;
-  String jobId;
-  String message;
-  bool ok;
-  List<Result> result;
-  String status;
+  final String? analyticType;
+  final String?jobId;
+  final String? message;
+  final bool? ok;
+  final List<Result>? result;
+  final String?status;
 
   factory FacePairNotMatch.fromJson(Map<String, dynamic> json) => FacePairNotMatch(
     analyticType: json["analytic_type"],
@@ -39,7 +39,7 @@ class FacePairNotMatch {
     "job_id": jobId,
     "message": message,
     "ok": ok,
-    "result": List<dynamic>.from(result.map((x) => x.toJson())),
+    "result": List<dynamic>.from(result!.map((x) => x.toJson())),
     "status": status,
   };
 }

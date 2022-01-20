@@ -105,6 +105,8 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
   String ktpDetected = '';
   bool ktpProcessed = false;
 
+  var _picker;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -343,11 +345,11 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
       if (await appdocdir.exists())
         appdocdir.delete(recursive: false);
 
-      var picture =  await ImagePicker.pickImage(source: source);
+      XFile?  picture =   await _picker.pickImage(source: source);
 
-      int appFileDirectory=picture.path.lastIndexOf('/');
-      String resultDirectory=picture.path.substring(0,appFileDirectory+1); // = appdocdir+'/Pictures/'
-      String resultPath=resultDirectory+DateFormat('yyyyMMddHHmmss').format(DateTime.now())+'.jpg';
+      int? appFileDirectory=picture?.path.lastIndexOf('/');
+      String? resultDirectory=picture?.path.substring(0,appFileDirectory!+1); // = appdocdir+'/Pictures/'
+      String resultPath=resultDirectory!+DateFormat('yyyyMMddHHmmss').format(DateTime.now())+'.jpg';
       //String resultPath='/storage/emulated/0/Android/data/com.smartherd.flutter_app_section2/files/Pictures/'+DateFormat('yyyyMMddHHmmss').format(DateTime.now())+'.jpg';
 
       int photoQuality=90;
@@ -360,20 +362,21 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
             quality: photoQuality,
           );
 
-          int resultLength=result.lengthSync();
+          int? resultLength=result?.lengthSync();
 
           var i = 1;
 
-          while ((resultLength < minPhotoSize || resultLength > maxPhotoSize) && photoQuality>0 && photoQuality<100) {
+          while ((resultLength! < minPhotoSize || resultLength > maxPhotoSize) && photoQuality>0 && photoQuality<100) {
             if (result!=null)
               await result.delete();
             resultPath=resultDirectory+DateFormat('yyyyMMddHHmmss').format(DateTime.now())+'.jpg';
             photoQuality=(resultLength>maxPhotoSize)? photoQuality-10:photoQuality+10;
+
             result = await FlutterImageCompress.compressAndGetFile(
-              picture.absolute.path, resultPath,
+              picture.path, resultPath,
               quality: photoQuality,
             );
-            resultLength=result.lengthSync();
+            resultLength=result?.lengthSync();
           }
 
           //comment end
@@ -384,7 +387,7 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
           await picture.delete();
           this.setState(() {
             //_imageFileProfile = cropped;
-            _ektpImage = result;
+            _ektpImage = result!;
             ktpDetected = 'lagi proses';
             nodefluxSelfie = true;
             changeColor = true;
@@ -422,7 +425,7 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
     String dialog = "";
     bool isPassed=false;
     String currentStatus="";
-    NodefluxDataModel nodefluxDataModel=NodefluxDataModel();
+    Type nodefluxDataModel=NodefluxDataModel;
     NodefluxJobModel nodefluxJobModel=NodefluxJobModel();
     NodefluxResultModel nodefluxResultModel = NodefluxResultModel();
     // NodefluxResult2Model nodefluxResult2Model =NodefluxResult2Model();
@@ -430,7 +433,7 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
     try{
 
       var url='https://api.cloud.nodeflux.io/v1/analytics/ocr-ktp';
-      List<String> photoBase64List=List<String>();
+      List<String> photoBase64List=<String>[];
       photoBase64List.add(base64Image);
 
       var response;
@@ -445,14 +448,18 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
         print(response.body);
 
         var respbody=response.body;
-        nodefluxDataModel=NodefluxDataModel.fromJson00(jsonDecode(response.body));
+        nodefluxDataModel=NodefluxDataModel.fromJson00(jsonDecode(response.body)) as Type;
+
         okValue=nodefluxDataModel.ok;
         if (okValue) {
-          nodefluxDataModel=NodefluxDataModel.fromJson0(jsonDecode(response.body));
+          nodefluxDataModel=NodefluxDataModel.fromJson0(jsonDecode(response.body)) as Type;
+
+
           nodefluxJobModel=nodefluxDataModel.job;
           nodefluxResultModel = nodefluxJobModel.result;
 
           currentStatus=nodefluxResultModel.status;
+          var message;
           message = nodefluxDataModel.message;
         } else {
           dialog=nodefluxDataModel.message;
@@ -461,7 +468,7 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
       }
 
       if (response!=null && currentStatus=="success") {
-        nodefluxDataModel=NodefluxDataModel.fromJson(jsonDecode(response.body));
+        nodefluxDataModel=NodefluxDataModel.fromJson(jsonDecode(response.body)) as Type;
         nodefluxJobModel=nodefluxDataModel.job;
         nodefluxResultModel = nodefluxJobModel.result;
         _nodefluxResult2Model = nodefluxResultModel.result[0];
@@ -549,23 +556,23 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
       if (await appdocdir.exists())
         appdocdir.delete(recursive: false);
 
-      var picture =  await ImagePicker.pickImage(source: source);
-
-      int appFileDirectory=picture.path.lastIndexOf('/');
-      String resultDirectory=picture.path.substring(0,appFileDirectory+1); // = appdocdir+'/Pictures/'
-      String resultPath=resultDirectory+DateFormat('yyyyMMddHHmmss').format(DateTime.now())+'.jpg';
+      XFile?  picture =   await _picker.pickImage(source: source);
+      int? appFileDirectory=picture?.path.lastIndexOf('/');
+      String? resultDirectory=picture?.path.substring(0,appFileDirectory!+1); // = appdocdir+'/Pictures/'
+      String resultPath=resultDirectory!+DateFormat('yyyyMMddHHmmss').format(DateTime.now())+'.jpg';
       //String resultPath='/storage/emulated/0/Android/data/com.smartherd.flutter_app_section2/files/Pictures/'+DateFormat('yyyyMMddHHmmss').format(DateTime.now())+'.jpg';
 
       int photoQuality=50;
       if(picture != null) {
         try {
+
           var result = await FlutterImageCompress.compressAndGetFile(
-            picture.absolute.path, resultPath,
+            picture.path, resultPath,
             quality: photoQuality,
           );
 
-          int pictureLength=picture.lengthSync();
-          int resultLength=result.lengthSync();
+          int? pictureLength=picture?.lengthSync();
+          int? resultLength=result?.lengthSync();
 
           var i = 1;
 
@@ -575,7 +582,7 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
             resultPath=resultDirectory+DateFormat('yyyyMMddHHmmss').format(DateTime.now())+'.jpg';
             photoQuality=(resultLength>maxPhotoSize)? photoQuality-10:photoQuality+10;
             result = await FlutterImageCompress.compressAndGetFile(
-              picture.absolute.path, resultPath,
+              picture.path, resultPath,
               quality: photoQuality,
             );
             resultLength=result.lengthSync();

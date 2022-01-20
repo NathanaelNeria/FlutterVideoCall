@@ -1,97 +1,86 @@
+import 'nodeflux_face_liveness_model.dart';
+import 'nodeflux_face_match_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 class NodefluxResult2Model {
-  @JsonKey(defaultValue: null)
-  @JsonKey(required: false)
-  String nik;
+  final NodefluxFaceLivenessModel? face_liveness;
+  final NodefluxFaceMatchModel? face_match;
+  late final String? nik;
 
-  @JsonKey(defaultValue: null)
-  @JsonKey(required: false)
-  String nama;
 
-  @JsonKey(defaultValue: null)
-  @JsonKey(required: false)
-  String agama;
+  final String? nama;
 
-  @JsonKey(defaultValue: null)
-  @JsonKey(required: false)
-  String rt_rw;
+  
+  final String? agama;
 
-  @JsonKey(defaultValue: null)
-  @JsonKey(required: false)
-  String alamat;
+  
+  final String? rt_rw;
 
-  @JsonKey(defaultValue: null)
-  @JsonKey(required: false)
-  String provinsi;
+  
+  final String? alamat;
 
-  @JsonKey(defaultValue: null)
-  @JsonKey(required: false)
-  String kecamatan;
+  
+  final String? provinsi;
 
-  @JsonKey(defaultValue: null)
-  @JsonKey(required: false)
-  String pekerjaan;
+  
+  
+  final String? kecamatan;
 
-  @JsonKey(defaultValue: null)
-  @JsonKey(required: false)
-  String tempat_lahir;
+  
+  
+  final String? pekerjaan;
 
-  @JsonKey(defaultValue: null)
-  @JsonKey(required: false)
-  String jenis_kelamin;
+  
+  final String? tempat_lahir;
 
-  @JsonKey(defaultValue: null)
-  @JsonKey(required: false)
-  String tanggal_lahir;
+  
+  final String? jenis_kelamin;
 
-  @JsonKey(defaultValue: null)
-  @JsonKey(required: false)
-  String berlaku_hingga;
+  
+  final String? tanggal_lahir;
 
-  @JsonKey(defaultValue: null)
-  @JsonKey(required: false)
-  String golongan_darah;
+  
+  final String? berlaku_hingga;
+  
+  final String? golongan_darah;
 
-  @JsonKey(defaultValue: null)
-  @JsonKey(required: false)
-  String kabupaten_kota;
+  
+  final String? kabupaten_kota;
 
-  @JsonKey(defaultValue: null)
-  @JsonKey(required: false)
-  String kelurahan_desa;
+  
+  final String? kelurahan_desa;
 
-  @JsonKey(defaultValue: null)
-  @JsonKey(required: false)
-  String kewarganegaraan;
+  
+  final String? kewarganegaraan;
 
-  @JsonKey(defaultValue: null)
-  @JsonKey(required: false)
-  String status_perkawinan;
+  
+  final String? status_perkawinan;
 
   NodefluxResult2Model({
-    required this.nik,
-    required this.nama,
-    required this.agama,
-    required this.rt_rw,
-    required this.alamat,
-    required this.provinsi,
-    required this.kecamatan,
-    required this.pekerjaan,
-    required this.tempat_lahir,
-    required this.jenis_kelamin,
-    required this.tanggal_lahir,
-    required this.berlaku_hingga,
-    required this.golongan_darah,
-    required this.kabupaten_kota,
-    required this.kelurahan_desa,
-    required this.kewarganegaraan,
-    required this.status_perkawinan,
+     this.nik,
+     this.nama,
+     this.agama,
+     this.rt_rw,
+     this.alamat,
+     this.provinsi,
+     this.kecamatan,
+     this.pekerjaan,
+     this.tempat_lahir,
+     this.jenis_kelamin,
+     this.tanggal_lahir,
+     this.berlaku_hingga,
+     this.golongan_darah,
+     this.kabupaten_kota,
+     this.kelurahan_desa,
+     this.kewarganegaraan,
+     this.status_perkawinan,
+    this .face_liveness,
+    this.face_match
   });
 
   factory NodefluxResult2Model.fromJson(Map<String, dynamic> json) =>
       NodefluxResult2Model(
-        nik: json["nik"],
+        nik: json['nik'],
         nama: json["nama"],
         agama: json["agama"],
         rt_rw: json["rt_rw"],
@@ -130,4 +119,26 @@ class NodefluxResult2Model {
         "kewarganegaraan": kewarganegaraan,
         "status_perkawinan": status_perkawinan,
       };
+
+  factory NodefluxResult2Model.fromJsonForMatchLiveness(Map<String, dynamic> json) => NodefluxResult2Model(
+    //face_liveness: List<NodefluxFaceLivenessModel>.from(json["face_liveness"].map((x) => NodefluxFaceLivenessModel.fromJson(x))), // jalan
+    //face_match:List<NodefluxFaceMatchModel>.from(json["face_match"].map((x) => NodefluxFaceMatchModel.fromJson(x))),
+    face_liveness: NodefluxFaceLivenessModel.fromJson(json["face_liveness"]),
+    face_match: NodefluxFaceMatchModel.fromJson(json["face_match"]),
+  );
+
+  Map< String, dynamic> toJsonForMatchLiveness() => {
+    "face_liveness": face_liveness?.toJson(),
+    "face_match": face_match?.toJson(),
+    //"face_match": List<dynamic>.from(face_match.map((x) => x.toJson())), // jalan (tp gak jalan kalo kosong)
+  };
+
+  factory NodefluxResult2Model.fromJsonForLiveness(Map< String, dynamic> json) => NodefluxResult2Model(
+    face_liveness: NodefluxFaceLivenessModel.fromJson(json["face_liveness"]),
+  );
+
+  Map<String, dynamic> toJsonForLiveness() => {
+    "face_liveness": face_liveness?.toJson(),
+  };
 }
+
