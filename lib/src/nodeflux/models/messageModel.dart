@@ -10,14 +10,14 @@ String messageModelToJson(MessageModel data) => json.encode(data.toJson());
 
 class MessageModel {
   MessageModel({
-    required this.message,
-    required this.ok,
-    required this.status,
+    this.message,
+    this.ok,
+    this.status,
   });
 
-  String message;
-  bool ok;
-  String status;
+  final String? message;
+  final bool? ok;
+  final String? status;
 
   factory MessageModel.fromJson(Map<String, dynamic> json) => MessageModel(
     message: json["message"],

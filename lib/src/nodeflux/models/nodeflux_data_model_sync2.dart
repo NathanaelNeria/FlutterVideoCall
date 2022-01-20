@@ -1,40 +1,20 @@
-//import 'package:simple_app/nodeflux/models/nodeflux_result_model.dart';
-import 'nodeflux_job_model.dart';
-import 'package:json_annotation/json_annotation.dart';
 import 'nodeflux_result2_model.dart';
 
 class NodefluxDataModelSync2 {
-
-
   final String?  analytic_type;
-
-
   final String? job_id;
-
-
   final String? message;
-
-
   final bool? ok;
-
-
-   final List<NodefluxResult2Model>? result;
-
-
- final  String? status;
-
-  // (defaultValue: null)
-  // (required: false)
-  // String code;
+  final List<NodefluxResult2Model>? result;
+  final  String? status;
 
   NodefluxDataModelSync2({
-     this.analytic_type,
-     this.job_id,
-     this.message,
+    this.analytic_type,
+    this.job_id,
+    this.message,
     this.ok,
-     this.status,
-     this.result,
-    //this.code
+    this.status,
+    this.result,
   });
 
   // fourth, if step 3 passed (face liveness: true), check face_match

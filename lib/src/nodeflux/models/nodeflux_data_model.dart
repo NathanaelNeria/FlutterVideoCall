@@ -3,22 +3,14 @@ import 'nodeflux_job_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 class NodefluxDataModel {
-  @JsonKey(defaultValue: null)
-  @JsonKey(required: false)
-  NodefluxJobModel job;
-
-  @JsonKey(defaultValue: null)
-  @JsonKey(required: false)
-  String message;
-
-  @JsonKey(defaultValue: null)
-  @JsonKey(required: false)
-  bool ok;
+  final NodefluxJobModel? job;
+  final String? message;
+  final bool? ok;
 
   NodefluxDataModel({
-    required this.job,
-    required this.message,
-    required this.ok,
+     this.job,
+     this.message,
+     this.ok,
   });
 
   factory NodefluxDataModel.fromJson(Map<String, dynamic> json) => NodefluxDataModel(
@@ -32,7 +24,7 @@ class NodefluxDataModel {
     "message": message,
     "ok": ok,
     //"result": List<dynamic>.from(result.map((x) => x.toJson())),
-    "job": job.toJson(),
+    "job": job?.toJson(),
   };
 
   factory NodefluxDataModel.fromJson0(Map<String, dynamic> json) => NodefluxDataModel(
@@ -46,7 +38,7 @@ class NodefluxDataModel {
     "message": message,
     "ok": ok,
     //"result": List<dynamic>.from(result.map((x) => x.toJson())),
-    "job": job.toJson(),
+    "job": job?.toJson(),
   };
 
   factory NodefluxDataModel.fromJson00(Map<String, dynamic> json) => NodefluxDataModel(
@@ -73,6 +65,6 @@ class NodefluxDataModel {
   Map<String, dynamic> toJsonForMatchLiveness() => {
     "message": message,
     "ok": ok,
-    "job": job.toJson(),
+    "job": job?.toJson(),
   };
 }

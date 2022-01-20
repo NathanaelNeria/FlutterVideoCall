@@ -33,9 +33,9 @@ import '../models/face_pair_not_match.dart';
 import '../models/no_face_detected.dart';
 
 class NodefluxOcrKtpPage extends StatefulWidget {
-  NodefluxOcrKtpPage({Key? key, required this.title}) : super(key: key);
+  NodefluxOcrKtpPage({Key? key, this.title}) : super(key: key);
 
-  final String title;
+  final String? title;
 
   @override
   _NodefluxOcrKtpPageState createState() => _NodefluxOcrKtpPageState();
@@ -43,12 +43,12 @@ class NodefluxOcrKtpPage extends StatefulWidget {
 
 class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
   DateTime? selectedbirthdate;
-  late File _imageFile;
+  File? _imageFile;
 
-  late File _ektpImage;
-  late File _selfieImage;
-  late File _npwpImage;
-  late File _selfieEktpImage;
+  File? _ektpImage;
+  File? _selfieImage;
+  File? _npwpImage;
+  File? _selfieEktpImage;
 
   TextEditingController nikController = TextEditingController();
   TextEditingController nameController = TextEditingController();
@@ -56,47 +56,47 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
   TextEditingController birthplaceController = TextEditingController();
   TextEditingController mobilePhoneController = TextEditingController();
   TextEditingController emailController = TextEditingController();
-  late TextEditingController addressController, genderController, rtrwController, kecamatanController, religionController, maritalStatusController, workfieldController, provinceController, expiryController,
+  TextEditingController? addressController, genderController, rtrwController, kecamatanController, religionController, maritalStatusController, workfieldController, provinceController, expiryController,
     bloodTypeController, kabupatenKotaController, kelurahanDesaController, nationalityController;
 
   //firestore
-  late String firestoreId;
-
-  late FirebaseFirestore db;
-  final _formKey = GlobalKey<FormState>();
-  late String firestoreName;
-  late String firestoreNik;
-  late String firestoreAddress;
-  late String firestoreBirthdate;
-  late String firestoreBirthplace;
-  late String firestoreGender;
-  late String firestoreRtRw;
-  late String firestoreKecamatan;
-  late String firestoreReligion;
-  late String firestoreMaritalStatus;
-  late String firestoreWorkfield;
-  late String firestoreProvince;
-  late String firestoreExpiry;
-  late String firestoreBloodType;
-  late String firestoreKabupatenKota;
-  late String firestoreKelurahanDesa;
-  late String firestoreNationality;
-  late String firestoreMobilePhone;
-  late String firestoreEmail;
+   String? firestoreId;
+   FirebaseFirestore? db;
+   final _formKey = GlobalKey<FormState>();
+   String? firestoreName;
+   String? firestoreNik;
+   String? firestoreAddress;
+   String? firestoreBirthdate;
+   String? firestoreBirthplace;
+   String? firestoreGender;
+   String? firestoreRtRw;
+   String? firestoreKecamatan;
+   String? firestoreReligion;
+   String? firestoreMaritalStatus;
+   String? firestoreWorkfield;
+   String? firestoreProvince;
+   String? firestoreExpiry;
+   String? firestoreBloodType;
+   String? firestoreKabupatenKota;
+   String? firestoreKelurahanDesa;
+   String? firestoreNationality;
+   String? firestoreMobilePhone;
+   String? firestoreEmail;
+  final ImagePicker _picker = ImagePicker();
 
   int minPhotoSize=256000; // 250KB
   int maxPhotoSize=512000; // 500KB
 
-  late String ocrNama, ocrNik, ocrTempatLahir, ocrTanggalLahir, ocrJenisKelamin, ocrAlamat, ocrRtrw, ocrKecamatan, ocrAgama, ocrStatusPerkawinan,
+  String? ocrNama, ocrNik, ocrTempatLahir, ocrTanggalLahir, ocrJenisKelamin, ocrAlamat, ocrRtrw, ocrKecamatan, ocrAgama, ocrStatusPerkawinan,
       ocrPekerjaan, ocrProvinsi, ocrBerlakuHingga, ocrGolonganDarah, ocrKabupatenKota, ocrKelurahanDesa, ocrKewarganegaraan;
 
   //NodefluxResult2Model nodefluxResult2Model =NodefluxResult2Model();
-  late NodefluxResult2Model _nodefluxResult2Model;
-  late bool isLive;
-  late bool isMatched;
+   NodefluxResult2Model? _nodefluxResult2Model;
+  bool? isLive;
+  bool? isMatched;
   bool nodefluxSelfie = false;
-  late double livenessValue;
-  late double similarityValue;
+  double? livenessValue;
+  double? similarityValue;
   String matchLivenessFeedback="";
   String message = '';
   bool noFace = false;
@@ -104,8 +104,6 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
   bool changeColor = false;
   String ktpDetected = '';
   bool ktpProcessed = false;
-
-  var _picker;
 
   @override
   void initState() {
@@ -345,7 +343,7 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
       if (await appdocdir.exists())
         appdocdir.delete(recursive: false);
 
-      XFile?  picture =   await _picker.pickImage(source: source);
+      File picture = await _picker.pickImage(source: source) as File;
 
       int? appFileDirectory=picture?.path.lastIndexOf('/');
       String? resultDirectory=picture?.path.substring(0,appFileDirectory!+1); // = appdocdir+'/Pictures/'
@@ -362,16 +360,15 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
             quality: photoQuality,
           );
 
-          int? resultLength=result?.lengthSync();
+          int? resultLength= result?.lengthSync();
 
           var i = 1;
 
-          while ((resultLength! < minPhotoSize || resultLength > maxPhotoSize) && photoQuality>0 && photoQuality<100) {
+          while ((resultLength! < minPhotoSize || resultLength! > maxPhotoSize) && photoQuality>0 && photoQuality<100) {
             if (result!=null)
               await result.delete();
             resultPath=resultDirectory+DateFormat('yyyyMMddHHmmss').format(DateTime.now())+'.jpg';
             photoQuality=(resultLength>maxPhotoSize)? photoQuality-10:photoQuality+10;
-
             result = await FlutterImageCompress.compressAndGetFile(
               picture.path, resultPath,
               quality: photoQuality,
@@ -409,7 +406,7 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
     //Navigator.of(context).pop();
 
     await nodefluxOcrKtpProcess(context);
-    await uploadImage(_ektpImage, "ektp");
+    await uploadImage(_ektpImage!, "ektp");
   }
 
   nodefluxOcrKtpProcess(BuildContext context) async{
@@ -420,12 +417,12 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
     String authorization = 'NODEFLUX-HMAC-SHA256 Credential=ZZC8MB2EHH01G3FX60ZNZS7KA/20201110/nodeflux.api.v1beta1.ImageAnalytic/StreamImageAnalytic, SignedHeaders=x-nodeflux-timestamp, Signature=5a6b903b95b8f3c9677169d69b13b4f790799ffba897405b7826770f51fd4a21';
     String contentType = 'application/json';
     String xnodefluxtimestamp='20201110T135945Z';
-    final imageBytes = _ektpImage.readAsBytesSync();
-    String base64Image = 'data:image/jpeg;base64,'+base64Encode(imageBytes);
-    String dialog = "";
+    final imageBytes = _ektpImage?.readAsBytesSync();
+    String base64Image = 'data:image/jpeg;base64,'+base64Encode(imageBytes!);
+    String? dialog = "";
     bool isPassed=false;
     String currentStatus="";
-    Type nodefluxDataModel=NodefluxDataModel;
+    NodefluxDataModel nodefluxDataModel=NodefluxDataModel();
     NodefluxJobModel nodefluxJobModel=NodefluxJobModel();
     NodefluxResultModel nodefluxResultModel = NodefluxResultModel();
     // NodefluxResult2Model nodefluxResult2Model =NodefluxResult2Model();
@@ -433,7 +430,7 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
     try{
 
       var url='https://api.cloud.nodeflux.io/v1/analytics/ocr-ktp';
-      List<String> photoBase64List=<String>[];
+      List<String> photoBase64List = <String>[];
       photoBase64List.add(base64Image);
 
       var response;
@@ -448,28 +445,24 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
         print(response.body);
 
         var respbody=response.body;
-        nodefluxDataModel=NodefluxDataModel.fromJson00(jsonDecode(response.body)) as Type;
-
-        okValue=nodefluxDataModel.ok;
+        nodefluxDataModel=NodefluxDataModel.fromJson00(jsonDecode(response.body));
+        okValue=nodefluxDataModel.ok!;
         if (okValue) {
-          nodefluxDataModel=NodefluxDataModel.fromJson0(jsonDecode(response.body)) as Type;
-
-
-          nodefluxJobModel=nodefluxDataModel.job;
+          nodefluxDataModel=NodefluxDataModel.fromJson0(jsonDecode(response.body));
+          nodefluxJobModel=nodefluxDataModel.job!;
           nodefluxResultModel = nodefluxJobModel.result;
 
           currentStatus=nodefluxResultModel.status;
-          var message;
-          message = nodefluxDataModel.message;
+          message = nodefluxDataModel.message!;
         } else {
-          dialog=nodefluxDataModel.message;
+          dialog=nodefluxDataModel.message!;
           isPassed=false;
         }
       }
 
       if (response!=null && currentStatus=="success") {
-        nodefluxDataModel=NodefluxDataModel.fromJson(jsonDecode(response.body)) as Type;
-        nodefluxJobModel=nodefluxDataModel.job;
+        nodefluxDataModel=NodefluxDataModel.fromJson(jsonDecode(response.body));
+        nodefluxJobModel=nodefluxDataModel.job!;
         nodefluxResultModel = nodefluxJobModel.result;
         _nodefluxResult2Model = nodefluxResultModel.result[0];
       }
@@ -480,23 +473,23 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
           dialog="OCR Process success";
           isPassed=true;
           setState(() {
-            ocrNik = _nodefluxResult2Model.nik;
-            ocrNama= _nodefluxResult2Model.nama;
-            ocrTempatLahir = _nodefluxResult2Model.tempat_lahir;
-            ocrTanggalLahir = _nodefluxResult2Model.tanggal_lahir;
-            ocrJenisKelamin = _nodefluxResult2Model.jenis_kelamin;
-            ocrAlamat = _nodefluxResult2Model.alamat;
-            ocrRtrw = _nodefluxResult2Model.rt_rw;
-            ocrKecamatan = _nodefluxResult2Model.kecamatan;
-            ocrAgama = _nodefluxResult2Model.agama;
-            ocrStatusPerkawinan = _nodefluxResult2Model.status_perkawinan;
-            ocrPekerjaan = _nodefluxResult2Model.pekerjaan;
-            ocrProvinsi = _nodefluxResult2Model.provinsi;
-            ocrBerlakuHingga = _nodefluxResult2Model.berlaku_hingga;
-            ocrGolonganDarah = _nodefluxResult2Model.golongan_darah;
-            ocrKabupatenKota = _nodefluxResult2Model.kabupaten_kota;
-            ocrKelurahanDesa = _nodefluxResult2Model.kelurahan_desa;
-            ocrKewarganegaraan= _nodefluxResult2Model.kewarganegaraan;
+            ocrNik = _nodefluxResult2Model!.nik;
+            ocrNama= _nodefluxResult2Model!.nama;
+            ocrTempatLahir = _nodefluxResult2Model!.tempat_lahir;
+            ocrTanggalLahir = _nodefluxResult2Model!.tanggal_lahir;
+            ocrJenisKelamin = _nodefluxResult2Model!.jenis_kelamin;
+            ocrAlamat = _nodefluxResult2Model!.alamat;
+            ocrRtrw = _nodefluxResult2Model!.rt_rw;
+            ocrKecamatan = _nodefluxResult2Model!.kecamatan;
+            ocrAgama = _nodefluxResult2Model!.agama;
+            ocrStatusPerkawinan = _nodefluxResult2Model!.status_perkawinan;
+            ocrPekerjaan = _nodefluxResult2Model!.pekerjaan;
+            ocrProvinsi = _nodefluxResult2Model!.provinsi;
+            ocrBerlakuHingga = _nodefluxResult2Model!.berlaku_hingga;
+            ocrGolonganDarah = _nodefluxResult2Model!.golongan_darah;
+            ocrKabupatenKota = _nodefluxResult2Model!.kabupaten_kota;
+            ocrKelurahanDesa = _nodefluxResult2Model!.kelurahan_desa;
+            ocrKewarganegaraan= _nodefluxResult2Model!.kewarganegaraan;
             ktpDetected = 'ktp ada';
             ktpProcessed = true;
           });
@@ -514,7 +507,7 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
     }
     catch(e){
       debugPrint('Error $e');
-      dialog=e;
+      dialog=e as String?;
     }
     setState(() {
       //loading = false;
@@ -556,36 +549,35 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
       if (await appdocdir.exists())
         appdocdir.delete(recursive: false);
 
-      XFile?  picture =   await _picker.pickImage(source: source);
-      int? appFileDirectory=picture?.path.lastIndexOf('/');
-      String? resultDirectory=picture?.path.substring(0,appFileDirectory!+1); // = appdocdir+'/Pictures/'
-      String resultPath=resultDirectory!+DateFormat('yyyyMMddHHmmss').format(DateTime.now())+'.jpg';
+      File picture = await _picker.pickImage(source: source) as File;
+      int appFileDirectory=picture.path.lastIndexOf('/');
+      String resultDirectory=picture.path.substring(0,appFileDirectory+1); // = appdocdir+'/Pictures/'
+      String resultPath=resultDirectory+DateFormat('yyyyMMddHHmmss').format(DateTime.now())+'.jpg';
       //String resultPath='/storage/emulated/0/Android/data/com.smartherd.flutter_app_section2/files/Pictures/'+DateFormat('yyyyMMddHHmmss').format(DateTime.now())+'.jpg';
 
       int photoQuality=50;
       if(picture != null) {
         try {
-
           var result = await FlutterImageCompress.compressAndGetFile(
-            picture.path, resultPath,
+            picture.absolute.path, resultPath,
             quality: photoQuality,
           );
 
-          int? pictureLength=picture?.lengthSync();
-          int? resultLength=result?.lengthSync();
+          int pictureLength=picture.lengthSync();
+          int? resultLength= result?.lengthSync();
 
           var i = 1;
 
-          while ((resultLength < minPhotoSize || resultLength > maxPhotoSize) && photoQuality>0 && photoQuality<100) {
+          while ((resultLength! < minPhotoSize || resultLength! > maxPhotoSize) && photoQuality>0 && photoQuality<100) {
             if (result!=null)
               await result.delete();
             resultPath=resultDirectory+DateFormat('yyyyMMddHHmmss').format(DateTime.now())+'.jpg';
             photoQuality=(resultLength>maxPhotoSize)? photoQuality-10:photoQuality+10;
             result = await FlutterImageCompress.compressAndGetFile(
-              picture.path, resultPath,
+              picture.absolute.path, resultPath,
               quality: photoQuality,
             );
-            resultLength=result.lengthSync();
+            resultLength=result?.lengthSync();
           }
 
           double sizeinKb=resultLength.toDouble()/1024;
@@ -594,7 +586,7 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
           await picture.delete();
           this.setState(() {
             //_imageFileProfile = cropped;
-            _npwpImage = result;
+            _npwpImage = result!;
             //loading = false;
           });
         } catch (e) {
@@ -611,7 +603,7 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
       debugPrint("Error $e");
     }
     //Navigator.of(context).pop();
-    uploadImage(_npwpImage, "npwp");
+    uploadImage(_npwpImage!, "npwp");
   }
 
   _getSelfieImage(BuildContext context, ImageSource source) async{
@@ -631,7 +623,7 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
       if (await appdocdir.exists())
         appdocdir.delete(recursive: false);
 
-      var picture =  await ImagePicker.pickImage(source: source);
+      File picture = await _picker.pickImage(source: source) as File;
 
       int appFileDirectory=picture.path.lastIndexOf('/');
       String resultDirectory=picture.path.substring(0,appFileDirectory+1); // = appdocdir+'/Pictures/'
@@ -647,11 +639,11 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
           );
 
           int pictureLength=picture.lengthSync();
-          int resultLength=result.lengthSync();
+          int? resultLength=result?.lengthSync();
 
           var i = 1;
 
-          while ((resultLength < minPhotoSize || resultLength > maxPhotoSize) && photoQuality>0 && photoQuality<100) {
+          while ((resultLength! < minPhotoSize || resultLength! > maxPhotoSize) && photoQuality>0 && photoQuality<100) {
             if (result!=null)
               await result.delete();
             resultPath=resultDirectory+DateFormat('yyyyMMddHHmmss').format(DateTime.now())+'.jpg';
@@ -660,7 +652,7 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
               picture.absolute.path, resultPath,
               quality: photoQuality,
             );
-            resultLength=result.lengthSync();
+            resultLength=result?.lengthSync();
           }
 
           double sizeinKb=resultLength.toDouble()/1024;
@@ -669,7 +661,7 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
           await picture.delete();
           this.setState(() {
             //_imageFileProfile = cropped;
-            _selfieImage = result;
+            _selfieImage = result!;
             ktpDetected = 'lagi proses';
             //loading = false;
           });
@@ -691,7 +683,7 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
     // Nodeflux API
     // Process kalau selfie live
     await nodefluxSelfieMatchLivenessProcess(context);
-    await uploadImage(_selfieImage, "selfie");
+    await uploadImage(_selfieImage!, "selfie");
     // Navigator.of(context).push(MaterialPageRoute(
     //   // builder: (context) => NodefluxOcrKtpResult(nodefluxResultModel.result[0])));
     //     builder: (context) => NodefluxOcrKtpResultPage(nodefluxResult2Model, _ektpImage, _selfieImage)));
@@ -705,11 +697,11 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
     String authorization = 'NODEFLUX-HMAC-SHA256 Credential=ZZC8MB2EHH01G3FX60ZNZS7KA/20201110/nodeflux.api.v1beta1.ImageAnalytic/StreamImageAnalytic, SignedHeaders=x-nodeflux-timestamp, Signature=5a6b903b95b8f3c9677169d69b13b4f790799ffba897405b7826770f51fd4a21';
     String contentType = 'application/json';
     String xnodefluxtimestamp='20201110T135945Z';
-    final imageBytesSelfie = _selfieImage.readAsBytesSync();
+    final imageBytesSelfie = _selfieImage!.readAsBytesSync();
     String base64ImageSelfie = 'data:image/jpeg;base64,'+base64Encode(imageBytesSelfie);
-    final imageBytesEktp = _ektpImage.readAsBytesSync();
+    final imageBytesEktp = _ektpImage!.readAsBytesSync();
     String base64ImageEktp = 'data:image/jpeg;base64,'+base64Encode(imageBytesEktp);
-    String dialog = "";
+    String? dialog = "";
     bool isPassed=false;
     String currentStatus='';
     NodefluxDataModelSync2 nodefluxDataModelSync2=NodefluxDataModelSync2();
@@ -722,7 +714,7 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
 
     try{
       var url='https://api.cloud.nodeflux.io/syncv2/analytics/face-match-liveness';
-      List<String> photoBase64List=List<String>();
+      List<String> photoBase64List=<String>[];
       photoBase64List.add(base64ImageEktp);
       photoBase64List.add(base64ImageSelfie);
 
@@ -740,13 +732,13 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
         var respbody=response.body;
         // first check ok value
         messageModel = MessageModel.fromJson(jsonDecode(response.body));
-        message = messageModel.message;
-        okValue = messageModel.ok;
+        message = messageModel.message!;
+        okValue = messageModel.ok!;
         var status = messageModel.status;
         print(message + ' ' + okValue.toString());
         // second, if ok false, exit; if ok true, check status [success or incompleted]
         if (okValue) {
-          currentStatus= status;
+          currentStatus= status!;
           // third, if status: success, ada liveness -> check liveness > live
 
 
@@ -754,14 +746,14 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
             if(message == 'Face Liveness Underqualified'){
               livenessModelUnderqualified = LivenessModelUnderqualified.fromJson(jsonDecode(response.body));
               setState(() {
-                livenessValue = livenessModelUnderqualified.result[0].faceLiveness.liveness;
-                isLive = livenessModelUnderqualified.result[0].faceLiveness.live;
+                livenessValue = livenessModelUnderqualified.result![0].faceLiveness!.liveness;
+                isLive = livenessModelUnderqualified.result![0].faceLiveness!.live;
                 underQualified = true;
                 nodefluxSelfie = true;
                 changeColor = true;
               });
 
-              double livenessPercentage=livenessValue*100;
+              double livenessPercentage=livenessValue!*100;
               String isLiveString = (livenessPercentage>=75)? "from live ": "not from live ";
               matchLivenessFeedback= "Selfie is taken " + isLiveString +"person!";
               matchLivenessFeedback+= '\nOR';
@@ -770,16 +762,16 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
             else if(message == 'Face Match Liveness Success'){
               livenessModel = LivenessModel.fromJson(jsonDecode(response.body));
               setState(() {
-                similarityValue = livenessModel.result[1].faceMatch.similarity;
-                isMatched = livenessModel.result[1].faceMatch.match;
-                livenessValue = livenessModel.result[0].faceLiveness.liveness;
-                isLive = livenessModel.result[0].faceLiveness.live;
+                similarityValue = livenessModel.result![1].faceMatch!.similarity;
+                isMatched = livenessModel.result![1].faceMatch!.match;
+                livenessValue = livenessModel.result![0].faceLiveness!.liveness;
+                isLive = livenessModel.result![0].faceLiveness!.live;
                 nodefluxSelfie = true;
                 changeColor = true;
               });
 
-              double similarityPercentage=similarityValue*100;
-              double livenessPercentage=livenessValue*100;
+              double similarityPercentage=similarityValue!*100;
+              double livenessPercentage=livenessValue!*100;
               String isLiveString = (livenessPercentage>=75)? "from live ": "not from live ";
               String isMatchedString = (similarityPercentage>=75)? "matched": "not matched";
               matchLivenessFeedback = "Selfie is taken " + isLiveString +"person ("+livenessPercentage.toStringAsFixed(2)+" %)";
@@ -788,16 +780,16 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
             else if(message == "The Face Pair Not Match"){
               facePairNotMatch = FacePairNotMatch.fromJson(jsonDecode(response.body));
               setState(() {
-                similarityValue = facePairNotMatch.result[1].faceMatch.similarity;
-                livenessValue = facePairNotMatch.result[0].faceLiveness.liveness;
-                isMatched = facePairNotMatch.result[1].faceMatch.match;
-                isLive = facePairNotMatch.result[0].faceLiveness.live;
+                similarityValue = facePairNotMatch.result![1].faceMatch!.similarity;
+                livenessValue = facePairNotMatch.result![0].faceLiveness!.liveness;
+                isMatched = facePairNotMatch.result![1].faceMatch!.match;
+                isLive = facePairNotMatch.result![0].faceLiveness!.live;
                 nodefluxSelfie = true;
                 changeColor = true;
               });
 
-              double similarityPercentage = similarityValue*100;
-              double livenessPercentage = livenessValue*100;
+              double similarityPercentage = similarityValue!*100;
+              double livenessPercentage = livenessValue!*100;
               String isLiveString = (livenessPercentage>=75)? "from live ": "not from live ";
               String isMatchedString = (similarityPercentage>=75)? "matched": "not matched";
               matchLivenessFeedback = "Selfie is taken " + isLiveString +"person ("+livenessPercentage.toStringAsFixed(2)+" %)";
@@ -805,22 +797,22 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
             }
           } else {
             noFaceDetected = NoFaceDetected.fromJson(jsonDecode(response.body));
-            matchLivenessFeedback = noFaceDetected.message;
+            matchLivenessFeedback = noFaceDetected.message!;
             setState(() {
-              message = noFaceDetected.message;
+              message = noFaceDetected.message!;
               noFace = true;
               changeColor = true;
             });
           }
         } else {
           dialog=nodefluxDataModelSync2.message;
-          matchLivenessFeedback=nodefluxDataModelSync2.message;
+          matchLivenessFeedback=nodefluxDataModelSync2.message!;
           isPassed=false;
         }
     }
     catch(e){
       debugPrint('Error $e');
-      dialog=e;
+      dialog=e as String?;
     }
     setState(() {
       //loading = false;
@@ -845,7 +837,7 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
       if (await appdocdir.exists())
         appdocdir.delete(recursive: false);
 
-      var picture =  await ImagePicker.pickImage(source: source);
+      File picture =  (await _picker.pickImage(source: source)) as File;
 
       int appFileDirectory=picture.path.lastIndexOf('/');
       String resultDirectory=picture.path.substring(0,appFileDirectory+1); // = appdocdir+'/Pictures/'
@@ -861,11 +853,11 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
           );
 
           int pictureLength=picture.lengthSync();
-          int resultLength=result.lengthSync();
+          int? resultLength=result?.lengthSync();
 
           var i = 1;
 
-          while ((resultLength < minPhotoSize || resultLength > maxPhotoSize) && photoQuality>0 && photoQuality<100) {
+          while ((resultLength! < minPhotoSize || resultLength! > maxPhotoSize) && photoQuality>0 && photoQuality<100) {
             if (result!=null)
               await result.delete();
             resultPath=resultDirectory+DateFormat('yyyyMMddHHmmss').format(DateTime.now())+'.jpg';
@@ -874,10 +866,10 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
               picture.absolute.path, resultPath,
               quality: photoQuality,
             );
-            resultLength=result.lengthSync();
+            resultLength=result?.lengthSync();
           }
 
-          double sizeinKb=resultLength.toDouble()/1024;
+          double sizeinKb=resultLength!.toDouble()/1024;
           debugPrint('Photo compressed size is '+sizeinKb.toString()+' kb');
           //print(pictureLength+resultLength);
           await picture.delete();
@@ -900,7 +892,7 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
       debugPrint("Error $e");
     }
     //Navigator.of(context).pop();
-    uploadImage(_selfieEktpImage, "selfieEktp");
+    uploadImage(_selfieEktpImage!, "selfieEktp");
   }
 
 
@@ -996,12 +988,10 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
 
   Future getImage() async {
 
-    File registerSelfieimage;
-    //Future<bool> faceMatchFound=Future<bool>.value(false);
-    bool faceMatchFound1 = false;
-    registerSelfieimage= await ImagePicker.pickImage(source: ImageSource.camera);
+    File? registerSelfieimage;
+    registerSelfieimage= (await _picker.pickImage(source: ImageSource.camera)) as File;
     if(registerSelfieimage != null) {
-      File cropped = await ImageCropper.cropImage(
+      File? cropped = await ImageCropper.cropImage(
           sourcePath: registerSelfieimage.path,
           aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
           compressQuality: 80,
@@ -1148,7 +1138,7 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
                       begin: Alignment.bottomLeft,
                       end: Alignment.topRight,
                       // colors: [Color(0xfffbb448), Color(0xffe46b10)]
-                      colors: [Colors.green, Colors.green[600], Colors.green[700], Colors.green[800]]
+                      colors: [Colors.green, Colors.green.shade700, Colors.green.shade900]
                   )
               ),
               child: ListView(
@@ -1355,10 +1345,10 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
   }
 
   void createData() async {
-    if (_formKey.currentState.validate()) {
-      _formKey.currentState.save();
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
       await Firebase.initializeApp();
-      await db.collection('form').doc('user').update({'name': '$firestoreName', 'nik': '$firestoreNik', 'address': '$firestoreAddress', 'dob': '$firestoreBirthdate', 'pob': '$firestoreBirthplace', 'mobile': '$firestoreMobilePhone', 'email': '$firestoreEmail'});
+      await db!.collection('form').doc('user').update({'name': '$firestoreName', 'nik': '$firestoreNik', 'address': '$firestoreAddress', 'dob': '$firestoreBirthdate', 'pob': '$firestoreBirthplace', 'mobile': '$firestoreMobilePhone', 'email': '$firestoreEmail'});
       //DocumentReference ref = await db.collection('form').add({'name': '$firestoreName', 'nik': '$firestoreNik', 'address': '$firestoreAddress', 'birthdate': '$firestoreBirthdate', 'birthday': '$firestoreBirthday', 'mobilePhone': '$firestoreMobilePhone', 'email': '$firestoreEmail'});
       //setState(() => firestoreId = ref.documentID);
       //print (ref.documentID);
@@ -1371,19 +1361,19 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
   }
 
   void goToResultPage() async {
-    if (_formKey.currentState.validate()) {
+    if (_formKey.currentState!.validate()) {
       //_formKey.currentState.save();
       //await db.collection('form').document('user').updateData({'name': '$firestoreName', 'nik': '$firestoreNik', 'address': '$firestoreAddress', 'dob': '$firestoreBirthdate', 'pob': '$firestoreBirthplace', 'mobile': '$firestoreMobilePhone', 'email': '$firestoreEmail'});
 
       Navigator.of(context).push(MaterialPageRoute(
         // builder: (context) => NodefluxOcrKtpResult(nodefluxResultModel.result[0])));
-          builder: (context) => NodefluxOcrKtpResultPage(model: _nodefluxResult2Model, ektpImage: _ektpImage,)));
+          builder: (context) => NodefluxOcrKtpResultPage(model: _nodefluxResult2Model!, ektpImage: _ektpImage!,)));
     }
   }
 
   void readData() async {
     await Firebase.initializeApp();
-    DocumentSnapshot snapshot = await db.collection('form').doc(firestoreId).get();
+    DocumentSnapshot snapshot = await db!.collection('form').doc(firestoreId).get();
     print ((snapshot.data() as dynamic)['name']);
   }
 
@@ -1753,6 +1743,4 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
       //_uploaded = true;
     });
   }
-
-
 }

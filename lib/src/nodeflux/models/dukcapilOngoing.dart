@@ -10,17 +10,17 @@ String dukcapilOngoingToJson(DukcapilOngoing data) => json.encode(data.toJson())
 
 class DukcapilOngoing {
   DukcapilOngoing({
-    required this.job,
-    required this.message,
-    required this.ok,
+     this.job,
+     this.message,
+     this.ok,
   }) {
     // TODO: implement
     throw UnimplementedError();
   }
 
-  Job job;
-  String message;
-  bool ok;
+  final Job? job;
+  final String? message;
+  final bool? ok;
 
   factory DukcapilOngoing.fromJson(Map<String, dynamic> json) => DukcapilOngoing(
     job: Job.fromJson(json["job"]),
@@ -29,7 +29,7 @@ class DukcapilOngoing {
   );
 
   Map<String, dynamic> toJson() => {
-    "job": job.toJson(),
+    "job": job?.toJson(),
     "message": message,
     "ok": ok,
   };
@@ -37,12 +37,12 @@ class DukcapilOngoing {
 
 class Job {
   Job({
-    required this.id,
-    required this.result,
+     this.id,
+     this.result,
   });
 
-  String id;
-  Result result;
+  final String? id;
+  final Result? result;
 
   factory Job.fromJson(Map<String, dynamic> json) => Job(
     id: json["id"],
@@ -51,18 +51,18 @@ class Job {
 
   Map<String, dynamic> toJson() => {
     "id": id,
-    "result": result.toJson(),
+    "result": result?.toJson(),
   };
 }
 
 class Result {
   Result({
-    required this.status,
-    required this.analyticType,
+     this.status,
+     this.analyticType,
   });
 
-  String status;
-  String analyticType;
+  final String? status;
+  final String? analyticType;
 
   factory Result.fromJson(Map<String, dynamic> json) => Result(
     status: json["status"],

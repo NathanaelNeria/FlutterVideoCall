@@ -63,8 +63,8 @@ class _CongratulationPageState extends State<CongratulationPage> {
             padding: EdgeInsets.symmetric(vertical: 15),
             alignment: Alignment.center,
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(5)),
-                border: Border.all(color: Colors.white, width: 2),
+              borderRadius: BorderRadius.all(Radius.circular(5)),
+              border: Border.all(color: Colors.white, width: 2),
             ),
             child: Text(
               //'Selesai',

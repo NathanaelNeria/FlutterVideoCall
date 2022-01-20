@@ -31,6 +31,7 @@ class _DisplayDataPageState extends State<DisplayDataPage> {
   TextEditingController birthplaceController = TextEditingController();
   TextEditingController mobilePhoneController = TextEditingController();
   TextEditingController emailController = TextEditingController();
+  ImagePicker _picker = ImagePicker();
 
   //firestore
   late String firestoreId;
@@ -518,8 +519,9 @@ class _DisplayDataPageState extends State<DisplayDataPage> {
 
   Future getImage() async {
 
-    File registerSelfieimage;
-    registerSelfieimage= (await ImagePicker.pickImage(source: ImageSource.camera)) as File;
+    File? registerSelfieimage;
+    // registerSelfieimage= await ImagePicker.pickImage(source: ImageSource.camera);
+    registerSelfieimage = (await _picker.pickImage(source: ImageSource.camera)) as File;
     if(registerSelfieimage != null) {
       File? cropped = await ImageCropper.cropImage(
           sourcePath: registerSelfieimage.path,

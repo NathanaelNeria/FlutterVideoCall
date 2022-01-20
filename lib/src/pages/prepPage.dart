@@ -75,11 +75,11 @@ class _PrepPageState extends State<PrepPage> {
             padding: EdgeInsets.symmetric(vertical: 15),
             alignment: Alignment.center,
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(5)),
-                border: Border.all(color: Colors.white, width: 2),
+              borderRadius: BorderRadius.all(Radius.circular(5)),
+              border: Border.all(color: Colors.white, width: 2),
             ),
             child: Text(
-         //     'OK, Semua sudah siap',
+              //     'OK, Semua sudah siap',
               'OK, I am ready',
               style: TextStyle(fontSize: 20, color: Colors.white),
             ),
@@ -98,13 +98,13 @@ class _PrepPageState extends State<PrepPage> {
           borderRadius: BorderRadius.all(Radius.circular(5)),
           border: Border.all(color: Colors.white, width: 2),
         ),
-          child: DropdownButtonHideUnderline(
-            child: DropdownButton<String>(
-              dropdownColor: Colors.white.withOpacity(0.15),
-              value: selectedValue,
-              isDense: true,
-              items: product.map((String value) {
-                return DropdownMenuItem<String>(
+        child: DropdownButtonHideUnderline(
+          child: DropdownButton<String>(
+            dropdownColor: Colors.white.withOpacity(0.15),
+            value: selectedValue,
+            isDense: true,
+            items: product.map((String value) {
+              return DropdownMenuItem<String>(
                   value: value,
                   child: new Theme(
                     data: Theme.of(context).copyWith(
@@ -112,17 +112,17 @@ class _PrepPageState extends State<PrepPage> {
                     ),
                     child: Text(value, style: TextStyle(color: Colors.white)),
                   )
-                );
-              }).toList(),
-              onChanged: (String? newValue) {
-                setState(() {
-                  selectedValue = newValue!;
-                  print(selectedValue + ' ' + newValue);
-                });
-              },
-            ),
-          )
-      );
+              );
+            }).toList(),
+            onChanged: (String? newValue) {
+              setState(() {
+                selectedValue = newValue!;
+                print(selectedValue + ' ' + newValue);
+              });
+            },
+          ),
+        )
+    );
   }
 
   Widget _title() {
@@ -131,11 +131,11 @@ class _PrepPageState extends State<PrepPage> {
       text: TextSpan(
           text: 'NTB Syariah',
           style: GoogleFonts.portLligatSans(
-            textStyle: Theme.of(context).textTheme.headline4,
-            fontSize: 30,
-            fontWeight: FontWeight.w700,
-            // color: Color(0xffe46b10),
-            color: Colors.white
+              textStyle: Theme.of(context).textTheme.headline4,
+              fontSize: 30,
+              fontWeight: FontWeight.w700,
+              // color: Color(0xffe46b10),
+              color: Colors.white
           ),
           children: [
             TextSpan(
@@ -197,90 +197,90 @@ class _PrepPageState extends State<PrepPage> {
                   //mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget> [
-                        SizedBox(height: 80),
-                        _title()
-                      ]
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget> [
+                          SizedBox(height: 80),
+                          _title()
+                        ]
                     ),
                     Column(crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget> [
-                      SizedBox(height: height * .03),
+                        children: <Widget> [
+                          SizedBox(height: height * .03),
 
-                      SizedBox(
-                        height: 50,
-                      ),
-                      Text(
-                        //'Hai, buka rekening IST Bank kamu sekarang yuk',
-                        'Let\'s follow these steps to open NTB Syariah Bank Account',
-                        style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.bold), textAlign: TextAlign.left,
-                      ),
-                      //_emailPasswordWidget(),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Text(
-                        //'Sebelum mulai kita persiapkan hal ini yuk:',
-                        'Please prepare these following items to begin:',
-                        style: TextStyle(color: Colors.white, fontSize: 17), textAlign: TextAlign.left,
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Text(
-                        '\u2022 eKTP',
-                        style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.bold), textAlign: TextAlign.left,
-                      ),
-                      //_emailPasswordWidget(),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Text(
-                        //'\u2022 Nomor HP dan Email yang aktif',
-                        '\u2022 Active Mobile Phone Number and Email',
-                        style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.bold), textAlign: TextAlign.left,
-                      ),
-                      //_emailPasswordWidget(),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Text(
-                        //'\u2022 Situasi kondusif untuk mengambil foto Selfie',
-                        '\u2022 Appropriate situation to take selfie',
-                        style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.bold), textAlign: TextAlign.left,
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      // Text(
-                      //   //'\u2022 Perangkat dan koneksi internet untuk video call',
-                      //   '\u2022 Video call ready device',
-                      //   style: TextStyle(color: Colors.black, fontSize: 17, fontWeight: FontWeight.bold), textAlign: TextAlign.left,
-                      // ),
-                      // //_emailPasswordWidget(),
-                      // SizedBox(
-                      //   height: 20,
-                      // ),
-                      // Text(
-                      //   //'\u2022 Perangkat dan koneksi internet untuk video call',
-                      //   '\u2022 Sufficient internet connection to have video call',
-                      //   style: TextStyle(color: Colors.black, fontSize: 17, fontWeight: FontWeight.bold), textAlign: TextAlign.left,
-                      // ),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      Text(
-                          'Please Select Account Type',
-                          style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.bold),
-                          textAlign: TextAlign.center,
-                      ),
-                      SizedBox(height: 20),
-                      selectProduct(),
-                      SizedBox(height: 20),
-                      _submitButton(),
-                      SizedBox(height: height * .14),
-                    ]),
+                          SizedBox(
+                            height: 50,
+                          ),
+                          Text(
+                            //'Hai, buka rekening IST Bank kamu sekarang yuk',
+                            'Let\'s follow these steps to open NTB Syariah Bank Account',
+                            style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.bold), textAlign: TextAlign.left,
+                          ),
+                          //_emailPasswordWidget(),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Text(
+                            //'Sebelum mulai kita persiapkan hal ini yuk:',
+                            'Please prepare these following items to begin:',
+                            style: TextStyle(color: Colors.white, fontSize: 17), textAlign: TextAlign.left,
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Text(
+                            '\u2022 eKTP',
+                            style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.bold), textAlign: TextAlign.left,
+                          ),
+                          //_emailPasswordWidget(),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Text(
+                            //'\u2022 Nomor HP dan Email yang aktif',
+                            '\u2022 Active Mobile Phone Number and Email',
+                            style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.bold), textAlign: TextAlign.left,
+                          ),
+                          //_emailPasswordWidget(),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Text(
+                            //'\u2022 Situasi kondusif untuk mengambil foto Selfie',
+                            '\u2022 Appropriate situation to take selfie',
+                            style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.bold), textAlign: TextAlign.left,
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          // Text(
+                          //   //'\u2022 Perangkat dan koneksi internet untuk video call',
+                          //   '\u2022 Video call ready device',
+                          //   style: TextStyle(color: Colors.black, fontSize: 17, fontWeight: FontWeight.bold), textAlign: TextAlign.left,
+                          // ),
+                          // //_emailPasswordWidget(),
+                          // SizedBox(
+                          //   height: 20,
+                          // ),
+                          // Text(
+                          //   //'\u2022 Perangkat dan koneksi internet untuk video call',
+                          //   '\u2022 Sufficient internet connection to have video call',
+                          //   style: TextStyle(color: Colors.black, fontSize: 17, fontWeight: FontWeight.bold), textAlign: TextAlign.left,
+                          // ),
+                          SizedBox(
+                            height: 30,
+                          ),
+                          Text(
+                            'Please Select Account Type',
+                            style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.center,
+                          ),
+                          SizedBox(height: 20),
+                          selectProduct(),
+                          SizedBox(height: 20),
+                          _submitButton(),
+                          SizedBox(height: height * .14),
+                        ]),
 
                     //_loginAccountLabel(),
                   ],

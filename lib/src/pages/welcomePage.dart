@@ -27,22 +27,22 @@ class _WelcomePageState extends State<WelcomePage> {
         padding: EdgeInsets.symmetric(vertical: 13),
         alignment: Alignment.center,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(5)),
-            border: Border.all(color: Colors.white, width: 2),
-            // boxShadow: <BoxShadow>[
-            //   BoxShadow(
-            //       color: Color(0xffdf8e33).withAlpha(100),
-            //       offset: Offset(2, 4),
-            //       blurRadius: 8,
-            //       spreadRadius: 2)
-            // ],
-            // color: Colors.white
+          borderRadius: BorderRadius.all(Radius.circular(5)),
+          border: Border.all(color: Colors.white, width: 2),
+          // boxShadow: <BoxShadow>[
+          //   BoxShadow(
+          //       color: Color(0xffdf8e33).withAlpha(100),
+          //       offset: Offset(2, 4),
+          //       blurRadius: 8,
+          //       spreadRadius: 2)
+          // ],
+          // color: Colors.white
         ),
         child: Text(
           'Open Account Now',
           style: TextStyle(fontSize: 20,
               color: Colors.white
-              // color: Color(0xfff7892b)
+            // color: Color(0xfff7892b)
           ),
         ),
       ),
@@ -143,7 +143,7 @@ class _WelcomePageState extends State<WelcomePage> {
                   begin: Alignment.bottomLeft,
                   end: Alignment.topRight,
                   // colors: [Color(0xfffbb448), Color(0xffe46b10)]
-                colors: [Colors.green, Colors.green.shade700, Colors.green.shade900]
+                  colors: [Colors.green, Colors.green.shade700, Colors.green.shade900]
               )
           ),
           child: Column(
