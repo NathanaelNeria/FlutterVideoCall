@@ -16,7 +16,7 @@ class SplashScreen extends StatefulWidget {
   final Color backgroundColor;
 
   /// Style for the laodertext
-  final TextStyle styleTextUnderTheLoader;
+  final TextStyle? styleTextUnderTheLoader;
 
   /// The page where you want to navigate if you have chosen time based navigation
   /// String or Widget
@@ -26,7 +26,7 @@ class SplashScreen extends StatefulWidget {
   final double photoSize;
 
   /// Triggered if the user clicks the screen
-  final GestureTapCallback onClick;
+  final GestureTapCallback? onClick;
 
   /// Loader color
   final Color loaderColor;
@@ -35,23 +35,23 @@ class SplashScreen extends StatefulWidget {
   final Image image;
 
   /// Loading text, default: 'Loading'
-  final Text loadingText;
+  final Text? loadingText;
 
   /// Padding for long Loading text, default: EdgeInsets.all(0)
-  final EdgeInsets loadingTextPadding;
+  final EdgeInsets? loadingTextPadding;
 
   /// Whether to display a loader or not
   final bool useLoader;
 
   /// Custom page route if you have a custom transition you want to play
-  final Route pageRoute;
+  final Route? pageRoute;
 
   /// RouteSettings name for pushing a route with custom name (if left out in MaterialApp route names) to navigator stack (Contribution by Ramis Mustafa)
-  final String routeName;
+  final String? routeName;
 
   /// expects a function that returns a future, when this future is returned it will navigate
   /// Future<String> or Future<Widget>
-  final Future<Object> navigateAfterFuture;
+  final Future<Object>? navigateAfterFuture;
 
   static const _defaultStyleTextUnderTheLoader = TextStyle(
     fontSize: 18.0,
@@ -62,21 +62,21 @@ class SplashScreen extends StatefulWidget {
   /// Use one of the provided factory constructors instead of.
   @protected
   SplashScreen({
-    required this.loaderColor,
-    required this.navigateAfterFuture,
-    required this.seconds,
-    required this.photoSize,
-    required this.pageRoute,
-    required this.onClick,
-    required this.navigateAfterSeconds,
-    required this.title,
-    required this.backgroundColor,
-    required this.styleTextUnderTheLoader,
-    required this.image,
-    required this.loadingText,
-    required this.loadingTextPadding,
-    required this.useLoader,
-    required this.routeName,
+     required this.loaderColor,
+     this.navigateAfterFuture,
+     required this.seconds,
+     required this.photoSize,
+     this.pageRoute,
+     this.onClick,
+     required this.navigateAfterSeconds,
+     required this.title,
+     required this.backgroundColor,
+     this.styleTextUnderTheLoader,
+     required this.image,
+     this.loadingText,
+     this.loadingTextPadding,
+     required this.useLoader,
+     this.routeName,
   })  : assert(
   routeName == null ||
       (routeName is String && routeName.startsWith('/')),
@@ -106,7 +106,6 @@ class SplashScreen extends StatefulWidget {
         );
 
   factory SplashScreen.timer({
-    //required int seconds,
     required int seconds,
     required Color loaderColor,
     Color backgroundColor = Colors.white,
@@ -115,7 +114,7 @@ class SplashScreen extends StatefulWidget {
     EdgeInsets loadingTextPadding = const EdgeInsets.only(top: 10.0),
     required Image image,
     Route? pageRoute,
-    Object? navigateAfterSeconds,
+    required Object navigateAfterSeconds,
     Future<Object>? navigateAfterFuture,
     Text title = const Text(''),
     TextStyle styleTextUnderTheLoader = _defaultStyleTextUnderTheLoader,
@@ -129,14 +128,9 @@ class SplashScreen extends StatefulWidget {
         loadingTextPadding: loadingTextPadding,
         backgroundColor: backgroundColor,
         image: image,
-        navigateAfterSeconds: navigateAfterSeconds!,
+        navigateAfterSeconds: navigateAfterSeconds,
         title: title,
-        styleTextUnderTheLoader: styleTextUnderTheLoader,
         useLoader: useLoader,
-        routeName: '',
-        pageRoute: pageRoute!,
-        onClick:(){},
-        navigateAfterFuture: navigateAfterFuture!,
       );
 
   // factory SplashScreen.future({
@@ -196,7 +190,7 @@ class _SplashScreenState extends State<SplashScreen> {
         } else if (widget.navigateAfterSeconds is Widget) {
           Navigator.of(context).pushReplacement(
             widget.pageRoute != null
-                ? widget.pageRoute
+                ? widget.pageRoute!
                 : MaterialPageRoute(
               settings: widget.routeName != null
                   ? RouteSettings(name: widget.routeName)
@@ -207,7 +201,7 @@ class _SplashScreenState extends State<SplashScreen> {
         }
       });
     } else {
-      widget.navigateAfterFuture.then((navigateTo) {
+      widget.navigateAfterFuture!.then((navigateTo) {
         if (navigateTo is String) {
           // It's fairly safe to assume this is using the in-built material
           // named route component
@@ -215,7 +209,7 @@ class _SplashScreenState extends State<SplashScreen> {
         } else if (navigateTo is Widget) {
           Navigator.of(context).pushReplacement(
             widget.pageRoute != null
-                ? widget.pageRoute
+                ? widget.pageRoute!
                 : MaterialPageRoute(
                 settings: widget.routeName != null
                     ? RouteSettings(name: widget.routeName)
@@ -292,7 +286,7 @@ class _SplashScreenState extends State<SplashScreen> {
                         padding: const EdgeInsets.only(top: 20.0),
                       ),
                       Padding(
-                        padding: widget.loadingTextPadding,
+                        padding: widget.loadingTextPadding!,
                         child: widget.loadingText,
                       ),
                     ],
