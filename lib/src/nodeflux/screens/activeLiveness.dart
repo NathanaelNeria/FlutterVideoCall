@@ -64,11 +64,17 @@ class _PlatformChannelState extends State<PlatformChannel> {
   String _batteryLevel = 'Battery level: unknown.';
   String _chargingStatus = 'Battery status: unknown.';
 
+
+
+
+
+
   Future<void> _getBatteryLevel() async {
     String batteryLevel;
     try {
-      final int? result = await methodChannel.invokeMethod('getBatteryLevel');
-      batteryLevel = 'Battery level: $result%.';
+      final result;
+      result = await methodChannel.invokeMethod('getBatteryLevel');
+      batteryLevel = 'Battery level: ' '$result';
     } on PlatformException {
       batteryLevel = 'Failed to get battery level.';
     }

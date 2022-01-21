@@ -161,7 +161,7 @@ class MyApp extends StatelessWidget {
       image: Image.asset('images/logoist.jpg'),
       photoSize: 150.0,
       backgroundColor: Colors.white,
-      loaderColor: Colors.red,
+      loaderColor: Colors.red, pageRoute: null,
     );
   }
 }
