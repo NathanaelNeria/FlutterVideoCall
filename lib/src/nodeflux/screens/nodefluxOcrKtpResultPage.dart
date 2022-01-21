@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc_demo/src/nodeflux/models/dukcapilFail.dart';
 import 'package:flutter_webrtc_demo/src/nodeflux/models/dukcapilOngoing.dart';
-import 'package:flutter_webrtc_demo/src/nodeflux/screens/coreBankingPageNTBS.dart';
-import 'package:flutter_webrtc_demo/src/pages/congratulationPage.dart';
 import 'package:flutter_webrtc_demo/src/pages/welcomePage.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -39,6 +37,7 @@ import '../models/modelLivenessNathan.dart';
 import '../models/face_pair_not_match.dart';
 import '../models/no_face_detected.dart';
 import '../models/dukcapilFaceMatch.dart';
+import 'coreBankingPageNTBS.dart';
 
 class NodefluxOcrKtpResultPage extends StatefulWidget {
   final NodefluxResult2Model model;
@@ -1283,7 +1282,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
       maxLength: 16,
       controller: nikController,
       onChanged: (value){
-        widget.model!.nik = value;
+        widget.model.nik = value;
         print(value);
       },
       keyboardType: TextInputType.number,

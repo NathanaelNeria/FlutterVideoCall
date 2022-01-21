@@ -345,8 +345,8 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
 
       File picture = await _picker.pickImage(source: source) as File;
 
-      int? appFileDirectory=picture?.path.lastIndexOf('/');
-      String? resultDirectory=picture?.path.substring(0,appFileDirectory!+1); // = appdocdir+'/Pictures/'
+      int? appFileDirectory=picture.path.lastIndexOf('/');
+      String? resultDirectory=picture.path.substring(0,appFileDirectory!+1); // = appdocdir+'/Pictures/'
       String resultPath=resultDirectory!+DateFormat('yyyyMMddHHmmss').format(DateTime.now())+'.jpg';
       //String resultPath='/storage/emulated/0/Android/data/com.smartherd.flutter_app_section2/files/Pictures/'+DateFormat('yyyyMMddHHmmss').format(DateTime.now())+'.jpg';
 
@@ -364,11 +364,11 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
 
           var i = 1;
 
-          while ((resultLength! < minPhotoSize || resultLength! > maxPhotoSize) && photoQuality>0 && photoQuality<100) {
+          while ((resultLength < minPhotoSize || resultLength > maxPhotoSize) && photoQuality>0 && photoQuality<100) {
             if (result!=null)
               await result.delete();
             resultPath=resultDirectory+DateFormat('yyyyMMddHHmmss').format(DateTime.now())+'.jpg';
-            photoQuality=(resultLength>maxPhotoSize)? photoQuality-10:photoQuality+10;
+            photoQuality=(resultLength > maxPhotoSize)? photoQuality-10:photoQuality+10;
             result = await FlutterImageCompress.compressAndGetFile(
               picture.path, resultPath,
               quality: photoQuality,
