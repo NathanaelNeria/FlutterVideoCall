@@ -48,11 +48,9 @@ class _DatetimePickerWidgetState extends State<DatetimePickerWidget> {
     final initialDate = DateTime.now();
     final newDate = await showDatePicker(
       context: context,
-      initialDate: dateTime ?? initialDate,
+      initialDate: initialDate,
       firstDate: DateTime.now(),
       lastDate: DateTime(DateTime.now().year + 1),
-      // firstDate: DateTime.now(),
-      // lastDate: DateTime(DateTime.now().month+1),
     );
 
     if (newDate == null) return null;

@@ -43,14 +43,14 @@ class _WebrtcRoomState extends State<WebrtcRoom> {
   WebrtcSignaling signaling = WebrtcSignaling();
   RTCVideoRenderer _localRenderer = RTCVideoRenderer();
   RTCVideoRenderer _remoteRenderer = RTCVideoRenderer();
-  String roomId = '';
+  String? roomId;
   TextEditingController textEditingController = TextEditingController(text: '');
   late Timer _timer;
 
-  late TextEditingController _scheduledDateTimeController;
-  String _scheduledDateTimeValueChanged = '';
-  String _scheduledDateTimeValueToValidate = '';
-  String _scheduledDateTimeValueSaved = '';
+  // late TextEditingController _scheduledDateTimeController;
+  // String _scheduledDateTimeValueChanged = '';
+  // String _scheduledDateTimeValueToValidate = '';
+  // String _scheduledDateTimeValueSaved = '';
 
   var VCHandled1;
   var VCHandled2;
@@ -64,7 +64,7 @@ class _WebrtcRoomState extends State<WebrtcRoom> {
   void initState() {
     FirebaseFirestore db = FirebaseFirestore.instance;
     Intl.defaultLocale = 'pt_BR';
-    _scheduledDateTimeController = TextEditingController(text: DateTime.now().toString());
+    // _scheduledDateTimeController = TextEditingController(text: DateTime.now().toString());
     //_getDefaultDateTimeValue();
 
     // _localRenderer.initialize();
@@ -84,7 +84,7 @@ class _WebrtcRoomState extends State<WebrtcRoom> {
     signaling.createRoom(_remoteRenderer, db).then((data) {
       _timer = new Timer(const Duration(seconds: 3), (){
         setState(() {
-          roomId=data;
+          roomId=data!;
         });
       });
     });
@@ -111,14 +111,14 @@ class _WebrtcRoomState extends State<WebrtcRoom> {
     await _remoteRenderer.initialize();
   }
 
-  Future<void> _getDefaultDateTimeValue() async {
-    await Future.delayed(const Duration(seconds: 3), () {
-      setState(() {
-        //_initialValue = '2000-10-22 14:30';
-        _scheduledDateTimeController.text = '2001-10-21 15:31';
-      });
-    });
-  }
+  // Future<void> _getDefaultDateTimeValue() async {
+  //   await Future.delayed(const Duration(seconds: 3), () {
+  //     setState(() {
+  //       _initialValue = '2000-10-22 14:30';
+  //       _scheduledDateTimeController.text = '2001-10-21 15:31';
+  //     });
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -263,43 +263,43 @@ class _WebrtcRoomState extends State<WebrtcRoom> {
     );
   }
 
-  Widget showCalendarScheduleButton() {
-    return new Padding(
-        padding: EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 0.0),
-        child: SizedBox(
-          height: 40.0,
-          child: new RaisedButton(
-            elevation: 5.0,
-            shape: new RoundedRectangleBorder(
-                borderRadius: new BorderRadius.circular(30.0)),
-            color: Colors.lightBlue,
-            child: new Text(
-              //'Ambil Foto Selfie',
-                'Schedule Video Call',
-                style: new TextStyle(fontSize: 12.0, color: Colors.white)),
-            //onPressed: () { navigateToPage('Login Face');}
-            onPressed: () {
-              DateTimePicker(
-                type: DateTimePickerType.dateTime,
-                dateMask: 'd MMMM yyyy - hh:mm',
-                controller: _scheduledDateTimeController,
-                //initialValue: _initialValue,
-                firstDate: DateTime(2000),
-                lastDate: DateTime(2100),
-                //icon: Icon(Icons.event),
-                dateLabelText: 'Date Time',
-                use24HourFormat: false,
-                locale: Locale('en', 'US'),
-                onChanged: (val) => setState(() => _scheduledDateTimeValueChanged = val),
-                validator: (val) {
-                  setState(() => _scheduledDateTimeValueToValidate = val ?? '');
-                  return null;
-                },
-                onSaved: (val) => setState(() => _scheduledDateTimeValueSaved = val ?? ''),
-              );
-              //pop up calendar and time
-            },
-          ),
-        ));
-  }
+  // Widget showCalendarScheduleButton() {
+  //   return new Padding(
+  //       padding: EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 0.0),
+  //       child: SizedBox(
+  //         height: 40.0,
+  //         child: new RaisedButton(
+  //           elevation: 5.0,
+  //           shape: new RoundedRectangleBorder(
+  //               borderRadius: new BorderRadius.circular(30.0)),
+  //           color: Colors.lightBlue,
+  //           child: new Text(
+  //             //'Ambil Foto Selfie',
+  //               'Schedule Video Call',
+  //               style: new TextStyle(fontSize: 12.0, color: Colors.white)),
+  //           //onPressed: () { navigateToPage('Login Face');}
+  //           onPressed: () {
+  //             DateTimePicker(
+  //               type: DateTimePickerType.dateTime,
+  //               dateMask: 'd MMMM yyyy - hh:mm',
+  //               controller: _scheduledDateTimeController,
+  //               //initialValue: _initialValue,
+  //               firstDate: DateTime(2000),
+  //               lastDate: DateTime(2100),
+  //               //icon: Icon(Icons.event),
+  //               dateLabelText: 'Date Time',
+  //               use24HourFormat: false,
+  //               locale: Locale('en', 'US'),
+  //               onChanged: (val) => setState(() => _scheduledDateTimeValueChanged = val),
+  //               validator: (val) {
+  //                 setState(() => _scheduledDateTimeValueToValidate = val ?? '');
+  //                 return null;
+  //               },
+  //               onSaved: (val) => setState(() => _scheduledDateTimeValueSaved = val ?? ''),
+  //             );
+  //             //pop up calendar and time
+  //           },
+  //         ),
+  //       ));
+  // }
 }

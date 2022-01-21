@@ -50,6 +50,8 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
   File? _npwpImage;
   File? _selfieEktpImage;
 
+  final _formKey = GlobalKey<FormState>();
+
   TextEditingController nikController = TextEditingController();
   TextEditingController nameController = TextEditingController();
   TextEditingController birthdateController = TextEditingController();
@@ -62,7 +64,6 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
   //firestore
    String? firestoreId;
    FirebaseFirestore? db;
-   final _formKey = GlobalKey<FormState>();
    String? firestoreName;
    String? firestoreNik;
    String? firestoreAddress;
@@ -345,9 +346,9 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
 
       File picture = await _picker.pickImage(source: source) as File;
 
-      int? appFileDirectory=picture.path.lastIndexOf('/');
-      String? resultDirectory=picture.path.substring(0,appFileDirectory!+1); // = appdocdir+'/Pictures/'
-      String resultPath=resultDirectory!+DateFormat('yyyyMMddHHmmss').format(DateTime.now())+'.jpg';
+      int appFileDirectory=picture.path.lastIndexOf('/');
+      String resultDirectory=picture.path.substring(0,appFileDirectory+1); // = appdocdir+'/Pictures/'
+      String resultPath=resultDirectory+DateFormat('yyyyMMddHHmmss').format(DateTime.now())+'.jpg';
       //String resultPath='/storage/emulated/0/Android/data/com.smartherd.flutter_app_section2/files/Pictures/'+DateFormat('yyyyMMddHHmmss').format(DateTime.now())+'.jpg';
 
       int photoQuality=90;
@@ -355,12 +356,12 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
 
       if(picture != null) {
         try {
-          var result = await FlutterImageCompress.compressAndGetFile(
+          File? result = await FlutterImageCompress.compressAndGetFile(
             picture.path, resultPath,
             quality: photoQuality,
           );
 
-          int? resultLength= result?.lengthSync();
+          int resultLength= result!.lengthSync();
 
           var i = 1;
 
@@ -368,12 +369,12 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
             if (result!=null)
               await result.delete();
             resultPath=resultDirectory+DateFormat('yyyyMMddHHmmss').format(DateTime.now())+'.jpg';
-            photoQuality=(resultLength > maxPhotoSize)? photoQuality-10:photoQuality+10;
+            photoQuality=(resultLength>maxPhotoSize)? photoQuality-10:photoQuality+10;
             result = await FlutterImageCompress.compressAndGetFile(
               picture.path, resultPath,
               quality: photoQuality,
             );
-            resultLength=result?.lengthSync();
+            resultLength=result!.lengthSync();
           }
 
           //comment end
@@ -558,17 +559,17 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
       int photoQuality=50;
       if(picture != null) {
         try {
-          var result = await FlutterImageCompress.compressAndGetFile(
+          File? result = await FlutterImageCompress.compressAndGetFile(
             picture.absolute.path, resultPath,
             quality: photoQuality,
           );
 
           int pictureLength=picture.lengthSync();
-          int? resultLength= result?.lengthSync();
+          int resultLength= result!.lengthSync();
 
           var i = 1;
 
-          while ((resultLength! < minPhotoSize || resultLength! > maxPhotoSize) && photoQuality>0 && photoQuality<100) {
+          while ((resultLength < minPhotoSize || resultLength > maxPhotoSize) && photoQuality>0 && photoQuality<100) {
             if (result!=null)
               await result.delete();
             resultPath=resultDirectory+DateFormat('yyyyMMddHHmmss').format(DateTime.now())+'.jpg';
@@ -577,7 +578,7 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
               picture.absolute.path, resultPath,
               quality: photoQuality,
             );
-            resultLength=result?.lengthSync();
+            resultLength=result!.lengthSync();
           }
 
           double sizeinKb=resultLength.toDouble()/1024;
@@ -633,17 +634,17 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
       int photoQuality=90;
       if(picture != null) {
         try {
-          var result = await FlutterImageCompress.compressAndGetFile(
+          File? result = await FlutterImageCompress.compressAndGetFile(
             picture.absolute.path, resultPath,
             quality: photoQuality,
           );
 
           int pictureLength=picture.lengthSync();
-          int? resultLength=result?.lengthSync();
+          int resultLength=result!.lengthSync();
 
           var i = 1;
 
-          while ((resultLength! < minPhotoSize || resultLength! > maxPhotoSize) && photoQuality>0 && photoQuality<100) {
+          while ((resultLength < minPhotoSize || resultLength > maxPhotoSize) && photoQuality>0 && photoQuality<100) {
             if (result!=null)
               await result.delete();
             resultPath=resultDirectory+DateFormat('yyyyMMddHHmmss').format(DateTime.now())+'.jpg';
@@ -652,7 +653,7 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
               picture.absolute.path, resultPath,
               quality: photoQuality,
             );
-            resultLength=result?.lengthSync();
+            resultLength=result!.lengthSync();
           }
 
           double sizeinKb=resultLength.toDouble()/1024;
@@ -805,7 +806,7 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
             });
           }
         } else {
-          dialog=nodefluxDataModelSync2.message;
+          dialog=nodefluxDataModelSync2.message!;
           matchLivenessFeedback=nodefluxDataModelSync2.message!;
           isPassed=false;
         }
@@ -847,17 +848,17 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
       int photoQuality=50;
       if(picture != null) {
         try {
-          var result = await FlutterImageCompress.compressAndGetFile(
+          File? result = await FlutterImageCompress.compressAndGetFile(
             picture.absolute.path, resultPath,
             quality: photoQuality,
           );
 
           int pictureLength=picture.lengthSync();
-          int? resultLength=result?.lengthSync();
+          int resultLength=result!.lengthSync();
 
           var i = 1;
 
-          while ((resultLength! < minPhotoSize || resultLength! > maxPhotoSize) && photoQuality>0 && photoQuality<100) {
+          while ((resultLength < minPhotoSize || resultLength > maxPhotoSize) && photoQuality>0 && photoQuality<100) {
             if (result!=null)
               await result.delete();
             resultPath=resultDirectory+DateFormat('yyyyMMddHHmmss').format(DateTime.now())+'.jpg';
@@ -866,10 +867,10 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
               picture.absolute.path, resultPath,
               quality: photoQuality,
             );
-            resultLength=result?.lengthSync();
+            resultLength=result!.lengthSync();
           }
 
-          double sizeinKb=resultLength!.toDouble()/1024;
+          double sizeinKb=resultLength.toDouble()/1024;
           debugPrint('Photo compressed size is '+sizeinKb.toString()+' kb');
           //print(pictureLength+resultLength);
           await picture.delete();
@@ -1121,7 +1122,6 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
     return Scaffold(
         body:
             Container(
@@ -1225,513 +1225,11 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
     );
   }
 
-  Card buildItem(DocumentSnapshot doc) {
-    return Card(
-        child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children:<Widget> [
-                  Text(
-                      'name: ${(doc.data() as dynamic)['name']}',
-                      style: TextStyle(fontSize: 24)
-                  ),
-                  Text(
-                      'nik: ${(doc.data() as dynamic)['nik']}',
-                      style: TextStyle(fontSize: 24)
-                  ),
-                  Text(
-                      'birthdate: ${(doc.data() as dynamic)['birthdate']}',
-                      style: TextStyle(fontSize: 24)
-                  ),
-                  Text(
-                      'birthday: ${(doc.data() as dynamic)['birthday']}',
-                      style: TextStyle(fontSize: 24)
-                  ),
-                  Text(
-                      'email: ${(doc.data() as dynamic)['email']}',
-                      style: TextStyle(fontSize: 24)
-                  ),
-                  Text(
-                      'mobilePhone: ${(doc.data() as dynamic)['mobilePhone']}',
-                      style: TextStyle(fontSize: 24)
-                  ),
-                  SizedBox(height: 12),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.end,
-                  //   children: <Widget>[
-                  //     FlatButton(
-                  //       onPressed: () =>
-                  //     )
-                  //   ],
-                  // )
-                ]
-            )
-        )
-    );
-  }
-
-  Widget build2(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
-    return Scaffold(
-        body: Container(
-          height: height,
-          child: Stack(
-            children: <Widget>[
-              Positioned(
-                  top: -height * .15,
-                  right: -MediaQuery.of(context).size.width * .4,
-                  child: BezierContainer()),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      SizedBox(height: height * .2),
-                      _title(),
-                      SizedBox(height: 50),
-                      // _ektpFormWidget(),
-                      SizedBox(height: 20),
-                      _submitButton(),
-                      SizedBox(height: 20)
-                      // Container(
-                      //   padding: EdgeInsets.symmetric(vertical: 10),
-                      //   alignment: Alignment.centerRight,
-                      //   child: Text('Forgot Password ?',
-                      //       style: TextStyle(
-                      //           fontSize: 14, fontWeight: FontWeight.w500)),
-                      // ),
-                      //_divider(),
-                      //_facebookButton(),
-                      //SizedBox(height: height * .055),
-                      //_createAccountLabel(),
-                    ],
-                  ),
-                ),
-              ),
-              Positioned(top: 40, left: 0, child: _backButton()),
-              // firestore start
-              ListView(
-                padding: EdgeInsets.all(8),
-                children: <Widget>[
-                  Form(
-                    key: _formKey,
-                    child: buildTextFormFieldName(),
-                  ),
-                  Row (
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      RaisedButton(
-                        onPressed: createData,
-                        child: Text('Create', style: TextStyle(color: Colors.black)),
-                        color: Colors.green,
-                      ),
-                      RaisedButton(
-                        onPressed: firestoreId != null? readData: null,
-                        child: Text('Read', style: TextStyle(color: Colors.black)),
-                        color: Colors.blue,
-                      )
-
-                    ],
-                  ),
-                ],
-              )
-              // firestore end
-            ],
-          ),
-        ));
-  }
-
-  void createData() async {
-    if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
-      await Firebase.initializeApp();
-      await db!.collection('form').doc('user').update({'name': '$firestoreName', 'nik': '$firestoreNik', 'address': '$firestoreAddress', 'dob': '$firestoreBirthdate', 'pob': '$firestoreBirthplace', 'mobile': '$firestoreMobilePhone', 'email': '$firestoreEmail'});
-      //DocumentReference ref = await db.collection('form').add({'name': '$firestoreName', 'nik': '$firestoreNik', 'address': '$firestoreAddress', 'birthdate': '$firestoreBirthdate', 'birthday': '$firestoreBirthday', 'mobilePhone': '$firestoreMobilePhone', 'email': '$firestoreEmail'});
-      //setState(() => firestoreId = ref.documentID);
-      //print (ref.documentID);
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              //builder: (BuildContext context) => CallSample(host: 'demo.cloudwebrtc.com')));
-              builder: (BuildContext context) => WebrtcRoom()));
-    }
-  }
-
   void goToResultPage() async {
     if (_formKey.currentState!.validate()) {
-      //_formKey.currentState.save();
-      //await db.collection('form').document('user').updateData({'name': '$firestoreName', 'nik': '$firestoreNik', 'address': '$firestoreAddress', 'dob': '$firestoreBirthdate', 'pob': '$firestoreBirthplace', 'mobile': '$firestoreMobilePhone', 'email': '$firestoreEmail'});
-
       Navigator.of(context).push(MaterialPageRoute(
-        // builder: (context) => NodefluxOcrKtpResult(nodefluxResultModel.result[0])));
           builder: (context) => NodefluxOcrKtpResultPage(model: _nodefluxResult2Model!, ektpImage: _ektpImage!)));
     }
-  }
-
-  void readData() async {
-    await Firebase.initializeApp();
-    DocumentSnapshot snapshot = await db!.collection('form').doc(firestoreId).get();
-    print ((snapshot.data() as dynamic)['name']);
-  }
-
-  TextFormField buildTextFormFieldName(){
-    return TextFormField (
-      controller: nameController,
-      decoration: new InputDecoration(
-          hintText: 'Nama',
-          icon: new Icon(
-            Icons.person,
-            color: Colors.grey,
-          )),
-      // validator: (value) {
-      //   if (value.isEmpty) {
-      //     return 'Please enter some text';
-      //   }
-      // },
-      onSaved: (value) => firestoreName = value,
-    );
-  }
-
-  TextFormField buildTextFormFieldNik(){
-    return TextFormField (
-      maxLength: 16,
-      controller: nikController,
-      decoration: new InputDecoration(
-          hintText: 'NIK',
-          icon: new Icon(
-            Icons.credit_card,
-            color: Colors.grey,
-          )),
-      // validator: (value) {
-      //   if (value.isEmpty) {
-      //     return 'Please enter some text';
-      //   }
-      // },
-      onSaved: (value) => firestoreNik = value,
-    );
-  }
-
-  TextFormField buildTextFormFieldAddress(){
-    return TextFormField (
-      controller: addressController,
-      decoration: new InputDecoration(
-          hintText: 'Alamat',
-          icon: new Icon(
-            Icons.home,
-            color: Colors.grey,
-          )),
-      // validator: (value) {
-      //   if (value.isEmpty) {
-      //     return 'Please enter some text';
-      //   }
-      // },
-      onSaved: (value) => firestoreAddress = value,
-    );
-  }
-
-  TextFormField buildTextFormFieldBirthdate(){
-    return TextFormField (
-      controller: birthdateController,
-      decoration: new InputDecoration(
-          hintText: 'Tanggal Lahir',
-          icon: new Icon(
-            Icons.calendar_today,
-            color: Colors.grey,
-          )),
-      // validator: (value) {
-      //   if (value.isEmpty) {
-      //     return 'Please enter some text';
-      //   }
-      // },
-      onSaved: (value) => firestoreBirthdate = value,
-    );
-  }
-
-  TextFormField buildTextFormFieldBirthplace(){
-    return TextFormField (
-      controller: birthplaceController,
-      decoration: new InputDecoration(
-          hintText: 'Tempat Lahir',
-          icon: new Icon(
-            Icons.location_city,
-            color: Colors.grey,
-          )),
-      // validator: (value) {
-      //   if (value.isEmpty) {
-      //     return 'Please enter some text';
-      //   }
-      // },
-      onSaved: (value) => firestoreBirthplace = value,
-    );
-  }
-
-  TextFormField buildTextFormFieldGender(){
-    return TextFormField (
-      controller: genderController,
-      maxLength: 16,
-      decoration: new InputDecoration(
-          hintText: 'Jenis Kelamin',
-          icon: new Icon(
-            Icons.person,
-            color: Colors.grey,
-          )),
-      // validator: (value) {
-      //   if (value.isEmpty) {
-      //     return 'Please enter some text';
-      //   }
-      // },
-      onSaved: (value) => firestoreGender = value,
-    );
-  }
-
-  TextFormField buildTextFormFieldRtRw(){
-    return TextFormField (
-        controller:rtrwController,
-        //maxLength: 16,
-      decoration: new InputDecoration(
-          hintText: 'RT/RW',
-          icon: new Icon(
-            Icons.map,
-            color: Colors.grey,
-          )),
-      // validator: (value) {
-      //   if (value.isEmpty) {
-      //     return 'Please enter some text';
-      //   }
-      // },
-      onSaved: (value) => firestoreRtRw = value,
-    );
-  }
-
-  TextFormField buildTextFormFieldKecamatan(){
-    return TextFormField (
-        controller:kecamatanController,
-        //maxLength: 16,
-        decoration: new InputDecoration(
-          hintText: 'Kecamatan',
-          icon: new Icon(
-            Icons.map,
-            color: Colors.grey,
-          )),
-      // validator: (value) {
-      //   if (value.isEmpty) {
-      //     return 'Please enter some text';
-      //   }
-      // },
-      onSaved: (value) => firestoreKecamatan = value,
-    );
-  }
-
-  TextFormField buildTextFormFieldReligion(){
-    return TextFormField (
-      //maxLength: 16,
-        controller:religionController,
-        decoration: new InputDecoration(
-          hintText: 'Agama',
-          icon: new Icon(
-            Icons.home_outlined,
-            color: Colors.grey,
-          )),
-      // validator: (value) {
-      //   if (value.isEmpty) {
-      //     return 'Please enter some text';
-      //   }
-      // },
-      onSaved: (value) => firestoreReligion = value,
-    );
-  }
-
-  TextFormField buildTextFormFieldMaritalStatus(){
-    return TextFormField (
-      //maxLength: 16,
-        controller:maritalStatusController,
-        decoration: new InputDecoration(
-          hintText: 'Status Perkawinan',
-          icon: new Icon(
-            Icons.home_outlined,
-            color: Colors.grey,
-          )),
-      // validator: (value) {
-      //   if (value.isEmpty) {
-      //     return 'Please enter some text';
-      //   }
-      // },
-      onSaved: (value) => firestoreMaritalStatus = value,
-    );
-  }
-
-  TextFormField buildTextFormFieldWorkfield(){
-    return TextFormField (
-        controller:workfieldController,
-        //maxLength: 16,
-      decoration: new InputDecoration(
-          hintText: 'Pekerjaan',
-          icon: new Icon(
-            Icons.location_city,
-            color: Colors.grey,
-          )),
-      // validator: (value) {
-      //   if (value.isEmpty) {
-      //     return 'Please enter some text';
-      //   }
-      // },
-      onSaved: (value) => firestoreWorkfield = value,
-    );
-  }
-
-  TextFormField buildTextFormFieldProvince(){
-    return TextFormField (
-        controller:provinceController,
-        //maxLength: 16,
-        decoration: new InputDecoration(
-          hintText: 'Provinsi',
-          icon: new Icon(
-            Icons.map,
-            color: Colors.grey,
-          )),
-      // validator: (value) {
-      //   if (value.isEmpty) {
-      //     return 'Please enter some text';
-      //   }
-      // },
-      onSaved: (value) => firestoreProvince = value,
-    );
-  }
-
-  TextFormField buildTextFormFieldExpiry(){
-    return TextFormField (
-      //maxLength: 16,
-        controller:expiryController,
-        decoration: new InputDecoration(
-          hintText: 'Berlaku Hingga',
-          icon: new Icon(
-            Icons.calendar_today,
-            color: Colors.grey,
-          )),
-      // validator: (value) {
-      //   if (value.isEmpty) {
-      //     return 'Please enter some text';
-      //   }
-      // },
-      onSaved: (value) => firestoreExpiry = value,
-    );
-  }
-
-  TextFormField buildTextFormFieldBloodType(){
-    return TextFormField (
-        controller:bloodTypeController,
-        //maxLength: 16,
-      decoration: new InputDecoration(
-          hintText: 'Golongan Darah',
-          icon: new Icon(
-            Icons.account_box_rounded,
-            color: Colors.grey,
-          )),
-      // validator: (value) {
-      //   if (value.isEmpty) {
-      //     return 'Please enter some text';
-      //   }
-      // },
-      onSaved: (value) => firestoreBloodType = value,
-    );
-  }
-
-  TextFormField buildTextFormFieldKabupatenKota(){
-    return TextFormField (
-      //maxLength: 16,
-      controller: kabupatenKotaController,
-      decoration: new InputDecoration(
-          hintText: 'Kabupaten / Kota',
-          icon: new Icon(
-            Icons.person,
-            color: Colors.grey,
-          )),
-      // validator: (value) {
-      //   if (value.isEmpty) {
-      //     return 'Please enter some text';
-      //   }
-      // },
-      onSaved: (value) => firestoreKabupatenKota = value,
-    );
-  }
-
-  TextFormField buildTextFormFieldKelurahanDesa(){
-    return TextFormField (
-        controller:kelurahanDesaController,
-        //maxLength: 16,
-      decoration: new InputDecoration(
-          hintText: 'Kelurahan / Desa',
-          icon: new Icon(
-            Icons.location_city,
-            color: Colors.grey,
-          )),
-      // validator: (value) {
-      //   if (value.isEmpty) {
-      //     return 'Please enter some text';
-      //   }
-      // },
-      onSaved: (value) => firestoreKelurahanDesa = value,
-    );
-  }
-
-
-  TextFormField buildTextFormFieldNationality(){
-    return TextFormField (
-      //maxLength: 16,
-        controller:nationalityController,
-        decoration: new InputDecoration(
-          hintText: 'Kewarganegaraan',
-          icon: new Icon(
-            Icons.credit_card,
-            color: Colors.grey,
-          )),
-      // validator: (value) {
-      //   if (value.isEmpty) {
-      //     return 'Please enter some text';
-      //   }
-      // },
-      onSaved: (value) => firestoreNationality = value,
-    );
-  }
-
-
-  TextFormField buildTextFormFieldEmail(){
-    return TextFormField (
-        controller:emailController,
-        decoration: new InputDecoration(
-          hintText: 'Email',
-          icon: new Icon(
-            Icons.mail,
-            color: Colors.grey,
-          )),
-      // validator: (value) {
-      //   if (value.isEmpty) {
-      //     return 'Please enter some text';
-      //   }
-      // },
-      onSaved: (value) => firestoreEmail = value,
-    );
-  }
-
-  TextFormField buildTextFormFieldMobilePhone(){
-    return TextFormField (
-        controller:mobilePhoneController,
-        decoration: new InputDecoration(
-          hintText: 'Mobile Phone Number (e.g. 08xxxx)',
-          icon: new Icon(
-            Icons.phone_android,
-            color: Colors.grey,
-          )),
-      // validator: (value) {
-      //   if (value.isEmpty) {
-      //     return 'Please enter some text';
-      //   }
-      // },
-      onSaved: (value) => firestoreMobilePhone = value,
-    );
   }
 
   Future uploadImage(File fileVar, String fileName) async {
