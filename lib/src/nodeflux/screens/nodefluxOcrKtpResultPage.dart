@@ -54,7 +54,7 @@ class NodefluxOcrKtpResultPage extends StatefulWidget {
 }
 
 class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
-  Null selectedbirthdate=null;
+   // selectedbirthdate=null;
    File? _imageFile;
    ImagePicker _picker= ImagePicker();
    File? ektpImage;
@@ -62,7 +62,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
    File? _npwpImage;
    File? _selfieEktpImage;
 
- late  bool? isEmail = false;
+   bool isEmail = false;
 
   TextEditingController nikController = TextEditingController();
   TextEditingController nameController = TextEditingController();
@@ -74,40 +74,40 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
       bloodTypeController, kabupatenKotaController, kelurahanDesaController, nationalityController;
 
   //firestore
-  String? firestoreId;
+  late String firestoreId;
   final db = FirebaseFirestore.instance;
   final _formKey = GlobalKey<FormState>();
-  String? firestoreName;
-  String? firestoreNik;
-  String? firestoreAddress;
-  String? firestoreBirthdate;
-  String? firestoreBirthplace;
-  String? firestoreGender;
-  String? firestoreRtRw;
-  String? firestoreKecamatan;
-  String? firestoreReligion;
-  String? firestoreMaritalStatus;
-  String? firestoreWorkfield;
-  String? firestoreProvince;
-  String? firestoreExpiry;
-  String? firestoreBloodType;
-  String? firestoreKabupatenKota;
-  String? firestoreKelurahanDesa;
-  String? firestoreNationality;
-  String? firestoreMobilePhone;
-  String? firestoreEmail;
+  late String firestoreName;
+  late String firestoreNik;
+  late String firestoreAddress;
+  late String firestoreBirthdate;
+  late String firestoreBirthplace;
+  late String firestoreGender;
+  late String firestoreRtRw;
+  late String firestoreKecamatan;
+  late String firestoreReligion;
+  late String firestoreMaritalStatus;
+  late String firestoreWorkfield;
+  late String firestoreProvince;
+  late String firestoreExpiry;
+  late String firestoreBloodType;
+  late String firestoreKabupatenKota;
+  late String firestoreKelurahanDesa;
+  late String firestoreNationality;
+  late String firestoreMobilePhone;
+  late String firestoreEmail;
 
-  final int? minPhotoSize=256000; // 250KB
-  final int? maxPhotoSize=512000; // 500KB
+  final int minPhotoSize=256000; // 250KB
+  final int maxPhotoSize=512000; // 500KB
 
- String? ocrNama, ocrNik, ocrTempatLahir, ocrTanggalLahir, ocrJenisKelamin, ocrAlamat, ocrRtrw, ocrKecamatan, ocrAgama, ocrStatusPerkawinan,
+ late String ocrNama, ocrNik, ocrTempatLahir, ocrTanggalLahir, ocrJenisKelamin, ocrAlamat, ocrRtrw, ocrKecamatan, ocrAgama, ocrStatusPerkawinan,
       ocrPekerjaan, ocrProvinsi, ocrBerlakuHingga, ocrGolonganDarah, ocrKabupatenKota, ocrKelurahanDesa, ocrKewarganegaraan;
 
 
   TextEditingController scheduledDateTimeController = new TextEditingController(text: 'Anonymous');
   DatetimePickerWidget datetimePickerWidget = DatetimePickerWidget();
 
-  final NodefluxResult2Model? _nodefluxResult2Model = null;
+  // final NodefluxResult2Model? _nodefluxResult2Model = null;
    bool? isLive;
    bool? isMatched;
    bool nodefluxSelfie = false;
@@ -370,11 +370,11 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
 
           int? resultLength=result?.lengthSync();
 
-          while ((resultLength! < minPhotoSize! || resultLength > maxPhotoSize!) && photoQuality>0 && photoQuality<100) {
+          while ((resultLength! < minPhotoSize || resultLength > maxPhotoSize) && photoQuality>0 && photoQuality<100) {
             if (result!=null)
               await result.delete();
             resultPath=resultDirectory+DateFormat('yyyyMMddHHmmss').format(DateTime.now())+'.jpg';
-            photoQuality=(resultLength>maxPhotoSize!)? photoQuality-10:photoQuality+10;
+            photoQuality=(resultLength>maxPhotoSize)? photoQuality-10:photoQuality+10;
             result = await FlutterImageCompress.compressAndGetFile(
               picture.path, resultPath,
               quality: photoQuality,
@@ -524,7 +524,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
     String base64ImageSelfie = 'data:image/jpeg;base64,'+base64Encode(imageBytesSelfie!);
     final imageBytesEktp = widget.ektpImage.readAsBytesSync();
     String base64ImageEktp = 'data:image/jpeg;base64,'+base64Encode(imageBytesEktp);
-    String? dialog = "";
+    String dialog = "";
     bool isPassed=false;
     String currentStatus='';
     LivenessModelUnderqualified livenessModelUnderqualified = LivenessModelUnderqualified();
@@ -631,7 +631,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
           });
         }
       } else {
-        dialog= messageModel.message;
+        dialog= messageModel.message!;
         matchLivenessFeedback= messageModel.message!;
         isPassed=false;
         print(ektpImage?.exists());
@@ -639,7 +639,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
     }
     catch(e){
       debugPrint('Error $e');
-      dialog=e as String?;
+      dialog = e.toString();
     }
     setState(() {
       print(matchLivenessFeedback);
@@ -681,11 +681,11 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
 
           int resultLength=result!.lengthSync();
 
-          while ((resultLength < minPhotoSize! || resultLength > maxPhotoSize!) && photoQuality>0 && photoQuality<100) {
+          while ((resultLength < minPhotoSize || resultLength > maxPhotoSize) && photoQuality>0 && photoQuality<100) {
             if (result!=null)
               await result.delete();
             resultPath=resultDirectory+DateFormat('yyyyMMddHHmmss').format(DateTime.now())+'.jpg';
-            if ((resultLength > maxPhotoSize!)) {
+            if ((resultLength > maxPhotoSize)) {
               photoQuality = photoQuality-10;
             } else {
               photoQuality = photoQuality+10;
@@ -743,115 +743,6 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
               )
           ),
         ));
-  }
-
-  Future getImage() async {
-
-    File? registerSelfieimage;
-    //Future<bool> faceMatchFound=Future<bool>.value(false);
-    bool faceMatchFound1 = false;
-    registerSelfieimage= (await _picker.pickImage(source: ImageSource.camera)) as File;
-    if(registerSelfieimage != null) {
-      File? cropped = await ImageCropper.cropImage(
-          sourcePath: registerSelfieimage.path,
-          aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
-          compressQuality: 80,
-          maxWidth: 300,
-          maxHeight: 400,
-          compressFormat: ImageCompressFormat.jpg,
-          androidUiSettings: AndroidUiSettings(
-            toolbarColor: Colors.blueAccent,
-            toolbarTitle: "Adjust Like Passport Photo",
-            statusBarColor: Colors.blue,
-            backgroundColor: Colors.white,
-          )
-      );
-
-      registerSelfieimage=cropped;
-      // _errorMessage='';
-    }
-
-    setState(() {
-      _imageFile = registerSelfieimage;
-    });
-
-  }
-
-  Widget showUploadPhotoButton(String photoTypeName){
-    return Padding(
-        padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
-        child: RaisedButton(
-          color: Colors.orange,
-          textColor: Colors.white,
-          child:
-          photoTypeName=='selfie'?
-          Text(
-            'Take Selfie',
-            textScaleFactor: 1.5,
-          ):
-          Text(
-            'Take eKTP Photo',
-            textScaleFactor: 1.5,
-          ),
-          onPressed: () {
-            getImage;
-          },
-        )
-    );
-  }
-
-  Widget showPhotoUploadedInfo() {
-    if (_imageFile != null) {
-      return new Padding(
-          padding: EdgeInsets.fromLTRB(15.0, 5.0, 0.0, 0.0),
-          child: new Center(
-              child:
-              Row(
-                //mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: const <Widget>[
-                  Icon(
-                    Icons.check_circle,
-                    color: Colors.green,
-                    size: 24.0,
-                    semanticLabel: 'Text to announce in accessibility modes',
-                  ),
-                  Text(
-                    'This photo is successfully uploaded',
-                    style: TextStyle(
-                        fontSize: 14.0,
-                        color: Colors.green,
-                        height: 1.0,
-                        fontWeight: FontWeight.bold),
-                  )
-                ],
-              )
-          ));
-    } else {
-      return new Padding(
-          padding: EdgeInsets.fromLTRB(15.0, 5.0, 0.0, 0.0),
-          child: new Center(
-              child:
-              Row(
-                //mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: const <Widget>[
-                  Icon(
-                    Icons.info,
-                    color: Colors.lightBlue,
-                    size: 20.0,
-                    semanticLabel: 'Text to announce in accessibility modes',
-                  ),
-                  Text(
-                    ' Must upload this photo',
-                    style: TextStyle(
-                        fontSize: 14.0,
-                        color: Colors.lightBlue,
-                        height: 1.0,
-                        fontWeight: FontWeight.bold),
-                  )
-                ],
-              )
-          ));
-    }
   }
 
   Widget tryAgainButton(){
@@ -941,7 +832,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
                           (selfieProcessed == 'selfie ada')? Text('Processed',
                               style: new TextStyle(fontSize: 12.0, color: Colors.black)):Container(),
                           SizedBox(height: 10),
-                          (matchLivenessFeedback = "") ?
+                          (matchLivenessFeedback != "") ?
                           Container(
                             child: (messageDukcapil != '' || selfieProcessed == 'selfie ada')? Container(
                                 child: (message == 'Face Match Liveness Success' && messageDukcapil == 'Dukcapil Validation Success')? Text(matchLivenessFeedback,
@@ -1140,79 +1031,6 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
     );
   }
 
-  Widget build2(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
-    return Scaffold(
-        body: Container(
-          height: height,
-          child: Stack(
-            children: <Widget>[
-              Positioned(
-                  top: -height * .15,
-                  right: -MediaQuery.of(context).size.width * .4,
-                  child: BezierContainer()),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      SizedBox(height: height * .2),
-                      _title(),
-                      SizedBox(height: 50),
-                      // _ektpFormWidget(),
-                      SizedBox(height: 20),
-                      _submitButton(),
-                      SizedBox(height: 20)
-                      // Container(
-                      //   padding: EdgeInsets.symmetric(vertical: 10),
-                      //   alignment: Alignment.centerRight,
-                      //   child: Text('Forgot Password ?',
-                      //       style: TextStyle(
-                      //           fontSize: 14, fontWeight: FontWeight.w500)),
-                      // ),
-                      //_divider(),
-                      //_facebookButton(),
-                      //SizedBox(height: height * .055),
-                      //_createAccountLabel(),
-                    ],
-                  ),
-                ),
-              ),
-              Positioned(top: 40, left: 0, child: _backButton()),
-              // firestore start
-              ListView(
-                padding: EdgeInsets.all(8),
-                children: <Widget>[
-                  Form(
-                    key: _formKey,
-                    child: buildTextFormFieldName(),
-                  ),
-                  Row (
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      RaisedButton(
-                        onPressed: createData,
-                        child: Text('Create', style: TextStyle(color: Colors.black)),
-                        color: Colors.green,
-                      ),
-                      RaisedButton(
-                        onPressed: firestoreId != null? readData: null,
-                        child: Text('Read', style: TextStyle(color: Colors.black)),
-                        color: Colors.blue,
-                      )
-
-                    ],
-                  ),
-                ],
-              )
-              // firestore end
-            ],
-          ),
-        ));
-  }
-
   void createData() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState?.save();
@@ -1263,7 +1081,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
         }
         return null;
       },
-      onSaved: (value) => firestoreName = value,
+      onSaved: (value) => firestoreName = value!,
     );
   }
 
@@ -1282,13 +1100,13 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
             Icons.credit_card,
             color: Colors.grey,
           )),
-      validator: (value) {
-        if (value!.isEmpty || value!.length! < 16) {
+      validator: (String? value) {
+        if (value!.isEmpty || value.length < 16) {
           return 'Please input NIK';
         }
         return null;
       },
-      onSaved: (value) => firestoreNik = value,
+      onSaved: (value) => firestoreNik = value!,
     );
   }
 
@@ -1307,7 +1125,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
         }
         return null;
       },
-      onSaved: (value) => firestoreAddress = value,
+      onSaved: (value) => firestoreAddress = value!,
     );
   }
 
@@ -1326,7 +1144,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
         }
         return null;
       },
-      onSaved: (value) => firestoreBirthdate = value,
+      onSaved: (value) => firestoreBirthdate = value!,
     );
   }
 
@@ -1345,7 +1163,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
         }
         return null;
       },
-      onSaved: (value) => firestoreBirthplace = value,
+      onSaved: (value) => firestoreBirthplace = value!,
     );
   }
 
@@ -1364,7 +1182,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
         }
         return null;
       },
-      onSaved: (value) => firestoreGender = value,
+      onSaved: (value) => firestoreGender = value!,
     );
   }
 
@@ -1384,7 +1202,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
         }
         return null;
       },
-      onSaved: (value) => firestoreRtRw = value,
+      onSaved: (value) => firestoreRtRw = value!,
     );
   }
 
@@ -1404,7 +1222,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
         }
         return null;
       },
-      onSaved: (value) => firestoreKecamatan = value,
+      onSaved: (value) => firestoreKecamatan = value!,
     );
   }
 
@@ -1424,7 +1242,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
         }
         return null;
       },
-      onSaved: (value) => firestoreReligion = value,
+      onSaved: (value) => firestoreReligion = value!,
     );
   }
 
@@ -1444,7 +1262,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
         }
         return null;
       },
-      onSaved: (value) => firestoreMaritalStatus = value,
+      onSaved: (value) => firestoreMaritalStatus = value!,
     );
   }
 
@@ -1464,7 +1282,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
         }
         return null;
       },
-      onSaved: (value) => firestoreWorkfield = value,
+      onSaved: (value) => firestoreWorkfield = value!,
     );
   }
 
@@ -1484,7 +1302,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
         }
         return null;
       },
-      onSaved: (value) => firestoreProvince = value,
+      onSaved: (value) => firestoreProvince = value!,
     );
   }
 
@@ -1504,7 +1322,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
         }
         return null;
       },
-      onSaved: (value) => firestoreExpiry = value,
+      onSaved: (value) => firestoreExpiry = value!,
     );
   }
 
@@ -1524,7 +1342,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
         }
         return null;
       },
-      onSaved: (value) => firestoreBloodType = value,
+      onSaved: (value) => firestoreBloodType = value!,
     );
   }
 
@@ -1544,7 +1362,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
         }
         return null;
       },
-      onSaved: (value) => firestoreKabupatenKota = value,
+      onSaved: (value) => firestoreKabupatenKota = value!,
     );
   }
 
@@ -1564,7 +1382,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
         }
         return null;
       },
-      onSaved: (value) => firestoreKelurahanDesa = value,
+      onSaved: (value) => firestoreKelurahanDesa = value!,
     );
   }
 
@@ -1585,7 +1403,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
         }
         return null;
       },
-      onSaved: (value) => firestoreNationality = value,
+      onSaved: (value) => firestoreNationality = value!,
     );
   }
 
@@ -1603,12 +1421,12 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
       validator: (value){
         isEmail = EmailValidator.validate(value!);
 
-        if (value!.isEmpty || isEmail!) {
+        if (value.isEmpty || isEmail) {
           return 'Please input a valid email address';
         }
         return null;
       },
-      onSaved: (value) => firestoreEmail = value,
+      onSaved: (value) => firestoreEmail = value!,
     );
   }
 
@@ -1628,7 +1446,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
         }
         return null;
       },
-      onSaved: (value) => firestoreMobilePhone = value,
+      onSaved: (value) => firestoreMobilePhone = value!,
     );
   }
 

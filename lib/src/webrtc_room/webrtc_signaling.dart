@@ -24,12 +24,12 @@ class WebrtcSignaling {
     ]
   };
 
-  late RTCPeerConnection peerConnection;
-  late MediaStream localStream;
-  late MediaStream remoteStream;
-  late String roomId;
-  late String currentRoomText;
-  late StreamStateCallback onAddRemoteStream;
+  RTCPeerConnection? peerConnection;
+  MediaStream? localStream;
+  MediaStream? remoteStream;
+  String? roomId;
+  String? currentRoomText;
+  StreamStateCallback? onAddRemoteStream;
 
   var VCHandled1;
   var VCHandled2;
@@ -39,7 +39,7 @@ class WebrtcSignaling {
   var inCall2;
 
 
-  Future<String> createRoom(RTCVideoRenderer remoteRenderer, FirebaseFirestore db) async {
+  Future<String?> createRoom(RTCVideoRenderer remoteRenderer, FirebaseFirestore db) async {
     DocumentReference roomRef = db.collection('rooms').doc('mobiletest').collection('mobiletestroom').doc();
     DocumentReference roomAgent1 = db.collection('rooms').doc('roomAgent1').collection('roomIDAgent1').doc();
     DocumentReference roomAgent2 = db.collection('rooms').doc('roomAgent2').collection('roomIDAgent2').doc();
@@ -71,8 +71,8 @@ class WebrtcSignaling {
 
     registerPeerConnectionListeners();
 
-    localStream.getTracks().forEach((track) {
-      peerConnection?.addTrack(track, localStream);
+    localStream?.getTracks().forEach((track) {
+      peerConnection?.addTrack(track, localStream!);
     });
 
     //Routing
@@ -88,8 +88,8 @@ class WebrtcSignaling {
       }; // Finish Code for collecting ICE candidate
 
       // Add code for creating a room
-      RTCSessionDescription offer = await peerConnection.createOffer();
-      await peerConnection.setLocalDescription(offer);
+      RTCSessionDescription offer = await peerConnection!.createOffer();
+      await peerConnection?.setLocalDescription(offer);
       print('Created offer: $offer');
 
       Map<String, dynamic> roomWithOffer = {'offer': offer.toMap()};
@@ -133,7 +133,7 @@ class WebrtcSignaling {
           if (change.type == DocumentChangeType.added) {
             Map<String, dynamic> data = change.doc.data() as Map<String, dynamic>;
             print('Got new remote ICE candidate: ${jsonEncode(data)}');
-            peerConnection.addCandidate(
+            peerConnection?.addCandidate(
               RTCIceCandidate(
                 data['candidate'],
                 data['sdpMid'],
@@ -156,8 +156,8 @@ class WebrtcSignaling {
       }; // Finish Code for collecting ICE candidate
 
       // Add code for creating a room
-      RTCSessionDescription offer = await peerConnection.createOffer();
-      await peerConnection.setLocalDescription(offer);
+      RTCSessionDescription offer = await peerConnection!.createOffer();
+      await peerConnection?.setLocalDescription(offer);
       print('Created offer: $offer');
 
       Map<String, dynamic> roomWithOffer = {'offer': offer.toMap()};
@@ -201,7 +201,7 @@ class WebrtcSignaling {
           if (change.type == DocumentChangeType.added) {
             Map<String, dynamic> data = change.doc.data() as Map<String, dynamic>;
             print('Got new remote ICE candidate: ${jsonEncode(data)}');
-            peerConnection.addCandidate(
+            peerConnection?.addCandidate(
               RTCIceCandidate(
                 data['candidate'],
                 data['sdpMid'],
@@ -224,8 +224,8 @@ class WebrtcSignaling {
       }; // Finish Code for collecting ICE candidate
 
       // Add code for creating a room
-      RTCSessionDescription offer = await peerConnection.createOffer();
-      await peerConnection.setLocalDescription(offer);
+      RTCSessionDescription offer = await peerConnection!.createOffer();
+      await peerConnection?.setLocalDescription(offer);
       print('Created offer: $offer');
 
       Map<String, dynamic> roomWithOffer = {'offer': offer.toMap()};
@@ -269,7 +269,7 @@ class WebrtcSignaling {
           if (change.type == DocumentChangeType.added) {
             Map<String, dynamic> data = change.doc.data() as Map<String, dynamic>;
             print('Got new remote ICE candidate: ${jsonEncode(data)}');
-            peerConnection.addCandidate(
+            peerConnection?.addCandidate(
               RTCIceCandidate(
                 data['candidate'],
                 data['sdpMid'],
@@ -365,12 +365,12 @@ class WebrtcSignaling {
       registerPeerConnectionListeners();
 
       localStream?.getTracks().forEach((track) {
-        peerConnection?.addTrack(track, localStream);
+        peerConnection?.addTrack(track, localStream!);
       });
 
       // Code for collecting ICE candidates below
       var calleeCandidatesCollection = roomRef.collection('calleeCandidates');
-      peerConnection.onIceCandidate = (RTCIceCandidate candidate) {
+      peerConnection?.onIceCandidate = (RTCIceCandidate candidate) {
         if (candidate == null) {
           print('onIceCandidate: complete!');
           return;
@@ -398,10 +398,10 @@ class WebrtcSignaling {
       await peerConnection?.setRemoteDescription(
         RTCSessionDescription(offer['sdp'], offer['type']),
       );
-      var answer = await peerConnection.createAnswer();
+      var answer = await peerConnection!.createAnswer();
       print('Created Answer $answer');
 
-      await peerConnection.setLocalDescription(answer);
+      await peerConnection!.setLocalDescription(answer);
 
       Map<String, dynamic> roomWithAnswer = {
         'answer': {'type': answer.type, 'sdp': answer.sdp, 'time': time }
@@ -416,7 +416,7 @@ class WebrtcSignaling {
           var data = document.doc.data() as Map<String, dynamic>;
           print(data);
           print('Got new remote ICE candidate: $data');
-          peerConnection.addCandidate(
+          peerConnection?.addCandidate(
             RTCIceCandidate(
               data['candidate'],
               data['sdpMid'],
@@ -453,9 +453,9 @@ class WebrtcSignaling {
     });
 
     if (remoteStream != null) {
-      remoteStream.getTracks().forEach((track) => track.stop());
+      remoteStream!.getTracks().forEach((track) => track.stop());
     }
-    if (peerConnection != null) peerConnection.close();
+    if (peerConnection != null) peerConnection!.close();
 
     if (roomId != null) {
       var db = FirebaseFirestore.instance;
@@ -469,7 +469,7 @@ class WebrtcSignaling {
       await roomRef.delete();
     }
 
-    localStream.dispose();
+    localStream!.dispose();
     remoteStream?.dispose();
   }
 
