@@ -344,7 +344,9 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
       if (await appdocdir.exists())
         appdocdir.delete(recursive: false);
 
-      File picture = await _picker.pickImage(source: source) as File;
+      XFile? xFilepicture = await _picker.pickImage(source: source);
+      File? picture = File(xFilepicture!.path);
+
 
       int appFileDirectory=picture.path.lastIndexOf('/');
       String resultDirectory=picture.path.substring(0,appFileDirectory+1); // = appdocdir+'/Pictures/'
@@ -415,7 +417,7 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
       //loading = true;
     });
     //String trx_id = 'Liveness_' + DateFormat('yyyyMMddHHmmss').format(DateTime.now());
-    String authorization = 'NODEFLUX-HMAC-SHA256 Credential=ZZC8MB2EHH01G3FX60ZNZS7KA/20201110/nodeflux.api.v1beta1.ImageAnalytic/StreamImageAnalytic, SignedHeaders=x-nodeflux-timestamp, Signature=5a6b903b95b8f3c9677169d69b13b4f790799ffba897405b7826770f51fd4a21';
+    String authorization = 'NODEFLUX-HMAC-SHA256 Credential=50WNYKJBV3E4QN0BXIMJUVMKN/20220125/nodeflux.api.v1beta1.ImageAnalytic/StreamImageAnalytic, SignedHeaders=x-nodeflux-timestamp, Signature=04db27a8b1c11e5e5feff31490b73b568d7b8400475b1a48248a03f029ccd33c';
     String contentType = 'application/json';
     String xnodefluxtimestamp='20201110T135945Z';
     final imageBytes = _ektpImage?.readAsBytesSync();
@@ -440,7 +442,7 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
             .post(Uri.parse(url), body: json.encode({
           "images":photoBase64List
         }), headers: {"Accept": "application/json",  "Content-Type": "application/json",
-          "x-nodeflux-timestamp": "20201110T135945Z",
+          "x-nodeflux-timestamp": "20220125T093502Z",
           "Authorization": authorization,});
 
         print(response.body);
@@ -508,7 +510,7 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
     }
     catch(e){
       debugPrint('Error $e');
-      dialog=e as String?;
+      dialog=e.toString();
     }
     setState(() {
       //loading = false;

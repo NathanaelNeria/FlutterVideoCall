@@ -46,19 +46,12 @@ class _WebrtcRoomState extends State<WebrtcRoom> {
   String? roomId;
   TextEditingController textEditingController = TextEditingController(text: '');
   late Timer _timer;
+  int? agentNum;
 
   // late TextEditingController _scheduledDateTimeController;
   // String _scheduledDateTimeValueChanged = '';
   // String _scheduledDateTimeValueToValidate = '';
   // String _scheduledDateTimeValueSaved = '';
-
-  var VCHandled1;
-  var VCHandled2;
-  var loggedIn1;
-  var loggedIn2;
-  var inCall1;
-  var inCall2;
-  bool passed = false;
 
   @override
   void initState() {
@@ -76,15 +69,24 @@ class _WebrtcRoomState extends State<WebrtcRoom> {
       setState(() {});
     });
 
+    signaling.firebaseAgent(db).then((value){
+      setState(() {
+          agentNum = value;
+          print(value);
+          print(agentNum);
+      });
+    });
+
     // auto open camera & mic
     signaling.openUserMedia(_localRenderer, _remoteRenderer).whenComplete(() {
-      setState(() {});
+      setState(() {
+      });
     } );
 
-    signaling.createRoom(_remoteRenderer, db).then((data) {
-      _timer = new Timer(const Duration(seconds: 3), (){
+    _timer = new Timer(const Duration(seconds: 3), (){
+    signaling.createRoom(_remoteRenderer, db, agentNum!).then((data) {
         setState(() {
-          roomId=data!;
+          roomId=data;
         });
       });
     });
