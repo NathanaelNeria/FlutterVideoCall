@@ -105,6 +105,7 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
   bool changeColor = false;
   String ktpDetected = '';
   bool ktpProcessed = false;
+  DateTime currTime = DateTime.now();
 
   @override
   void initState() {
@@ -115,7 +116,6 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
       print("completed");
       setup();
     });
-
   }
 
   setup() {

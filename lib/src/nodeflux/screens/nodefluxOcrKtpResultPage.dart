@@ -4,6 +4,7 @@ import 'package:flutter_webrtc_demo/src/nodeflux/models/dukcapilOngoing.dart';
 import 'package:flutter_webrtc_demo/src/nodeflux/screens/coreBankingPageNTBS.dart';
 import 'package:flutter_webrtc_demo/src/pages/congratulationPage.dart';
 import 'package:flutter_webrtc_demo/src/pages/welcomePage.dart';
+import 'package:flutter_webrtc_demo/src/webrtc_room/notice.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../Widget/bezierContainer.dart';
@@ -27,7 +28,6 @@ import '../models/nodeflux_result2_model.dart';
 import 'dart:convert';
 import '../../webrtc_room/webrtc_room.dart';
 
-import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart';
 
@@ -912,78 +912,8 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
 
             ),
             SizedBox(height: 15),
-            // (_selfieEktpImage != null) ?
-            // Column (
-            //   crossAxisAlignment: CrossAxisAlignment.center,
-            //   children: <Widget>[
-            //     RaisedButton(
-            //       onPressed: createData,
-            //       child: Text(
-            //           'Submit registration data',
-            //           style: TextStyle(color: Colors.white, fontSize: 20)),
-            //       color: Colors.green,
-            //     ),
-                //SizedBox(height: 10),
-                //     Text("- or -"),
-                // //SizedBox(height: 10),
-                // Text("Please choose date and time when we will contact you:"),
-                // DatetimePickerWidget(),
-                // RaisedButton(
-                //   onPressed: createData, // MAYA: SCHEDULE
-                //   child: Text(
-                //     //'Ok Saya Siap Melakukan Video Call',
-                //     //'OK, I am ready to have Video Call',
-                //       'Yes, call me at above time',
-                //       style: TextStyle(color: Colors.white, fontSize: 20)),
-                //   color: Colors.orange,
-                // ),
-                //(DateTimePickerWidget!=null)?Text(DateTimePickerWidget.toString()):Container(),
-                //Text(scheduledDateTimeController.text),
-                //     RaisedButton(
-                //       onPressed: () {
-                //         showDatePicker(
-                //           context:this.context,
-                //           initialDate:DateTime.now(),
-                //           firstDate: DateTime.now(),
-                //           lastDate: DateTime(DateTime.now().month+1),
-                //           //lastDate:DateTime.now(),
-                //         ).then((selectedDate){
-                //           //selectedcertificatedate=selectedDate;
-                //           scheduledDateTimeController.text= DateFormat('dd-MM-yyyy').format(selectedDate).toString();
-                //           //new DateFormat.yMMMd().format(selectedDate);
-                //
-                //         });
-                //
-                //       },
-                //       //onPressed:
-                //       // DateTimePicker(
-                //       //   type: DateTimePickerType.dateTime,
-                //       //   dateMask: 'd MMMM yyyy - hh:mm',
-                //       //   controller: _scheduledDateTimeController,
-                //       //   //initialValue: _initialValue,
-                //       //   firstDate: DateTime(2000),
-                //       //   lastDate: DateTime(2100),
-                //       //   //icon: Icon(Icons.event),
-                //       //   dateLabelText: 'Date Time',
-                //       //   use24HourFormat: false,
-                //       //   locale: Locale('en', 'US'),
-                //       //   onChanged: (val) => setState(() => _scheduledDateTimeValueChanged = val),
-                //       //   validator: (val) {
-                //       //     setState(() => _scheduledDateTimeValueToValidate = val ?? '');
-                //       //     return null;
-                //       //   },
-                //       //   onSaved: (val) => setState(() => _scheduledDateTimeValueSaved = val ?? ''),
-                //       // )
-                //       child: Text(
-                //           'Call me at my chosen date and time',
-                //           style: TextStyle(color: Colors.white, fontSize: 20)),
-                //       color: Colors.orange,
-                //     ),
-              // ],
-            // ) : Container()
           ],
         )
-      // firestore end
     );
   }
 
@@ -1019,18 +949,39 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
                       style: TextStyle(fontSize: 24)
                   ),
                   SizedBox(height: 12),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.end,
-                  //   children: <Widget>[
-                  //     FlatButton(
-                  //       onPressed: () =>
-                  //     )
-                  //   ],
-                  // )
                 ]
             )
         )
     );
+  }
+  
+  checkQueue() async {
+    int? queue1;
+    int? queue2;
+    int currTime = DateTime.now().hour;
+
+    db.collection('rooms').doc('roomAgent1').collection('roomIDAgent1').get().then((value) => {
+      print(value.docs.length),
+      queue1 = value.docs.length
+    });
+
+    db.collection('rooms').doc('roomAgent2').collection('roomIDAgent2').get().then((value) => {
+      print(value.docs.length),
+      queue2 = value.docs.length
+    });
+
+    if(queue1! + queue2! >= 10 || (currTime > 17 && currTime < 8)){
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (BuildContext context) => Notice()));
+    }
+    else if(queue1! + queue2! <= 10 && (currTime < 17 && currTime > 8)){
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (BuildContext context) => WebrtcRoom()));
+    }
   }
 
   void createData() async {
@@ -1056,10 +1007,8 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
         'nationality': '$firestoreNationality',
         'mobile': '$firestoreMobilePhone',
         'email': '$firestoreEmail'});
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (BuildContext context) => coreBanking()));
+
+      checkQueue();
     }
   }
 

@@ -67,23 +67,24 @@ class WebrtcSignaling {
       print(VCHandled2);
     });
 
-      print('diluar >>>>> ' + VCHandled1.toString());
-
-      if((VCHandled1 <= VCHandled2) && loggedIn1! && !inCall1!){
-        agentAvail = 1;
-      } // VChandled agent1 & 2 sama, agent 1 loggedin ga ada call
-      else if((VCHandled1 > VCHandled2) && loggedIn2! && !inCall2!){
-        agentAvail = 2;
-      } // VChandled agent 1 > agent 2, agent 2 loggedin ga ada call
-      else if((VCHandled1 < VCHandled2) && !loggedIn1! && loggedIn2!){
-        agentAvail = 2;
-      } // VChandled agent 1 < agent 2, agent 1 ga loggedin tapi agent 2 loggedin
-      else if((VCHandled1 > VCHandled2) && !loggedIn2! && loggedIn1!){
-        agentAvail = 1;
-      } // VChandled agent 1 > agent 2, agent 2 ga loggedin tapi agent loggedin
-      else if(!loggedIn2! && !loggedIn1!){
-        agentAvail = 0;
-      }
+    if((VCHandled1 <= VCHandled2) && loggedIn1! && !inCall1!){
+      agentAvail = 1;
+    } // VChandled agent1 & 2 sama, agent 1 loggedin ga ada call
+    else if((VCHandled1 > VCHandled2) && loggedIn2! && !inCall2!){
+      agentAvail = 2;
+    } // VChandled agent 1 > agent 2, agent 2 loggedin ga ada call
+    else if((VCHandled1 < VCHandled2) && !loggedIn1! && loggedIn2!){
+      agentAvail = 2;
+    } // VChandled agent 1 < agent 2, agent 1 ga loggedin tapi agent 2 loggedin
+    else if((VCHandled1 > VCHandled2) && !loggedIn2! && loggedIn1!){
+      agentAvail = 1;
+    } // VChandled agent 1 > agent 2, agent 2 ga loggedin tapi agent loggedin
+    else if((VCHandled1 > VCHandled2) && loggedIn1! && !inCall1! && inCall2!){
+      agentAvail = 1;
+    }//kalo call agent 1 > agent 2 tapi agent 2 lagi in call, agent 1 ga in call
+    else if((VCHandled1 < VCHandled2) && loggedIn2! && !inCall2! && inCall1!){
+      agentAvail = 2;
+    } //kalo call agent 1 < agent 2 tapi agent 1 lagi in call, agent 2 ga in call
 
     return agentAvail;
   }

@@ -11,8 +11,8 @@ dependencies:
 
   flutter_localizations:
     sdk: flutter
-  date_time_picker: ^2.1.0
 
+  date_format: ^2.0.5
   cupertino_icons: ^1.0.4
   google_fonts: ^2.2.0
   flutter_webrtc: ^0.8.1

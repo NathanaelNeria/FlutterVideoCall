@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:flutter_webrtc_demo/src/pages/displayDataPage.dart';
 import 'webrtc_signaling.dart';
-import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart';
 import '../../Widget/datetime_picker_widget.dart';
@@ -25,7 +24,7 @@ class WebrtcRoom2 extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.green,
       ),
       home: WebrtcRoom(),
     );

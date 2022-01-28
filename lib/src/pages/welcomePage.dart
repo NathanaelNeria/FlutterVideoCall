@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc_demo/src/nodeflux/screens/activeLiveness.dart';
+import 'package:flutter_webrtc_demo/src/webrtc_room/schedule.dart';
 import 'package:flutter_webrtc_demo/src/webrtc_room/webrtc_room.dart';
 import 'loginPage.dart';
 // import 'signup.dart';
@@ -56,7 +57,7 @@ class _WelcomePageState extends State<WelcomePage> {
       onTap: () async {
         await Firebase.initializeApp();
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) =>WebrtcRoom()));
+            context, MaterialPageRoute(builder: (context) =>ScheduleCall()));
       },
       child: Container(
         width: MediaQuery.of(context).size.width,
