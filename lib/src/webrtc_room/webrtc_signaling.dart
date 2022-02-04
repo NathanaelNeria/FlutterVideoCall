@@ -5,15 +5,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc_demo/src/pages/displayDataPage.dart';
+import 'package:flutter_webrtc_demo/src/webrtc_room/webrtc_room.dart';
 import './model/agent1.dart';
 import './model/agent2.dart';
 
 typedef void StreamStateCallback(MediaStream stream);
 
 class WebrtcSignaling {
-  // WebrtcSignaling({required this.context});
-
-  late final BuildContext context;
 
   Map<String, dynamic> configuration = {
     'iceServers': [
@@ -73,7 +71,7 @@ class WebrtcSignaling {
     else if((VCHandled1 > VCHandled2) && loggedIn2! && !inCall2!){
       agentAvail = 2;
     } // VChandled agent 1 > agent 2, agent 2 loggedin ga ada call
-    else if((VCHandled1 < VCHandled2) && !loggedIn1! && loggedIn2!){
+    else if((VCHandled1 <= VCHandled2) && !loggedIn1! && loggedIn2!){
       agentAvail = 2;
     } // VChandled agent 1 < agent 2, agent 1 ga loggedin tapi agent 2 loggedin
     else if((VCHandled1 > VCHandled2) && !loggedIn2! && loggedIn1!){
@@ -82,7 +80,7 @@ class WebrtcSignaling {
     else if((VCHandled1 > VCHandled2) && loggedIn1! && !inCall1! && inCall2!){
       agentAvail = 1;
     }//kalo call agent 1 > agent 2 tapi agent 2 lagi in call, agent 1 ga in call
-    else if((VCHandled1 < VCHandled2) && loggedIn2! && !inCall2! && inCall1!){
+    else if((VCHandled1 <= VCHandled2) && loggedIn2! && !inCall2! && inCall1!){
       agentAvail = 2;
     } //kalo call agent 1 < agent 2 tapi agent 1 lagi in call, agent 2 ga in call
 
@@ -98,7 +96,7 @@ class WebrtcSignaling {
 
     peerConnection = await createPeerConnection(configuration);
 
-    registerPeerConnectionListeners();
+    // registerPeerConnectionListeners();
 
     localStream?.getTracks().forEach((track) {
       peerConnection?.addTrack(track, localStream!);
@@ -183,7 +181,7 @@ class WebrtcSignaling {
 
   Future<void> joinRoom(String roomId, RTCVideoRenderer remoteVideo) async {
     FirebaseFirestore db = FirebaseFirestore.instance;
-    DocumentReference roomRef = db.collection('rooms').doc('$roomId');
+    DocumentReference roomRef = db.collection('rooms').doc('scheduledRoom').collection('scheduledRoomID').doc(roomId);
     var roomSnapshot = await roomRef.get();
     print('Got room ${roomSnapshot.exists}');
 
@@ -191,7 +189,7 @@ class WebrtcSignaling {
       print('Create PeerConnection with configuration: $configuration');
       peerConnection = await createPeerConnection(configuration);
 
-      registerPeerConnectionListeners();
+      // registerPeerConnectionListeners();
 
       localStream?.getTracks().forEach((track) {
         peerConnection?.addTrack(track, localStream!);
@@ -302,16 +300,21 @@ class WebrtcSignaling {
     remoteStream?.dispose();
   }
 
-  void registerPeerConnectionListeners() {
+  void registerPeerConnectionListeners(BuildContext context) {
     peerConnection?.onIceGatheringState = (RTCIceGatheringState state) {
       print('ICE gathering state changed: $state');
     };
 
-    peerConnection?.onConnectionState = (RTCPeerConnectionState state) {
+    peerConnection!.onConnectionState = (RTCPeerConnectionState state) {
       print('Connection state change: $state');
       if (state==RTCPeerConnectionState.RTCPeerConnectionStateDisconnected) {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => DisplayDataPage(title: '',)));
+            context, MaterialPageRoute(builder: (context) => DisplayDataPage()));
+        print('disconnect');
+      }
+      if(state == RTCPeerConnectionState.RTCPeerConnectionStateFailed){
+        Navigator.pop(context);
+        print('failed');
       }
     };
 

@@ -477,7 +477,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
 
             double similarityPercentage=similarityValue!*100;
             String isMatchedString = (similarityPercentage>=75)? "matched": "not matched";
-            matchLivenessFeedback = "\neKTP photo is " + isMatchedString +" with selfie ("+similarityPercentage.toStringAsFixed(2)+" %)";
+            matchLivenessFeedback += "\neKTP photo is " + isMatchedString +" with selfie ("+similarityPercentage.toStringAsFixed(2)+" %)";
           }
           else if(currentStatus == 'failed' || currentStatus == 'incompleted'){
             dukcapilFail = DukcapilFail.fromJson(jsonDecode(response.body));
@@ -491,19 +491,19 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
             });
 
             if(messageDukcapil == 'Please ensure image format is JPEG, or NIK is registered on Dukcapil'){
-              matchLivenessFeedback = "\nNIK doesn't match with face or NIK not registered on Dukcapil";
+              matchLivenessFeedback += "\nNIK doesn't match with face or NIK not registered on Dukcapil";
             }
             else if(messageDukcapil == "NIK is not found, please check your NIK"){
-              matchLivenessFeedback = '\n$messageDukcapil';
+              matchLivenessFeedback += '\n$messageDukcapil';
             }
             else if(messageDukcapil == 'NIK data not found'){
-              matchLivenessFeedback = '\n$messageDukcapil';
+              matchLivenessFeedback += '\n$messageDukcapil';
             }
             else if(messageDukcapil == 'Invalid Response from Gateway'){
-              matchLivenessFeedback = 'Face doesn\'t match with Dukcapil';
+              matchLivenessFeedback += 'Face doesn\'t match with Dukcapil';
             }
             else if(messageDukcapil == 'Gateway not Responding'){
-              matchLivenessFeedback = 'Dukcapil verification server error';
+              matchLivenessFeedback += 'Dukcapil verification server error';
             }
           }
           // await nodefluxSelfieMatchLivenessProcess(context);
@@ -519,8 +519,6 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
     });
     //String trx_id = 'Liveness_' + DateFormat('yyyyMMddHHmmss').format(DateTime.now());
     String authorization = 'NODEFLUX-HMAC-SHA256 Credential=50WNYKJBV3E4QN0BXIMJUVMKN/20220125/nodeflux.api.v1beta1.ImageAnalytic/StreamImageAnalytic, SignedHeaders=x-nodeflux-timestamp, Signature=04db27a8b1c11e5e5feff31490b73b568d7b8400475b1a48248a03f029ccd33c';
-    String contentType = 'application/json';
-    String xnodefluxtimestamp='20201110T135945Z';
     final imageBytesSelfie = _selfieImage?.readAsBytesSync();
     String base64ImageSelfie = 'data:image/jpeg;base64,'+base64Encode(imageBytesSelfie!);
     final imageBytesEktp = widget.ektpImage.readAsBytesSync();
@@ -763,8 +761,9 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
                 style: new TextStyle(fontSize: 12.0, color: Colors.white)),
             //onPressed: () { navigateToPage('Login Face');}
             onPressed:  () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => WebrtcRoom()));
+              // Navigator.of(context).push(MaterialPageRoute(
+              //     builder: (context) => WebrtcRoom()));
+              _getSelfieImage(this.context, ImageSource.camera);
             },
             style: ElevatedButton.styleFrom(
                 primary: changeColor? Colors.red : Colors.red
@@ -916,67 +915,42 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
         )
     );
   }
-
-  Card buildItem(DocumentSnapshot doc) {
-    return Card(
-        child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children:<Widget> [
-                  Text(
-                      'name: ${(doc.data() as dynamic)['name']}',
-                      style: TextStyle(fontSize: 24)
-                  ),
-                  Text(
-                      'nik: ${(doc.data() as dynamic)['nik']}',
-                      style: TextStyle(fontSize: 24)
-                  ),
-                  Text(
-                      'birthdate: ${(doc.data() as dynamic)['birthdate']}',
-                      style: TextStyle(fontSize: 24)
-                  ),
-                  Text(
-                      'birthday: ${(doc.data() as dynamic)['birthday']}',
-                      style: TextStyle(fontSize: 24)
-                  ),
-                  Text(
-                      'email: ${(doc.data() as dynamic)['email']}',
-                      style: TextStyle(fontSize: 24)
-                  ),
-                  Text(
-                      'mobilePhone: ${(doc.data() as dynamic)['mobilePhone']}',
-                      style: TextStyle(fontSize: 24)
-                  ),
-                  SizedBox(height: 12),
-                ]
-            )
-        )
-    );
-  }
   
   checkQueue() async {
     int? queue1;
     int? queue2;
-    int currTime = DateTime.now().hour;
+    int NIK = int.parse(firestoreNik);
+    TimeOfDay currTime = TimeOfDay.now();
+    final TimeOfDay open = TimeOfDay(hour: 08, minute: 00);
+    final TimeOfDay close = TimeOfDay(hour: 17, minute: 00);
+    double _openTime = open.hour.toDouble() + (open.minute.toDouble()/60);
+    double _closeTime = close.hour.toDouble() + (close.minute.toDouble()/60);
+    double _currTime = currTime.hour.toDouble() + (currTime.minute.toDouble()/60);
 
-    db.collection('rooms').doc('roomAgent1').collection('roomIDAgent1').get().then((value) => {
+    await db.collection('rooms').doc('roomAgent1').collection('roomIDAgent1').get().then((value) => {
       print(value.docs.length),
-      queue1 = value.docs.length
+      queue1 = value.docs.length,
+      print('1')
     });
 
-    db.collection('rooms').doc('roomAgent2').collection('roomIDAgent2').get().then((value) => {
+    await db.collection('rooms').doc('roomAgent2').collection('roomIDAgent2').get().then((value) => {
       print(value.docs.length),
-      queue2 = value.docs.length
+      queue2 = value.docs.length,
+      print('2')
     });
 
-    if(queue1! + queue2! >= 10 || (currTime > 17 && currTime < 8)){
+    print(queue1! + queue2! >= 3 || (_currTime <= _openTime || _currTime >= _closeTime));
+    print(queue1! + queue2! < 3 && (_currTime >= _openTime && _currTime <= _closeTime));
+
+    if(queue1! + queue2! >= 3 || (_currTime <= _openTime || _currTime >= _closeTime)){
+      print('masuk notice');
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (BuildContext context) => Notice()));
+              builder: (BuildContext context) => Notice(nik: NIK, email: firestoreEmail,)));
     }
-    else if(queue1! + queue2! <= 10 && (currTime < 17 && currTime > 8)){
+    else if(queue1! + queue2! < 3 && (_currTime >= _openTime && _currTime <= _closeTime)){
+      print('masuk room');
       Navigator.push(
           context,
           MaterialPageRoute(
@@ -1372,7 +1346,9 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
       validator: (value){
         isEmail = EmailValidator.validate(value!);
 
-        if (value.isEmpty || isEmail) {
+        if (value.isEmpty || !isEmail) {
+          print(value.isNotEmpty);
+          print(isEmail);
           return 'Please input a valid email address';
         }
         return null;

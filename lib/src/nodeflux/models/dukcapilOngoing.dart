@@ -13,10 +13,7 @@ class DukcapilOngoing {
      this.job,
      this.message,
      this.ok,
-  }) {
-    // TODO: implement
-    throw UnimplementedError();
-  }
+  });
 
   final Job? job;
   final String? message;

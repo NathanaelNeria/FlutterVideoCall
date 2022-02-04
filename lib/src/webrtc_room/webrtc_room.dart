@@ -32,7 +32,9 @@ class WebrtcRoom2 extends StatelessWidget {
 }
 
 class WebrtcRoom extends StatefulWidget {
-  // WebrtcRoom({required Key key}) : super(key: key);
+  WebrtcRoom({Key? key, this.schedule}) : super(key: key);
+
+  final bool? schedule;
 
   @override
   _WebrtcRoomState createState() => _WebrtcRoomState();
@@ -47,20 +49,12 @@ class _WebrtcRoomState extends State<WebrtcRoom> {
   late Timer _timer;
   int? agentNum;
 
-  // late TextEditingController _scheduledDateTimeController;
-  // String _scheduledDateTimeValueChanged = '';
-  // String _scheduledDateTimeValueToValidate = '';
-  // String _scheduledDateTimeValueSaved = '';
 
   @override
   void initState() {
     FirebaseFirestore db = FirebaseFirestore.instance;
     Intl.defaultLocale = 'pt_BR';
-    // _scheduledDateTimeController = TextEditingController(text: DateTime.now().toString());
-    //_getDefaultDateTimeValue();
 
-    // _localRenderer.initialize();
-    // _remoteRenderer.initialize();
     initRenderers();
 
     signaling.onAddRemoteStream = ((stream) {
@@ -86,17 +80,11 @@ class _WebrtcRoomState extends State<WebrtcRoom> {
     signaling.createRoom(_remoteRenderer, db, agentNum!).then((data) {
         setState(() {
           roomId=data;
+          signaling.registerPeerConnectionListeners(context);
         });
       });
     });
 
-    // _timer = new Timer(const Duration(seconds: 3), () {
-    //   setState(() {
-    //     signaling.createRoom(_remoteRenderer).then((data) {
-    //       roomId=data;
-    //     });
-    //   });
-    // });
     super.initState();
   }
 
@@ -111,15 +99,6 @@ class _WebrtcRoomState extends State<WebrtcRoom> {
     await _localRenderer.initialize();
     await _remoteRenderer.initialize();
   }
-
-  // Future<void> _getDefaultDateTimeValue() async {
-  //   await Future.delayed(const Duration(seconds: 3), () {
-  //     setState(() {
-  //       _initialValue = '2000-10-22 14:30';
-  //       _scheduledDateTimeController.text = '2001-10-21 15:31';
-  //     });
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -145,64 +124,11 @@ class _WebrtcRoomState extends State<WebrtcRoom> {
             Text("Connecting you to our agent"),
             Text("Please wait.."),
             SizedBox(height: 20),
-            //       Text("or"),
-            //       SizedBox(height: 20),
-            //       Text("Do you want us to contact you at another time?"),
-            //       RaisedButton(
-            //         onPressed: () {
-            //   // Navigator.push(
-            //   //     context, MaterialPageRoute(builder: (context) => NodefluxOcrKtpResultPage()));
-            //           Navigator.pop(context);
-            // },
-            //         child: Text(
-            //             'Go back to choose another time',
-            //             style: TextStyle(color: Colors.white, fontSize: 20)),
-            //         color: Colors.orange,
-            //       ),
-            //showCalendarScheduleButton(),
-            //DatetimePickerWidget(),
-            // DateTimePicker(
-            //   type: DateTimePickerType.dateTime,
-            //   dateMask: 'd MMMM yyyy - hh:mm',
-            //   controller: _scheduledDateTimeController,
-            //   //initialValue: _initialValue,
-            //   firstDate: DateTime(2000),
-            //   lastDate: DateTime(2100),
-            //   //icon: Icon(Icons.event),
-            //   dateLabelText: 'Date Time',
-            //   use24HourFormat: false,
-            //   locale: Locale('en', 'US'),
-            //   onChanged: (val) => setState(() => _scheduledDateTimeValueChanged = val),
-            //   validator: (val) {
-            //     setState(() => _scheduledDateTimeValueToValidate = val ?? '');
-            //     return null;
-            //   },
-            //   onSaved: (val) => setState(() => _scheduledDateTimeValueSaved = val ?? ''),
-            // ),
           ]
       )
           :
       Column(
         children: [
-          //START
-          // Expanded(
-          //   child:
-          //   Padding(
-          //     padding: const EdgeInsets.all(8.0),
-          //     child: Row(
-          //       mainAxisAlignment: MainAxisAlignment.center,
-          //       children: [
-          //         Expanded(
-          //             child:
-          //         RTCVideoView(_localRenderer, mirror: true)
-          //         ),
-          //         Expanded(child: RTCVideoView(_remoteRenderer)),
-          //       ],
-          //     ),
-          //
-          //   ),
-          // ),
-          // END
           SizedBox(height: 178),
           Expanded(
             child:
@@ -243,16 +169,11 @@ class _WebrtcRoomState extends State<WebrtcRoom> {
                   Navigator.push(
                       context, MaterialPageRoute(builder: (context) => DisplayDataPage(title: '',)));
                 },
-                //child: Text("Hangup"),
                 child: Icon(Icons.call_end_rounded),
                 style: ButtonStyle(
                   shape: MaterialStateProperty.all(CircleBorder()),
                   padding: MaterialStateProperty.all(EdgeInsets.all(20)),
                   backgroundColor: MaterialStateProperty.all(Colors.red), // <-- Button color
-                  // overlayColor: MaterialStateProperty.resolveWith<Color>((states) {
-                  //   if (states.contains(MaterialState.pressed))
-                  //     return Colors.red; // <-- Splash color
-                  // }),
                 ),
               ):Container(),
               // END: Comment button hangup
@@ -263,44 +184,4 @@ class _WebrtcRoomState extends State<WebrtcRoom> {
       ),
     );
   }
-
-  // Widget showCalendarScheduleButton() {
-  //   return new Padding(
-  //       padding: EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 0.0),
-  //       child: SizedBox(
-  //         height: 40.0,
-  //         child: new RaisedButton(
-  //           elevation: 5.0,
-  //           shape: new RoundedRectangleBorder(
-  //               borderRadius: new BorderRadius.circular(30.0)),
-  //           color: Colors.lightBlue,
-  //           child: new Text(
-  //             //'Ambil Foto Selfie',
-  //               'Schedule Video Call',
-  //               style: new TextStyle(fontSize: 12.0, color: Colors.white)),
-  //           //onPressed: () { navigateToPage('Login Face');}
-  //           onPressed: () {
-  //             DateTimePicker(
-  //               type: DateTimePickerType.dateTime,
-  //               dateMask: 'd MMMM yyyy - hh:mm',
-  //               controller: _scheduledDateTimeController,
-  //               //initialValue: _initialValue,
-  //               firstDate: DateTime(2000),
-  //               lastDate: DateTime(2100),
-  //               //icon: Icon(Icons.event),
-  //               dateLabelText: 'Date Time',
-  //               use24HourFormat: false,
-  //               locale: Locale('en', 'US'),
-  //               onChanged: (val) => setState(() => _scheduledDateTimeValueChanged = val),
-  //               validator: (val) {
-  //                 setState(() => _scheduledDateTimeValueToValidate = val ?? '');
-  //                 return null;
-  //               },
-  //               onSaved: (val) => setState(() => _scheduledDateTimeValueSaved = val ?? ''),
-  //             );
-  //             //pop up calendar and time
-  //           },
-  //         ),
-  //       ));
-  // }
 }

@@ -14,7 +14,7 @@ class _coreBankingState extends State<coreBanking> with TickerProviderStateMixin
     super.initState();
     Future.delayed(Duration(seconds: 10), (){
       Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
-          builder: (context) => CongratulationPage(title: '', email: '',)
+          builder: (context) => CongratulationPage()
       ), (_) => false);
     });
   }

@@ -7,11 +7,9 @@ import 'WelcomePage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CongratulationPage extends StatefulWidget {
-  CongratulationPage({Key? key, required this.title, required this.email}) : super(key: key);
+  CongratulationPage({Key? key, this.title,}) : super(key: key);
 
-  final String title;
-  final String email;
-
+  final String? title;
 
   @override
   _CongratulationPageState createState() => _CongratulationPageState();
@@ -19,16 +17,16 @@ class CongratulationPage extends StatefulWidget {
 
 class _CongratulationPageState extends State<CongratulationPage> {
   //firestore
-  late String firestoreId;
+  // late String firestoreId;
   final db = FirebaseFirestore.instance;
   final _formKey = GlobalKey<FormState>();
-  late String firestoreName;
-  late String firestoreNik;
-  late String firestoreAddress;
-  late String firestoreBirthdate;
-  late String firestoreBirthday;
-  late String firestoreMobilePhone;
-  late String firestoreEmail;
+  // late String firestoreName;
+  // late String firestoreNik;
+  // late String firestoreAddress;
+  // late String firestoreBirthdate;
+  // late String firestoreBirthday;
+  // late String firestoreMobilePhone;
+  // late String firestoreEmail;
 
   Widget _backButton() {
     return InkWell(
@@ -178,6 +176,7 @@ class _CongratulationPageState extends State<CongratulationPage> {
                           }
                         }
                     ),
+                    // Text(widget.email, style: TextStyle(fontSize: 17, color: Colors.white)),
                     SizedBox(
                       height: 20,
                     ),
