@@ -11,30 +11,11 @@ import 'package:intl/intl.dart';
 import '../../Widget/datetime_picker_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-Future<void> WebrtcRoom1() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  runApp(WebrtcRoom2());
-}
-
-class WebrtcRoom2 extends StatelessWidget {
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.green,
-      ),
-      home: WebrtcRoom(),
-    );
-  }
-}
-
 class WebrtcRoom extends StatefulWidget {
-  WebrtcRoom({Key? key, this.schedule}) : super(key: key);
+  WebrtcRoom({Key? key, required this.scheduled, required this.nik}) : super(key: key);
 
-  final bool? schedule;
+  final bool scheduled;
+  final String nik;
 
   @override
   _WebrtcRoomState createState() => _WebrtcRoomState();
@@ -76,14 +57,21 @@ class _WebrtcRoomState extends State<WebrtcRoom> {
       });
     } );
 
-    _timer = new Timer(const Duration(seconds: 3), (){
-    signaling.createRoom(_remoteRenderer, db, agentNum!).then((data) {
-        setState(() {
-          roomId=data;
-          signaling.registerPeerConnectionListeners(context);
+    if(!widget.scheduled) {
+      _timer = new Timer(const Duration(seconds: 3), () {
+        signaling.createRoom(_remoteRenderer, db, agentNum!).then((data) {
+          setState(() {
+            roomId = data;
+            signaling.registerPeerConnectionListeners(context);
+          });
         });
       });
-    });
+    }
+    else{
+      signaling.joinRoom(widget.nik, _remoteRenderer).whenComplete((){
+        signaling.registerPeerConnectionListeners(context);
+      });
+    }
 
     super.initState();
   }

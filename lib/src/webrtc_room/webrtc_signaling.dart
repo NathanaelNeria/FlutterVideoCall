@@ -301,29 +301,44 @@ class WebrtcSignaling {
   }
 
   void registerPeerConnectionListeners(BuildContext context) {
+    bool disconnect = false;
     peerConnection?.onIceGatheringState = (RTCIceGatheringState state) {
       print('ICE gathering state changed: $state');
     };
 
     peerConnection!.onConnectionState = (RTCPeerConnectionState state) {
       print('Connection state change: $state');
+
       if (state==RTCPeerConnectionState.RTCPeerConnectionStateDisconnected) {
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => DisplayDataPage()));
         print('disconnect');
+        disconnect = true;
       }
-      if(state == RTCPeerConnectionState.RTCPeerConnectionStateFailed){
-        Navigator.pop(context);
+      else if(state == RTCPeerConnectionState.RTCPeerConnectionStateFailed && !disconnect){
         print('failed');
+        showDialog(
+          context: context,
+          builder: (BuildContext context){
+            return AlertDialog(
+              title: Text('Video call connection failed!'),
+              content: Text('Please check your connection.'),
+              actions: [
+                TextButton(
+                  onPressed: (){
+                    Navigator.pop(context);
+                  },
+                  child: Text('Return'),
+                )
+              ],
+            );
+          }
+        );
       }
     };
 
     peerConnection?.onSignalingState = (RTCSignalingState state) {
       print('Signaling state change: $state');
-    };
-
-    peerConnection?.onIceGatheringState = (RTCIceGatheringState state) {
-      print('ICE connection state change: $state');
     };
 
     peerConnection?.onAddStream = (MediaStream stream) {

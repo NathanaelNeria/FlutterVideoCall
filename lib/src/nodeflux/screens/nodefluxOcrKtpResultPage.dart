@@ -54,8 +54,6 @@ class NodefluxOcrKtpResultPage extends StatefulWidget {
 }
 
 class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
-   // selectedbirthdate=null;
-   File? _imageFile;
    ImagePicker _picker= ImagePicker();
    File? ektpImage;
    File? _selfieImage;
@@ -63,6 +61,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
    File? _selfieEktpImage;
 
    bool isEmail = false;
+   bool scheduled = false;
 
   TextEditingController nikController = TextEditingController();
   TextEditingController nameController = TextEditingController();
@@ -107,7 +106,6 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
   TextEditingController scheduledDateTimeController = new TextEditingController(text: 'Anonymous');
   DatetimePickerWidget datetimePickerWidget = DatetimePickerWidget();
 
-  // final NodefluxResult2Model? _nodefluxResult2Model = null;
    bool? isLive;
    bool? isMatched;
    bool nodefluxSelfie = false;
@@ -150,125 +148,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
     kelurahanDesaController= TextEditingController(text: widget.model.kelurahan_desa);
     nationalityController= TextEditingController(text: widget.model.kewarganegaraan);
 
-    //datetimePickerWidget = DatetimePickerWidget();
     initializeDateFormatting();
-  }
-
-  Widget _backButton() {
-    return InkWell(
-      onTap: () {
-        Navigator.pop(context);
-      },
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 10),
-        child: Row(
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.only(left: 0, top: 10, bottom: 10),
-              child: Icon(Icons.keyboard_arrow_left, color: Colors.black),
-            ),
-            Text('Back',
-                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500))
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _entryField(String title, {bool isPassword = false}) {
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            title,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          TextField(
-              obscureText: isPassword,
-              decoration: InputDecoration(
-                  border: InputBorder.none,
-                  fillColor: Color(0xfff3f3f4),
-                  filled: true))
-        ],
-      ),
-    );
-  }
-
-  Widget _submitButton() {
-    return
-      InkWell(
-          onTap: () {
-            // Navigator.push(
-            //     context, MaterialPageRoute(builder: (context) => VideoCallPage()));;
-
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  //builder: (BuildContext context) => CallSample(host: 'demo.cloudwebrtc.com')));
-                    builder: (BuildContext context) => WebrtcRoom()));
-          },
-          child:
-
-          Container(
-            width: MediaQuery.of(context).size.width,
-            padding: EdgeInsets.symmetric(vertical: 15),
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(5)),
-                boxShadow: <BoxShadow>[
-                  BoxShadow(
-                      color: Colors.grey.shade200,
-                      offset: Offset(2, 4),
-                      blurRadius: 5,
-                      spreadRadius: 2)
-                ],
-                gradient: LinearGradient(
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                    colors: [Color(0xfffbb448), Color(0xfff7892b)])),
-            child: Text(
-              'Saya siap melakukan video call',
-              style: TextStyle(fontSize: 20, color: Colors.white),
-            ),
-          ));
-  }
-
-  Widget _divider() {
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 10),
-      child: Row(
-        children: <Widget>[
-          SizedBox(
-            width: 20,
-          ),
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              child: Divider(
-                thickness: 1,
-              ),
-            ),
-          ),
-          Text('or'),
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              child: Divider(
-                thickness: 1,
-              ),
-            ),
-          ),
-          SizedBox(
-            width: 20,
-          ),
-        ],
-      ),
-    );
   }
 
   Widget _title() {
@@ -319,21 +199,6 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
               )
           ),
         ));
-  }
-
-  createAlertDialog(BuildContext context, String title, String message) {
-    Widget okButton = FlatButton(
-      child: Text("Close"),
-      onPressed: () {Navigator.of(context).pop(); },
-    );
-
-    return showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(title: Text(title), content: Text(message),  actions: [
-            okButton,
-          ],);
-        });
   }
 
   _getSelfieImage(BuildContext context, ImageSource source) async{
@@ -669,7 +534,6 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
       int? appFileDirectory=picture.path.lastIndexOf('/');
       String? resultDirectory=picture.path.substring(0,appFileDirectory+1); // = appdocdir+'/Pictures/'
       String resultPath=resultDirectory+DateFormat('yyyyMMddHHmmss').format(DateTime.now())+'.jpg';
-      //String resultPath='/storage/emulated/0/Android/data/com.smartherd.flutter_app_section2/files/Pictures/'+DateFormat('yyyyMMddHHmmss').format(DateTime.now())+'.jpg';
 
       int photoQuality=50;
       if(picture != null) {
@@ -761,9 +625,9 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
                 style: new TextStyle(fontSize: 12.0, color: Colors.white)),
             //onPressed: () { navigateToPage('Login Face');}
             onPressed:  () {
-              // Navigator.of(context).push(MaterialPageRoute(
-              //     builder: (context) => WebrtcRoom()));
-              _getSelfieImage(this.context, ImageSource.camera);
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => WebrtcRoom(scheduled: scheduled, nik: widget.model.nik!,)));
+              // _getSelfieImage(this.context, ImageSource.camera);
             },
             style: ElevatedButton.styleFrom(
                 primary: changeColor? Colors.red : Colors.red
@@ -920,6 +784,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
     int? queue1;
     int? queue2;
     int NIK = int.parse(firestoreNik);
+    String? checkNikRoom = widget.model.nik;
     TimeOfDay currTime = TimeOfDay.now();
     final TimeOfDay open = TimeOfDay(hour: 08, minute: 00);
     final TimeOfDay close = TimeOfDay(hour: 17, minute: 00);
@@ -939,6 +804,16 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
       print('2')
     });
 
+    await db.collection('rooms').doc('scheduledRoom').collection('scheduledRoomID').doc(checkNikRoom!).get().then((value){
+      if(value.exists){
+        scheduled = true;
+        print(value)
+      }
+      else{
+        scheduled = false;
+      }
+    });
+
     print(queue1! + queue2! >= 3 || (_currTime <= _openTime || _currTime >= _closeTime));
     print(queue1! + queue2! < 3 && (_currTime >= _openTime && _currTime <= _closeTime));
 
@@ -954,7 +829,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (BuildContext context) => WebrtcRoom()));
+              builder: (BuildContext context) => WebrtcRoom(scheduled: scheduled, nik: checkNikRoom!,)));
     }
   }
 
@@ -1016,7 +891,6 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
       controller: nikController,
       onChanged: (value){
         widget.model.nik = value;
-        print(value);
       },
       keyboardType: TextInputType.number,
       decoration: new InputDecoration(

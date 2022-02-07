@@ -58,7 +58,7 @@ class _WelcomePageState extends State<WelcomePage> {
       onTap: () async {
         await Firebase.initializeApp();
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => WebrtcRoom()));
+            context, MaterialPageRoute(builder: (context) => LoginPage()));
       },
       child: Container(
         width: MediaQuery.of(context).size.width,
