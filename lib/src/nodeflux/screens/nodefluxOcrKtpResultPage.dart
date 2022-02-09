@@ -625,9 +625,10 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
                 style: new TextStyle(fontSize: 12.0, color: Colors.white)),
             //onPressed: () { navigateToPage('Login Face');}
             onPressed:  () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => WebrtcRoom(scheduled: scheduled, nik: widget.model.nik!,)));
+              // Navigator.of(context).push(MaterialPageRoute(
+              //     builder: (context) => WebrtcRoom(scheduled: scheduled, nik: widget.model.nik!,)));
               // _getSelfieImage(this.context, ImageSource.camera);
+              createData();
             },
             style: ElevatedButton.styleFrom(
                 primary: changeColor? Colors.red : Colors.red
@@ -807,7 +808,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
     await db.collection('rooms').doc('scheduledRoom').collection('scheduledRoomID').doc(checkNikRoom!).get().then((value){
       if(value.exists){
         scheduled = true;
-        print(value)
+        print("hasil schedule" + value.toString());
       }
       else{
         scheduled = false;
@@ -829,7 +830,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (BuildContext context) => WebrtcRoom(scheduled: scheduled, nik: checkNikRoom!,)));
+              builder: (BuildContext context) => WebrtcRoom(scheduled: scheduled, nik: checkNikRoom,)));
     }
   }
 

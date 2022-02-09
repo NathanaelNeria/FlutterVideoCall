@@ -67,7 +67,7 @@ class _WebrtcRoomState extends State<WebrtcRoom> {
         });
       });
     }
-    else{
+    else if(widget.scheduled){
       signaling.joinRoom(widget.nik, _remoteRenderer).whenComplete((){
         signaling.registerPeerConnectionListeners(context);
       });

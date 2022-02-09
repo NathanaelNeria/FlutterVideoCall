@@ -88,15 +88,11 @@ class WebrtcSignaling {
   }
 
   Future<String?> createRoom(RTCVideoRenderer remoteRenderer, FirebaseFirestore db, int agentNum) async {
-    // DocumentReference roomRef = db.collection('rooms').doc('mobiletest').collection('mobiletestroom').doc();
     DocumentReference roomAgent = db.collection('rooms').doc('roomAgent' + agentNum.toString()).collection('roomIDAgent' + agentNum.toString()).doc();
-    // DocumentReference roomAgent2 = db.collection('rooms').doc('roomAgent2').collection('roomIDAgent2').doc();
 
     print('Create PeerConnection with configuration: $configuration');
 
     peerConnection = await createPeerConnection(configuration);
-
-    // registerPeerConnectionListeners();
 
     localStream?.getTracks().forEach((track) {
       peerConnection?.addTrack(track, localStream!);
@@ -189,15 +185,13 @@ class WebrtcSignaling {
       print('Create PeerConnection with configuration: $configuration');
       peerConnection = await createPeerConnection(configuration);
 
-      // registerPeerConnectionListeners();
-
       localStream?.getTracks().forEach((track) {
         peerConnection?.addTrack(track, localStream!);
       });
 
       // Code for collecting ICE candidates below
       var calleeCandidatesCollection = roomRef.collection('calleeCandidates');
-      peerConnection?.onIceCandidate = (RTCIceCandidate candidate) {
+      peerConnection!.onIceCandidate = (RTCIceCandidate candidate) {
         if (candidate == null) {
           print('onIceCandidate: complete!');
           return;
@@ -219,9 +213,6 @@ class WebrtcSignaling {
       var data = roomSnapshot.data() as Map<String, dynamic>;
       print('Got offer $data');
       var offer = data['offer'];
-      // var currentTimestamp = DateFormat('yyyy-MM-dd hh:mm:ss').format(DateTime.now()).toString();
-      var time = DateTime.now().millisecondsSinceEpoch;
-      var isAnswered=false;
       await peerConnection?.setRemoteDescription(
         RTCSessionDescription(offer['sdp'], offer['type']),
       );
@@ -231,7 +222,7 @@ class WebrtcSignaling {
       await peerConnection!.setLocalDescription(answer);
 
       Map<String, dynamic> roomWithAnswer = {
-        'answer': {'type': answer.type, 'sdp': answer.sdp, 'time': time }
+        'answer': {'type': answer.type, 'sdp': answer.sdp}
       };
 
       await roomRef.update(roomWithAnswer);
@@ -243,7 +234,7 @@ class WebrtcSignaling {
           var data = document.doc.data() as Map<String, dynamic>;
           print(data);
           print('Got new remote ICE candidate: $data');
-          peerConnection?.addCandidate(
+          peerConnection!.addCandidate(
             RTCIceCandidate(
               data['candidate'],
               data['sdpMid'],
@@ -262,7 +253,7 @@ class WebrtcSignaling {
     var stream = await navigator.mediaDevices
         .getUserMedia({
       'video': {
-        'facingMode': 'user'
+        'facingMode': 'user',
       },
       'audio': true,
       });
