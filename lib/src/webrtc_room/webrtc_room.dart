@@ -1,14 +1,10 @@
 import 'dart:async';
-import 'dart:convert';
 
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:flutter_webrtc_demo/src/pages/displayDataPage.dart';
 import 'webrtc_signaling.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart';
-import '../../Widget/datetime_picker_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class WebrtcRoom extends StatefulWidget {
@@ -27,7 +23,6 @@ class _WebrtcRoomState extends State<WebrtcRoom> {
   RTCVideoRenderer _remoteRenderer = RTCVideoRenderer();
   String? roomId;
   TextEditingController textEditingController = TextEditingController(text: '');
-  late Timer _timer;
   int? agentNum;
 
 
@@ -51,25 +46,24 @@ class _WebrtcRoomState extends State<WebrtcRoom> {
       });
     });
 
-    // auto open camera & mic
     signaling.openUserMedia(_localRenderer, _remoteRenderer).whenComplete(() {
       setState(() {
       });
     } );
 
     if(!widget.scheduled) {
-      _timer = new Timer(const Duration(seconds: 3), () {
+      Timer(const Duration(seconds: 3), () {
         signaling.createRoom(_remoteRenderer, db, agentNum!).then((data) {
           setState(() {
             roomId = data;
-            signaling.registerPeerConnectionListeners(context);
+            signaling.connectionState(context);
           });
         });
       });
     }
     else if(widget.scheduled){
       signaling.joinRoom(widget.nik, _remoteRenderer).whenComplete((){
-        signaling.registerPeerConnectionListeners(context);
+        signaling.connectionState(context);
       });
     }
 
@@ -155,7 +149,7 @@ class _WebrtcRoomState extends State<WebrtcRoom> {
                 onPressed: () {
                   signaling.hangUp(_localRenderer);
                   Navigator.push(
-                      context, MaterialPageRoute(builder: (context) => DisplayDataPage(title: '',)));
+                      context, MaterialPageRoute(builder: (context) => DisplayDataPage()));
                 },
                 child: Icon(Icons.call_end_rounded),
                 style: ButtonStyle(

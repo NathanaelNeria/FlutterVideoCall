@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../Widget/bezierContainer.dart';
-import 'loginPage.dart';
+// import '../../Widget/bezierContainer.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'WelcomePage.dart';
 
@@ -16,17 +15,7 @@ class CongratulationPage extends StatefulWidget {
 }
 
 class _CongratulationPageState extends State<CongratulationPage> {
-  //firestore
-  // late String firestoreId;
   final db = FirebaseFirestore.instance;
-  final _formKey = GlobalKey<FormState>();
-  // late String firestoreName;
-  // late String firestoreNik;
-  // late String firestoreAddress;
-  // late String firestoreBirthdate;
-  // late String firestoreBirthday;
-  // late String firestoreMobilePhone;
-  // late String firestoreEmail;
 
   Widget _backButton() {
     return InkWell(
@@ -65,7 +54,6 @@ class _CongratulationPageState extends State<CongratulationPage> {
               border: Border.all(color: Colors.white, width: 2),
             ),
             child: Text(
-              //'Selesai',
               'Done',
               style: TextStyle(fontSize: 20, color: Colors.white),
             ),
@@ -90,10 +78,6 @@ class _CongratulationPageState extends State<CongratulationPage> {
               text: ' Bank',
               style: TextStyle(color: Colors.white, fontSize: 30),
             ),
-            // TextSpan(
-            //   text: 'rnz',
-            //   style: TextStyle(color: Color(0xffe46b10), fontSize: 30),
-            // ),
           ]),
     );
   }
@@ -108,8 +92,6 @@ class _CongratulationPageState extends State<CongratulationPage> {
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
-    //String emailAddress= widget.email.toString();
-    //print('INI EMAIL ADDRESS: '+emailAddress);
 
     return Scaffold(
       body: Container(
@@ -126,12 +108,12 @@ class _CongratulationPageState extends State<CongratulationPage> {
             gradient: LinearGradient(
                 begin: Alignment.bottomLeft,
                 end: Alignment.topRight,
-                // colors: [Color(0xfffbb448), Color(0xffe46b10)]
                 colors: [Colors.green, Colors.green.shade700, Colors.green.shade900]
             )
         ),
         child: Stack(
           children: <Widget>[
+            //TODO: uncomment kalo perlu UI IST
             // Positioned(
             //   top: -MediaQuery.of(context).size.height * .15,
             //   right: -MediaQuery.of(context).size.width * .4,
@@ -150,16 +132,13 @@ class _CongratulationPageState extends State<CongratulationPage> {
                       height: 50,
                     ),
                     Text(
-                      //'Selamat! Anda telah berhasil membuka rekening di Bank IST!',
                       'Congratulation! You have successfully registered for a Savings Account in NTB Syariah Bank',
                       style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.bold), textAlign: TextAlign.left,
                     ),
-                    //_emailPasswordWidget(),
                     SizedBox(
                       height: 20,
                     ),
                     Text(
-                      //'Proses verifikasi bapak/ibu sudah selesai. Pemberitahuan akan kami kirimkan melalui email:',
                       'Your verification process has been done. We are sending you confirmation email to:',
                       style: TextStyle(color: Colors.white, fontSize: 17), textAlign: TextAlign.left,
                     ),
@@ -176,12 +155,10 @@ class _CongratulationPageState extends State<CongratulationPage> {
                           }
                         }
                     ),
-                    // Text(widget.email, style: TextStyle(fontSize: 17, color: Colors.white)),
                     SizedBox(
                       height: 20,
                     ),
                     Text(
-                      //'Silahkan bapak/ibu cek di email tsb untuk melihat hasil verifikasi dari pihak Bank dalam 24 jam',
                       'Please keep checking your email above to follow up NTBS verification process within 24 hours',
                       style: TextStyle(color: Colors.white, fontSize: 17), textAlign: TextAlign.left,
                     ),
@@ -191,7 +168,6 @@ class _CongratulationPageState extends State<CongratulationPage> {
 
                     _submitButton(),
                     SizedBox(height: height * .14),
-                    //_loginAccountLabel(),
                   ],
                 ),
               ),

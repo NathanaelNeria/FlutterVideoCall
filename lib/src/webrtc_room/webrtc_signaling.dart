@@ -94,6 +94,8 @@ class WebrtcSignaling {
 
     peerConnection = await createPeerConnection(configuration);
 
+    registerPeerConnectionListeners();
+
     localStream?.getTracks().forEach((track) {
       peerConnection?.addTrack(track, localStream!);
     });
@@ -184,6 +186,8 @@ class WebrtcSignaling {
     if (roomSnapshot.exists) {
       print('Create PeerConnection with configuration: $configuration');
       peerConnection = await createPeerConnection(configuration);
+
+      registerPeerConnectionListeners();
 
       localStream?.getTracks().forEach((track) {
         peerConnection?.addTrack(track, localStream!);
@@ -291,45 +295,61 @@ class WebrtcSignaling {
     remoteStream?.dispose();
   }
 
-  void registerPeerConnectionListeners(BuildContext context) {
+  void connectionState(BuildContext context) {
     bool disconnect = false;
-    peerConnection?.onIceGatheringState = (RTCIceGatheringState state) {
-      print('ICE gathering state changed: $state');
-    };
+    bool connected = false;
 
     peerConnection!.onConnectionState = (RTCPeerConnectionState state) {
       print('Connection state change: $state');
 
-      if (state==RTCPeerConnectionState.RTCPeerConnectionStateDisconnected) {
+      if(state == RTCPeerConnectionState.RTCPeerConnectionStateConnected){
+        connected = true;
+      }
+      else if (state == RTCPeerConnectionState.RTCPeerConnectionStateDisconnected) {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => DisplayDataPage()));
+            context,
+            MaterialPageRoute(builder: (context) => DisplayDataPage()));
         print('disconnect');
         disconnect = true;
       }
-      else if(state == RTCPeerConnectionState.RTCPeerConnectionStateFailed && !disconnect){
+      else if (state == RTCPeerConnectionState.RTCPeerConnectionStateFailed && !disconnect && !connected) {
         print('failed');
         showDialog(
-          context: context,
-          builder: (BuildContext context){
-            return AlertDialog(
-              title: Text('Video call connection failed!'),
-              content: Text('Please check your connection.'),
-              actions: [
-                TextButton(
-                  onPressed: (){
-                    Navigator.pop(context);
-                  },
-                  child: Text('Return'),
-                )
-              ],
-            );
-          }
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text('Video call connection failed!'),
+                content: Text('Please check your connection.'),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text('Return'),
+                  )
+                ],
+              );
+            }
         );
       }
+    };
+  }
+
+  void registerPeerConnectionListeners() {
+    peerConnection?.onIceGatheringState = (RTCIceGatheringState state) {
+      print('ICE gathering state changed: $state');
+    };
+
+    peerConnection?.onConnectionState = (RTCPeerConnectionState state) {
+      print('Connection state change: $state');
     };
 
     peerConnection?.onSignalingState = (RTCSignalingState state) {
       print('Signaling state change: $state');
+    };
+
+    peerConnection?.onIceGatheringState = (RTCIceGatheringState state) {
+      print('ICE connection state change: $state');
     };
 
     peerConnection?.onAddStream = (MediaStream stream) {

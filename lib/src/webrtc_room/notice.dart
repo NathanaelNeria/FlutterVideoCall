@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'schedule.dart';
 
 class Notice extends StatefulWidget {
-  const Notice({Key? key, required this.email, required this.nik}) : super(key: key);
+  const Notice({Key? key, required this.email, required this.nik, required this.name}) : super(key: key);
 
   final String email;
   final int nik;
+  final String name;
 
   @override
   _NoticeState createState() => _NoticeState();
@@ -48,7 +49,7 @@ class _NoticeState extends State<Notice> {
                   style: new TextStyle(fontSize: 12.0, color: Colors.white)),
               onPressed:  () {
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => ScheduleCall(nik: widget.nik, email: widget.email,)));
+                    builder: (context) => ScheduleCall(nik: widget.nik, email: widget.email, name: widget.name,)));
               },
               style: ElevatedButton.styleFrom(
                   primary: Colors.green

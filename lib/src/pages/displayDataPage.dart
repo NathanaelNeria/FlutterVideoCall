@@ -1,42 +1,23 @@
 import 'package:flutter/material.dart';
-import 'signup.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../Widget/bezierContainer.dart';
-import 'package:intl/intl.dart';
-import 'dart:io';
-import 'package:path/path.dart' as path;
-import 'package:image_cropper/image_cropper.dart';
-import 'package:image_picker/image_picker.dart';
 import 'congratulationPage.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DisplayDataPage extends StatefulWidget {
-  DisplayDataPage({Key? key, this.title}) : super(key: key);
-
-  final String? title;
+  DisplayDataPage({Key? key}) : super(key: key);
 
   @override
   _DisplayDataPageState createState() => _DisplayDataPageState();
 }
 
 class _DisplayDataPageState extends State<DisplayDataPage> {
-  DateTime? selectedbirthdate;
-  File _imageFile = new File('');
-
-  TextEditingController nikController = TextEditingController();
-  TextEditingController nameController = TextEditingController();
-  TextEditingController birthdateController = TextEditingController();
-  TextEditingController birthplaceController = TextEditingController();
-  TextEditingController mobilePhoneController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  ImagePicker _picker = ImagePicker();
 
   //firestore
   late String firestoreId;
   final db = FirebaseFirestore.instance;
-  final _formKey = GlobalKey<FormState>();
 
   Widget _title() {
     return RichText(
@@ -56,12 +37,9 @@ class _DisplayDataPageState extends State<DisplayDataPage> {
             TextSpan(
               text: 'Information',
               style: TextStyle(color: Colors.black, fontSize: 30),
-            ),
-            // TextSpan(
-            //   text: 'Form',
-            //   style: TextStyle(color: Color(0xffe46b10), fontSize: 30),
-            // ),
-          ]),
+          ),
+      ]
+    )
     );
   }
 
@@ -148,7 +126,6 @@ class _DisplayDataPageState extends State<DisplayDataPage> {
                     end: Alignment.centerRight,
                     colors: [Color(0xfffbb448), Color(0xfff7892b)])),
             child: Text(
-              //'Langkah Berikutnya',
               'Next Step',
               style: TextStyle(fontSize: 20, color: Colors.white),
             ),
@@ -187,23 +164,8 @@ class _DisplayDataPageState extends State<DisplayDataPage> {
                   style: TextStyle(fontSize: 18)
               ),
               SizedBox(height: 12),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.end,
-              //   children: <Widget>[
-              //     FlatButton(
-              //       onPressed: () =>
-              //     )
-              //   ],
-              // )
             ]
         )
     );
-  }
-
-  void readData() async {
-    DocumentSnapshot snapshot = await db.collection('form')
-        .doc(firestoreId)
-        .get();
-    print((snapshot.data as dynamic)['name']);
   }
 }

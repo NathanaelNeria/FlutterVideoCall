@@ -1,14 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc_demo/src/pages/welcomePage.dart';
+import 'package:flutter_webrtc_demo/src/webrtc_room/scheduleDisplay.dart';
 import 'package:intl/intl.dart';
 import 'package:date_format/date_format.dart';
 
 class ScheduleCall extends StatefulWidget {
-  const ScheduleCall({Key? key, required this.email, required this.nik}) : super(key: key);
+  const ScheduleCall({Key? key, required this.email, required this.nik, required this.name}) : super(key: key);
 
   final String email;
   final int nik;
+  final String name;
 
   @override
   _ScheduleCallState createState() => _ScheduleCallState();
@@ -148,7 +150,8 @@ class _ScheduleCallState extends State<ScheduleCall> {
         'date': dateFormatted,
         'time': timeFormatted,
         'nik': widget.nik,
-        'email': widget.email
+        'email': widget.email,
+        'name': widget.name
       });
     }
     catch(e){
@@ -162,7 +165,7 @@ class _ScheduleCallState extends State<ScheduleCall> {
         if(operationTime) {
           firestoreSchedule();
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => WelcomePage())
+              context, MaterialPageRoute(builder: (context) => scheduleDisplay(name: widget.name, nik: widget.nik, email: widget.email, date: dateFormatted!, time: timeFormatted!))
           );
         }
       },
