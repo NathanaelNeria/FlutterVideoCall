@@ -151,7 +151,11 @@ class _ScheduleCallState extends State<ScheduleCall> {
         'time': timeFormatted,
         'nik': widget.nik,
         'email': widget.email,
-        'name': widget.name
+        'name': widget.name,
+        'status': 'Pending',
+        'disable': false,
+        'disableRoom': true,
+        'disableDecline': false
       });
     }
     catch(e){
