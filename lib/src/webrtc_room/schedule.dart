@@ -1,16 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc_demo/src/pages/welcomePage.dart';
+import 'package:flutter_webrtc_demo/src/parameterModel.dart';
 import 'package:flutter_webrtc_demo/src/webrtc_room/scheduleDisplay.dart';
 import 'package:intl/intl.dart';
 import 'package:date_format/date_format.dart';
+import 'dart:math';
 
 class ScheduleCall extends StatefulWidget {
-  const ScheduleCall({Key? key, required this.email, required this.nik, required this.name}) : super(key: key);
+  const ScheduleCall({Key? key, required this.email, required this.nik, required this.name, required this.parameter}) : super(key: key);
 
   final String email;
   final int nik;
   final String name;
+  final Parameter parameter;
 
   @override
   _ScheduleCallState createState() => _ScheduleCallState();
@@ -31,6 +34,7 @@ class _ScheduleCallState extends State<ScheduleCall> {
   String? dateFormatted, timeFormatted;
 
   String timeMessage = '';
+  var startTime, endTime;
 
   bool operationTime = false;
 
@@ -46,6 +50,8 @@ class _ScheduleCallState extends State<ScheduleCall> {
   TextEditingController _timeController = TextEditingController();
 
   final db = FirebaseFirestore.instance;
+
+
 
   Future<String> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -74,10 +80,8 @@ class _ScheduleCallState extends State<ScheduleCall> {
   }
 
   Future<String> _selectTime(BuildContext context) async {
-    final TimeOfDay open = TimeOfDay(hour: 08, minute: 00);
-    final TimeOfDay close = TimeOfDay(hour: 17, minute: 00);
-    double _openTime = open.hour.toDouble() + (open.minute.toDouble()/60);
-    double _closeTime = close.hour.toDouble() + (close.minute.toDouble()/60);
+    double _openTime = widget.parameter.data![0].operationalStart!;
+    double _closeTime = widget.parameter.data![0].operationalEnd!;
 
     final TimeOfDay? picked = await showTimePicker(
       context: context,
@@ -112,7 +116,7 @@ class _ScheduleCallState extends State<ScheduleCall> {
       }
       else{
         operationTime = false;
-        timeMessage = 'Please select time between 08:00 - 17:00';
+        timeMessage = 'Please select time between $startTime - $endTime';
       }
     }
     else if(picked == null){
@@ -123,24 +127,44 @@ class _ScheduleCallState extends State<ScheduleCall> {
       }
       else{
         operationTime = false;
-        timeMessage = 'Please select time between 08:00 - 17:00';
+        timeMessage = 'Please select time between $startTime - $endTime';
       }
     }
     return selectedTime.toString();
+  }
+
+  String getTimeStringFromDouble(double value) {
+    if (value < 0) return 'Invalid Value';
+    int flooredValue = value.floor();
+    double decimalValue = value - flooredValue;
+    String hourValue = getHourString(flooredValue);
+    String minuteString = getMinuteString(decimalValue);
+
+    return '$hourValue:$minuteString';
+  }
+
+  String getMinuteString(double decimalValue) {
+    return '${(decimalValue * 60).toInt()}'.padLeft(2, '0');
+  }
+
+  String getHourString(int flooredValue) {
+    return '${flooredValue % 24}'.padLeft(2, '0');
   }
 
   @override
   void initState() {
     _dateController.text = DateFormat.yMd().format(selectedDate);
 
-    _timeController.text = formatDate(
-        DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, DateTime.now().hour, DateTime.now().minute),
-        [HH, ':', nn, " "]).toString();
+    // _timeController.text = formatDate(
+    //     DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, DateTime.now().hour, DateTime.now().minute),
+    //     [HH, ':', nn, " "]).toString();
 
     // dateFormatted = _dateController.text;
     timeFormatted = _timeController.text;
     dateFormatted = formatter.format(today);
     _selectedTime = DateTime.now().hour.toDouble() + (DateTime.now().minute.toDouble()/60);
+    startTime = getTimeStringFromDouble(widget.parameter.data![0].operationalStart!);
+    endTime = getTimeStringFromDouble(widget.parameter.data![0].operationalEnd!);
     super.initState();
   }
 
@@ -169,7 +193,7 @@ class _ScheduleCallState extends State<ScheduleCall> {
         if(operationTime) {
           firestoreSchedule();
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => scheduleDisplay(name: widget.name, nik: widget.nik, email: widget.email, date: dateFormatted!, time: timeFormatted!))
+              context, MaterialPageRoute(builder: (context) => scheduleDisplay(name: widget.name, nik: widget.nik, email: widget.email, date: dateFormatted!, time: timeFormatted!, parameter: widget.parameter,))
           );
         }
       },

@@ -242,7 +242,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   gradient: LinearGradient(
                       begin: Alignment.bottomLeft,
                       end: Alignment.topRight,
-                      colors: [Colors.green, Colors.green.shade700, Colors.green.shade900])
+                      colors: [Colors.white])
               ),
             ),
             Column(
@@ -278,7 +278,7 @@ class _SplashScreenState extends State<SplashScreen> {
                       widget.useLoader
                           ? CircularProgressIndicator(
                         valueColor: AlwaysStoppedAnimation<Color>(
-                          Colors.white,
+                          Colors.orange,
                         ),
                       )
                           : Container(),

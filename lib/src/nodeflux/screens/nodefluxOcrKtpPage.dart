@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../hexColorConverter.dart';
 import '../../pages/signup.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -16,6 +17,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
+import '../../parameterModel.dart';
 import '../models/nodeflux_data_model.dart';
 import '../models/nodeflux_data_model_sync2.dart';
 import '../models/nodeflux_job_model.dart';
@@ -33,9 +35,10 @@ import '../models/face_pair_not_match.dart';
 import '../models/no_face_detected.dart';
 
 class NodefluxOcrKtpPage extends StatefulWidget {
-  NodefluxOcrKtpPage({Key? key, this.title}) : super(key: key);
+  NodefluxOcrKtpPage({Key? key, this.title, required this.parameter}) : super(key: key);
 
   final String? title;
+  final Parameter parameter;
 
   @override
   _NodefluxOcrKtpPageState createState() => _NodefluxOcrKtpPageState();
@@ -107,6 +110,13 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
   bool ktpProcessed = false;
   DateTime currTime = DateTime.now();
 
+  Color bgColor = Colors.white;
+  Color buttonColor = Colors.white;
+  Color boxColor = Colors.white;
+  String titleText = '';
+  Color textColor = Colors.white;
+  Color warningTextColor = Colors.white;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -116,6 +126,12 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
       print("completed");
       setup();
     });
+    bgColor = HexColor.fromHex(widget.parameter.data![0].background!);
+    buttonColor = HexColor.fromHex(widget.parameter.data![0].button!);
+    boxColor = HexColor.fromHex(widget.parameter.data![0].box!);
+    titleText = widget.parameter.data![0].title!;
+    textColor = HexColor.fromHex(widget.parameter.data![0].textColor!);
+    warningTextColor = HexColor.fromHex(widget.parameter.data![0].warningTextColor!);
   }
 
   setup() {
@@ -147,13 +163,13 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
             textStyle: Theme.of(context).textTheme.headline4,
             fontSize: 30,
             fontWeight: FontWeight.w700,
-            // color: Color(0xffe46b10),
-            color: Colors.white
+            color: textColor,
+            // color: Colors.white
           ),
           children: [
             TextSpan(
               text: 'Information',
-              style: TextStyle(color: Colors.white, fontSize: 30),
+              style: TextStyle(color: textColor, fontSize: 30),
             ),
           ]),
     );
@@ -249,9 +265,9 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
       //loading = true;
     });
     //String trx_id = 'Liveness_' + DateFormat('yyyyMMddHHmmss').format(DateTime.now());
-    String authorization = 'NODEFLUX-HMAC-SHA256 Credential=50WNYKJBV3E4QN0BXIMJUVMKN/20220125/nodeflux.api.v1beta1.ImageAnalytic/StreamImageAnalytic, SignedHeaders=x-nodeflux-timestamp, Signature=04db27a8b1c11e5e5feff31490b73b568d7b8400475b1a48248a03f029ccd33c';
+    String authorization = 'NODEFLUX-HMAC-SHA256 Credential=VFUWPCWUJEPWBSH3S7WNW7975/20220405/nodeflux.api.v1beta1.ImageAnalytic/StreamImageAnalytic, SignedHeaders=x-nodeflux-timestamp, Signature=ca67983c3bf8c688112b59f00e32f119481dbb2e6375e1ad5a7af66fca9cb7c8';
     String contentType = 'application/json';
-    String xnodefluxtimestamp='20201110T135945Z';
+    String xnodefluxtimestamp='20220405T094324Z';
     final imageBytes = _ektpImage?.readAsBytesSync();
     String base64Image = 'data:image/jpeg;base64,'+base64Encode(imageBytes!);
     String? dialog = "";
@@ -274,7 +290,7 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
             .post(Uri.parse(url), body: json.encode({
           "images":photoBase64List
         }), headers: {"Accept": "application/json",  "Content-Type": "application/json",
-          "x-nodeflux-timestamp": "20220125T093502Z",
+          "x-nodeflux-timestamp": xnodefluxtimestamp,
           "Authorization": authorization,});
 
         print(response.body);
@@ -374,19 +390,26 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
           height: 40.0,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(5)),
-            border: Border.all(color: Colors.white, width: 2),
+            border: Border.all(color: boxColor, width: 2),
+              boxShadow: <BoxShadow>[
+                BoxShadow(
+                    color: boxColor,
+                    offset: Offset(2, 4),
+                    blurRadius: 8,
+                    spreadRadius: 2)
+              ],
+              color: buttonColor
           ),
           child: new ElevatedButton(
             child: new Text(
-                //'Ambil Foto eKTP',
               'Take eKTP Photo',
                 style: new TextStyle(fontSize: 12.0, color: Colors.white)),
             //onPressed: () { navigateToPage('Login Face');}
             onPressed:  () {
-              nodefluxSelfie? changeColor: _getEktpImage(this.context, ImageSource.camera);
+              nodefluxSelfie? changeColor : _getEktpImage(this.context, ImageSource.camera);
             },
             style: ElevatedButton.styleFrom(
-              primary: changeColor? Colors.grey : Colors.green[700]
+              primary: changeColor? Colors.grey : buttonColor
             ),
           ),
         ));
@@ -399,16 +422,16 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
           height: 40.0,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(5)),
-            border: Border.all(color: Colors.white, width: 2),
+            border: Border.all(color: boxColor, width: 2),
           ),
           child: new ElevatedButton(
             child: new Text(
-              //'Ambil Foto eKTP',
                 'Try again',
                 style: new TextStyle(fontSize: 12.0, color: Colors.white)),
             //onPressed: () { navigateToPage('Login Face');}
             onPressed:  () {
-              Navigator.pop(context);
+              ktpDetected = '';
+              _getEktpImage(context, ImageSource.camera);
             },
             style: ElevatedButton.styleFrom(
                 primary: changeColor? Colors.red : Colors.red
@@ -427,12 +450,19 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
           alignment: Alignment.center,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(5)),
-            border: Border.all(color: Colors.white, width: 2),
+            border: Border.all(color: boxColor, width: 2),
+              boxShadow: <BoxShadow>[
+                BoxShadow(
+                    color: boxColor,
+                    offset: Offset(2, 4),
+                    blurRadius: 8,
+                    spreadRadius: 2)
+              ],
+              color: buttonColor
           ),
           child: Text(
-            //'Selesai',
             'Next',
-            style: TextStyle(fontSize: 20, color: Colors.white),
+            style: TextStyle(fontSize: 20, color: textColor),
           ),
         )
     );
@@ -440,6 +470,7 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
 
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
     return Scaffold(
         body:
             Container(
@@ -447,7 +478,7 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
                   borderRadius: BorderRadius.all(Radius.circular(5)),
                   boxShadow: <BoxShadow>[
                     BoxShadow(
-                        color: Colors.grey.shade200,
+                        color: boxColor,
                         offset: Offset(2, 4),
                         blurRadius: 5,
                         spreadRadius: 2)
@@ -456,7 +487,7 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
                       begin: Alignment.bottomLeft,
                       end: Alignment.topRight,
                       // colors: [Color(0xfffbb448), Color(0xffe46b10)]
-                      colors: [Colors.green, Colors.green.shade700, Colors.green.shade900]
+                      colors: [bgColor, bgColor]
                   )
               ),
               child: ListView(
@@ -466,73 +497,29 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
                       key: _formKey,
                       child: Column (
                         children: <Widget>[
-                          SizedBox(height: 60),
+                          SizedBox(height: 40),
                           _title(),
-
+                          SizedBox(height: 40),
                           showUploadEktpButton(),
                           (ktpDetected == 'lagi proses')?Text('Processing.. Please wait a moment..',
-                              style: new TextStyle(fontSize: 12.0, color: Colors.white)):Container(),
+                              style: new TextStyle(fontSize: 12.0, color: textColor)):Container(),
 
                           (ktpDetected == 'ktp ada')?Text('eKTP Processed',
-                              style: new TextStyle(fontSize: 12.0, color: Colors.white)):Container(),
+                              style: new TextStyle(fontSize: 12.0, color: textColor)):Container(),
 
                           SizedBox(height: 20),
                           (ktpDetected == 'ktp ga ada')?
-                          Text('eKTP not found', style: new TextStyle(fontSize: 12.0, color: Colors.red[200])) : Container(),
+                          Text('eKTP not found', style: new TextStyle(fontSize: 12.0, color: warningTextColor)) : Container(),
                           (ktpDetected == 'ktp ga ada')? tryAgainButton() : Container(
-                              child: (ktpProcessed)? nextButton() : Container()
+                              child: (ktpDetected == 'ktp ada')? nextButton() : Container()
                           ),
-                          // (ktpDetected == 'ktp ada' && ktpProcessed && _ektpImage != null)?
-
-
-
-                          SizedBox(height: 20),
-                          // (_ektpImage!=null && _nodefluxResult2Model!=null)?showUploadSelfieButton():Container(),
                           SizedBox(height: 20),
                           (matchLivenessFeedback!="")?
                           Text(matchLivenessFeedback,
-                            style: new TextStyle(fontSize: 12.0, color: Colors.white),
+                            style: new TextStyle(fontSize: 12.0, color: textColor),
                             textAlign: TextAlign.center,
                           ):Container(),
                           SizedBox(height:20),
-                          // (similarityValue != null && livenessValue != null && _ektpImage!=null && _nodefluxResult2Model!=null
-                          //     && _selfieImage != null && similarityValue >= 0.75 && livenessValue >= 0.75
-                          // )?
-                          // InkWell(
-                          //     onTap: goToResultPage,
-                          //     child:Container(
-                          //       width: MediaQuery.of(context).size.width,
-                          //       padding: EdgeInsets.symmetric(vertical: 15),
-                          //       alignment: Alignment.center,
-                          //       decoration: BoxDecoration(
-                          //         borderRadius: BorderRadius.all(Radius.circular(5)),
-                          //         border: Border.all(color: Colors.white, width: 2),
-                          //       ),
-                          //       child: Text(
-                          //         //'Selesai',
-                          //         'Next',
-                          //         style: TextStyle(fontSize: 20, color: Colors.white),
-                          //       ),
-                          //     )
-                          // )
-                          //     :
-                          // Container(
-                          //     child: (noFace && message == 'No face detected')? tryAgainButton()
-                          //         :
-                          //     ((nodefluxSelfie)?
-                          //     ((underQualified)? tryAgainButton()
-                          //         :
-                          //     ((similarityValue < 75 && livenessValue < 75)? Column(
-                          //       children: [
-                          //         Text('Liveness or face match do not pass the requirement',
-                          //           style: TextStyle(fontSize: 15.0, color: Colors.red),
-                          //           textAlign: TextAlign.center,
-                          //         ),
-                          //         SizedBox(height: 10),
-                          //         tryAgainButton()
-                          //       ],
-                          //     ):Container())) : Container())
-                          // ),
                         ],
                       )
                   ),
@@ -546,7 +533,7 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
   void goToResultPage() async {
     if (_formKey.currentState!.validate()) {
       Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => NodefluxOcrKtpResultPage(model: _nodefluxResult2Model!, ektpImage: _ektpImage!)));
+          builder: (context) => NodefluxOcrKtpResultPage(model: _nodefluxResult2Model!, ektpImage: _ektpImage!, parameter: widget.parameter,)));
     }
   }
 

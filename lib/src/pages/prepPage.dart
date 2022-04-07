@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_webrtc_demo/src/parameterModel.dart';
 import '../../Widget/bezierContainer.dart';
+import '../../hexColorConverter.dart';
 import 'loginPage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../nodeflux/screens/nodefluxOcrKtpPage.dart';
 
 
 class PrepPage extends StatefulWidget {
-  PrepPage({Key? key, required this.title}) : super(key: key);
+  PrepPage({Key? key, required this.title, required this.parameter}) : super(key: key);
 
 
   final String title;
+  final Parameter parameter;
 
   @override
   _PrepPageState createState() => _PrepPageState();
@@ -17,6 +20,11 @@ class PrepPage extends StatefulWidget {
 
 class _PrepPageState extends State<PrepPage> {
   String selectedValue = 'Savings Account';
+  Color bgColor = Colors.white;
+  Color buttonColor = Colors.white;
+  Color boxColor = Colors.white;
+  String titleText = '';
+  Color textColor = Colors.white;
 
   Widget _backButton() {
     return InkWell(
@@ -29,10 +37,10 @@ class _PrepPageState extends State<PrepPage> {
           children: <Widget>[
             Container(
               padding: EdgeInsets.only(left: 0, top: 10, bottom: 10),
-              child: Icon(Icons.keyboard_arrow_left, color: Colors.white),
+              child: Icon(Icons.keyboard_arrow_left, color: textColor),
             ),
             Text('Back',
-                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: Colors.white))
+                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: textColor))
           ],
         ),
       ),
@@ -68,7 +76,7 @@ class _PrepPageState extends State<PrepPage> {
       InkWell(
           onTap: () {
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => NodefluxOcrKtpPage(title: '',)));
+                context, MaterialPageRoute(builder: (context) => NodefluxOcrKtpPage(title: '', parameter: widget.parameter,)));
           },
           child:Container(
             width: MediaQuery.of(context).size.width,
@@ -76,12 +84,20 @@ class _PrepPageState extends State<PrepPage> {
             alignment: Alignment.center,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(5)),
-              border: Border.all(color: Colors.white, width: 2),
+              border: Border.all(color: boxColor, width: 2),
+                boxShadow: <BoxShadow>[
+                  BoxShadow(
+                      color: boxColor,
+                      offset: Offset(2, 4),
+                      blurRadius: 8,
+                      spreadRadius: 2)
+                ],
+                color: buttonColor
             ),
             child: Text(
               //     'OK, Semua sudah siap',
               'OK, I am ready',
-              style: TextStyle(fontSize: 20, color: Colors.white),
+              style: TextStyle(fontSize: 20, color: textColor),
             ),
           )
       );
@@ -129,7 +145,7 @@ class _PrepPageState extends State<PrepPage> {
     return RichText(
       textAlign: TextAlign.center,
       text: TextSpan(
-          text: 'NTB Syariah',
+          text: titleText,
           style: GoogleFonts.portLligatSans(
               textStyle: Theme.of(context).textTheme.headline4,
               fontSize: 30,
@@ -137,27 +153,28 @@ class _PrepPageState extends State<PrepPage> {
               // color: Color(0xffe46b10),
               color: Colors.white
           ),
-          children: [
-            TextSpan(
-              text: ' Bank',
-              style: TextStyle(color: Colors.white, fontSize: 30),
-            ),
-            // TextSpan(
-            //   text: 'rnz',
-            //   style: TextStyle(color: Color(0xffe46b10), fontSize: 30),
-            // ),
-          ]),
+          // children: [
+          //   TextSpan(
+          //     text: ' Bank',
+          //     style: TextStyle(color: Colors.white, fontSize: 30),
+          //   ),
+          //   // TextSpan(
+          //   //   text: 'rnz',
+          //   //   style: TextStyle(color: Color(0xffe46b10), fontSize: 30),
+          //   // ),
+          // ]
+      ),
     );
   }
 
-  Widget _emailPasswordWidget() {
-    return Column(
-      children: <Widget>[
-        _entryField("Username"),
-        _entryField("Email id"),
-        _entryField("Password", isPassword: true),
-      ],
-    );
+  @override
+  void initState() {
+    bgColor = HexColor.fromHex(widget.parameter.data![0].background!);
+    buttonColor = HexColor.fromHex(widget.parameter.data![0].button!);
+    boxColor = HexColor.fromHex(widget.parameter.data![0].box!);
+    titleText = widget.parameter.data![0].title!;
+    textColor = HexColor.fromHex(widget.parameter.data![0].textColor!);
+    super.initState();
   }
 
   @override
@@ -178,7 +195,7 @@ class _PrepPageState extends State<PrepPage> {
                 begin: Alignment.bottomLeft,
                 end: Alignment.topRight,
                 // colors: [Color(0xfffbb448), Color(0xffe46b10)]
-                colors: [Colors.green, Colors.green.shade700, Colors.green.shade900]
+                colors: [bgColor, bgColor]
             )
         ),
         height: height,
@@ -212,71 +229,51 @@ class _PrepPageState extends State<PrepPage> {
                             height: 50,
                           ),
                           Text(
-                            //'Hai, buka rekening IST Bank kamu sekarang yuk',
-                            'Let\'s follow these steps to open NTB Syariah Bank Account',
-                            style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.bold), textAlign: TextAlign.left,
+                            'Let\'s follow these steps to register $titleText Account',
+                            style: TextStyle(color: textColor, fontSize: 17, fontWeight: FontWeight.bold), textAlign: TextAlign.left,
                           ),
                           //_emailPasswordWidget(),
                           SizedBox(
                             height: 20,
                           ),
                           Text(
-                            //'Sebelum mulai kita persiapkan hal ini yuk:',
                             'Please prepare these following items to begin:',
-                            style: TextStyle(color: Colors.white, fontSize: 17), textAlign: TextAlign.left,
+                            style: TextStyle(color: textColor, fontSize: 17), textAlign: TextAlign.left,
                           ),
                           SizedBox(
                             height: 20,
                           ),
                           Text(
                             '\u2022 eKTP',
-                            style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.bold), textAlign: TextAlign.left,
+                            style: TextStyle(color: textColor, fontSize: 17, fontWeight: FontWeight.bold), textAlign: TextAlign.left,
                           ),
-                          //_emailPasswordWidget(),
                           SizedBox(
                             height: 20,
                           ),
                           Text(
-                            //'\u2022 Nomor HP dan Email yang aktif',
                             '\u2022 Active Mobile Phone Number and Email',
-                            style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.bold), textAlign: TextAlign.left,
+                            style: TextStyle(color: textColor, fontSize: 17, fontWeight: FontWeight.bold), textAlign: TextAlign.left,
                           ),
-                          //_emailPasswordWidget(),
                           SizedBox(
                             height: 20,
                           ),
                           Text(
-                            //'\u2022 Situasi kondusif untuk mengambil foto Selfie',
                             '\u2022 Appropriate situation to take selfie',
-                            style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.bold), textAlign: TextAlign.left,
+                            style: TextStyle(color: textColor, fontSize: 17, fontWeight: FontWeight.bold), textAlign: TextAlign.left,
                           ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          // Text(
-                          //   //'\u2022 Perangkat dan koneksi internet untuk video call',
-                          //   '\u2022 Video call ready device',
-                          //   style: TextStyle(color: Colors.black, fontSize: 17, fontWeight: FontWeight.bold), textAlign: TextAlign.left,
-                          // ),
-                          // //_emailPasswordWidget(),
                           // SizedBox(
                           //   height: 20,
-                          // ),
-                          // Text(
-                          //   //'\u2022 Perangkat dan koneksi internet untuk video call',
-                          //   '\u2022 Sufficient internet connection to have video call',
-                          //   style: TextStyle(color: Colors.black, fontSize: 17, fontWeight: FontWeight.bold), textAlign: TextAlign.left,
                           // ),
                           SizedBox(
                             height: 30,
                           ),
-                          Text(
-                            'Please Select Account Type',
-                            style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.bold),
-                            textAlign: TextAlign.center,
-                          ),
-                          SizedBox(height: 20),
-                          selectProduct(),
+                          // Text(
+                          //   'Please Select Account Type',
+                          //   style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.bold),
+                          //   textAlign: TextAlign.center,
+                          // ),
+                          // SizedBox(height: 20),
+                          // selectProduct(),
                           SizedBox(height: 20),
                           _submitButton(),
                           SizedBox(height: height * .14),

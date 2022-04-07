@@ -12,11 +12,11 @@ class _coreBankingState extends State<coreBanking> with TickerProviderStateMixin
   void initState() {
     // TODO: implement initState
     super.initState();
-    Future.delayed(Duration(seconds: 10), (){
-      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
-          builder: (context) => CongratulationPage()
-      ), (_) => false);
-    });
+    // Future.delayed(Duration(seconds: 10), (){
+    //   Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+    //       builder: (context) => CongratulationPage()
+    //   ), (_) => false);
+    // });
   }
 
   @override

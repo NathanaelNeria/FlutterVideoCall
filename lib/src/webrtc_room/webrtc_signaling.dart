@@ -6,8 +6,10 @@ import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc_demo/src/pages/displayDataPage.dart';
 import 'package:flutter_webrtc_demo/src/webrtc_room/webrtc_room.dart';
+import '../parameterModel.dart';
 import './model/agent1.dart';
 import './model/agent2.dart';
+import 'package:http/http.dart' as http;
 
 typedef void StreamStateCallback(MediaStream stream);
 
@@ -33,6 +35,18 @@ class WebrtcSignaling {
   Agent1 agent1 = Agent1();
   Agent2 agent2 = Agent2();
   late Timer _timer;
+
+  String urlParam = 'https://api-portal.herokuapp.com/api/v1/admin/parameter';
+  String token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiNjIyODUxMmM5MmFmYjFmNDA2MDE5NTc2IiwidXNlcm5hbWUiOiJOYXRoYW5hZWwiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NDg3MTkxMjYsImV4cCI6MTY0ODg5MTkyNn0.1w2SGvqlSFV1YX-u1d-hAP9qmFTgnHVJsAsUl-glfK4';
+  var response;
+  Parameter parameter = Parameter();
+
+
+  param() async{
+    response = await http.get(Uri.parse(urlParam), headers: {'Authorization': 'Bearer $token' });
+
+    parameter = Parameter.fromJson(jsonDecode(response.body));
+  }
 
   Future<int?>firebaseAgent(FirebaseFirestore db) async{
     late int VCHandled1;
@@ -83,6 +97,8 @@ class WebrtcSignaling {
     else if((VCHandled1 <= VCHandled2) && loggedIn2! && !inCall2! && inCall1!){
       agentAvail = 2;
     } //kalo call agent 1 < agent 2 tapi agent 1 lagi in call, agent 2 ga in call
+
+    param();
 
     return agentAvail;
   }
@@ -258,6 +274,10 @@ class WebrtcSignaling {
         .getUserMedia({
       'video': {
         'facingMode': 'user',
+        'frameRate': {
+          'ideal': 30,
+          'max': 60
+        },
       },
       'audio': true,
       });
@@ -308,7 +328,7 @@ class WebrtcSignaling {
       else if (state == RTCPeerConnectionState.RTCPeerConnectionStateDisconnected) {
         Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => DisplayDataPage()));
+            MaterialPageRoute(builder: (context) => DisplayDataPage(parameter: parameter,)));
         print('disconnect');
         disconnect = true;
       }

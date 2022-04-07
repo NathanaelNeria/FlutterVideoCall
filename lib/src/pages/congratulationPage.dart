@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_webrtc_demo/src/parameterModel.dart';
 // import '../../Widget/bezierContainer.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../hexColorConverter.dart';
 import 'WelcomePage.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CongratulationPage extends StatefulWidget {
-  CongratulationPage({Key? key, this.title,}) : super(key: key);
+  CongratulationPage({Key? key, this.title, required this.parameter}) : super(key: key);
 
   final String? title;
+  final Parameter parameter;
 
   @override
   _CongratulationPageState createState() => _CongratulationPageState();
@@ -16,6 +19,11 @@ class CongratulationPage extends StatefulWidget {
 
 class _CongratulationPageState extends State<CongratulationPage> {
   final db = FirebaseFirestore.instance;
+  var textColor;
+  var bgColor;
+  var buttonColor;
+  var boxColor;
+  String titleText = '';
 
   Widget _backButton() {
     return InkWell(
@@ -66,27 +74,38 @@ class _CongratulationPageState extends State<CongratulationPage> {
     return RichText(
       textAlign: TextAlign.center,
       text: TextSpan(
-          text: 'NTB Syariah',
+          text: titleText,
           style: GoogleFonts.portLligatSans(
             textStyle: Theme.of(context).textTheme.headline4,
             fontSize: 30,
             fontWeight: FontWeight.w700,
-            color: Colors.white,
+            color: textColor,
           ),
-          children: [
-            TextSpan(
-              text: ' Bank',
-              style: TextStyle(color: Colors.white, fontSize: 30),
-            ),
-          ]),
+          // children: [
+          //   TextSpan(
+          //     text: ' Bank',
+          //     style: TextStyle(color: Colors.white, fontSize: 30),
+          //   ),
+          // ]
+      ),
     );
   }
 
   Widget buildItem(DocumentSnapshot doc) {
     return Text(
         '${(doc.data() as dynamic)['email']}',
-        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)
+        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: textColor)
     );
+  }
+
+  @override
+  void initState() {
+    bgColor = HexColor.fromHex(widget.parameter.data![0].background!);
+    buttonColor = HexColor.fromHex(widget.parameter.data![0].button!);
+    boxColor = HexColor.fromHex(widget.parameter.data![0].box!);
+    textColor = HexColor.fromHex(widget.parameter.data![0].textColor!);
+    titleText = widget.parameter.data![0].title!;
+    super.initState();
   }
 
   @override
@@ -100,7 +119,7 @@ class _CongratulationPageState extends State<CongratulationPage> {
             borderRadius: BorderRadius.all(Radius.circular(5)),
             boxShadow: <BoxShadow>[
               BoxShadow(
-                  color: Colors.grey.shade200,
+                  color: boxColor,
                   offset: Offset(2, 4),
                   blurRadius: 5,
                   spreadRadius: 2)
@@ -108,7 +127,7 @@ class _CongratulationPageState extends State<CongratulationPage> {
             gradient: LinearGradient(
                 begin: Alignment.bottomLeft,
                 end: Alignment.topRight,
-                colors: [Colors.green, Colors.green.shade700, Colors.green.shade900]
+                colors: [bgColor, bgColor]
             )
         ),
         child: Stack(
@@ -160,7 +179,7 @@ class _CongratulationPageState extends State<CongratulationPage> {
                     ),
                     Text(
                       'Please keep checking your email above to follow up NTBS verification process within 24 hours',
-                      style: TextStyle(color: Colors.white, fontSize: 17), textAlign: TextAlign.left,
+                      style: TextStyle(color: textColor, fontSize: 17), textAlign: TextAlign.left,
                     ),
                     SizedBox(
                       height: 20,
