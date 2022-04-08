@@ -53,7 +53,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return SplashScreen.timer(
-      seconds: 5,
+      seconds: 7,
       navigateAfterSeconds: AfterSplash(parameter: parameter,),
       title: Text(
         'Initializing',

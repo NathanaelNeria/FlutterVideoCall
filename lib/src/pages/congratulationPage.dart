@@ -36,10 +36,10 @@ class _CongratulationPageState extends State<CongratulationPage> {
           children: <Widget>[
             Container(
               padding: EdgeInsets.only(left: 0, top: 10, bottom: 10),
-              child: Icon(Icons.keyboard_arrow_left, color: Colors.white),
+              child: Icon(Icons.keyboard_arrow_left, color: textColor),
             ),
             Text('Back',
-                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: Colors.white))
+                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: textColor))
           ],
         ),
       ),
@@ -51,19 +51,27 @@ class _CongratulationPageState extends State<CongratulationPage> {
       InkWell(
           onTap: () {
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => WelcomePage()));
+                context, MaterialPageRoute(builder: (context) => WelcomePage(parameter: widget.parameter,)));
           },
           child:Container(
             width: MediaQuery.of(context).size.width,
             padding: EdgeInsets.symmetric(vertical: 15),
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(5)),
-              border: Border.all(color: Colors.white, width: 2),
+                borderRadius: BorderRadius.all(Radius.circular(5)),
+                border: Border.all(color: boxColor, width: 2),
+                boxShadow: <BoxShadow>[
+                  BoxShadow(
+                      color: boxColor,
+                      offset: Offset(2, 4),
+                      blurRadius: 8,
+                      spreadRadius: 2)
+                ],
+                color: buttonColor
             ),
             child: Text(
               'Done',
-              style: TextStyle(fontSize: 20, color: Colors.white),
+              style: TextStyle(fontSize: 20, color: textColor),
             ),
           )
       );
@@ -81,12 +89,6 @@ class _CongratulationPageState extends State<CongratulationPage> {
             fontWeight: FontWeight.w700,
             color: textColor,
           ),
-          // children: [
-          //   TextSpan(
-          //     text: ' Bank',
-          //     style: TextStyle(color: Colors.white, fontSize: 30),
-          //   ),
-          // ]
       ),
     );
   }
@@ -151,15 +153,15 @@ class _CongratulationPageState extends State<CongratulationPage> {
                       height: 50,
                     ),
                     Text(
-                      'Congratulation! You have successfully registered for a Savings Account in NTB Syariah Bank',
-                      style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.bold), textAlign: TextAlign.left,
+                      'Congratulation! You have successfully registered for an account in $titleText',
+                      style: TextStyle(color: textColor, fontSize: 17, fontWeight: FontWeight.bold), textAlign: TextAlign.left,
                     ),
                     SizedBox(
                       height: 20,
                     ),
                     Text(
                       'Your verification process has been done. We are sending you confirmation email to:',
-                      style: TextStyle(color: Colors.white, fontSize: 17), textAlign: TextAlign.left,
+                      style: TextStyle(color: textColor, fontSize: 17), textAlign: TextAlign.left,
                     ),
                     SizedBox(
                       height: 20,
@@ -178,7 +180,7 @@ class _CongratulationPageState extends State<CongratulationPage> {
                       height: 20,
                     ),
                     Text(
-                      'Please keep checking your email above to follow up NTBS verification process within 24 hours',
+                      'Please keep checking your email above to follow up $titleText verification process within 24 hours',
                       style: TextStyle(color: textColor, fontSize: 17), textAlign: TextAlign.left,
                     ),
                     SizedBox(

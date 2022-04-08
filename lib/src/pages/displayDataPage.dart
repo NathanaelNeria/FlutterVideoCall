@@ -66,8 +66,24 @@ class _DisplayDataPageState extends State<DisplayDataPage> {
         .of(context)
         .size
         .height;
+
     return Scaffold(
         body: Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(5)),
+                boxShadow: <BoxShadow>[
+                  BoxShadow(
+                      color: boxColor,
+                      offset: Offset(2, 4),
+                      blurRadius: 5,
+                      spreadRadius: 2)
+                ],
+                gradient: LinearGradient(
+                    begin: Alignment.bottomLeft,
+                    end: Alignment.topRight,
+                    colors: [bgColor, bgColor]
+                )
+            ),
             height: height,
             child: Stack(
                 children: <Widget>[
@@ -84,22 +100,6 @@ class _DisplayDataPageState extends State<DisplayDataPage> {
                   // ),
                   Container(
                       padding: EdgeInsets.symmetric(horizontal: 20),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(5)),
-                          boxShadow: <BoxShadow>[
-                            BoxShadow(
-                                color: boxColor,
-                                offset: Offset(2, 4),
-                                blurRadius: 5,
-                                spreadRadius: 2)
-                          ],
-                          gradient: LinearGradient(
-                              begin: Alignment.bottomLeft,
-                              end: Alignment.topRight,
-                              // colors: [Color(0xfffbb448), Color(0xffe46b10)]
-                              colors: [bgColor, bgColor]
-                          )
-                      ),
                       child: ListView(
                         padding: EdgeInsets.all(8),
                         children: <Widget>[
@@ -138,26 +138,22 @@ class _DisplayDataPageState extends State<DisplayDataPage> {
             )
             );
           },
-          child: Container(
-            width: MediaQuery
-                .of(context)
-                .size
-                .width,
+          child:Container(
+            width: MediaQuery.of(context).size.width,
             padding: EdgeInsets.symmetric(vertical: 15),
             alignment: Alignment.center,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(5)),
+                border: Border.all(color: boxColor, width: 2),
                 boxShadow: <BoxShadow>[
                   BoxShadow(
                       color: boxColor,
                       offset: Offset(2, 4),
-                      blurRadius: 5,
+                      blurRadius: 8,
                       spreadRadius: 2)
                 ],
-                gradient: LinearGradient(
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                    colors: [buttonColor])),
+                color: buttonColor
+            ),
             child: Text(
               'Next Step',
               style: TextStyle(fontSize: 20, color: textColor),

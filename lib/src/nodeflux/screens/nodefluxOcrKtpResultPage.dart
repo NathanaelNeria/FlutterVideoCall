@@ -115,7 +115,6 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
    bool underQualified = false;
    bool changeColor = false;
    String ktpDetected = '';
-   Color textColorRed = Colors.red;
    String messageDukcapil = '';
    bool dukcapil = true;
    String selfieProcessed = '';
@@ -165,13 +164,13 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
             textStyle: Theme.of(context).textTheme.headline4,
             fontSize: 30,
             fontWeight: FontWeight.w700,
-            // color: Color(0xffe46b10),
-            color: textColor
+            color: Color(0xffe46b10),
+            // color: Colors.black
           ),
           children: [
             TextSpan(
               text: 'Information',
-              style: TextStyle(color: textColor, fontSize: 30),
+              style: TextStyle(color: Colors.black, fontSize: 30),
             ),
             // TextSpan(
             //   text: 'Form',
@@ -302,7 +301,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
         var status = dukcapilOngoing.job!.result!.status;
         if(okValue){
           currentStatus = status!;
-          dukcapilStatus = status!;
+          dukcapilStatus = status;
         }
       }
 
@@ -472,9 +471,10 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
     catch(e){
       debugPrint('Error $e');
     }
-    setState(() {
-      print(matchLivenessFeedback);
-    });
+    // setState(() {
+    //   print(matchLivenessFeedback);
+    // });
+    print('isi string $matchLivenessFeedback');
   }
 
 
@@ -680,18 +680,19 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
                           showUploadSelfieEktpButton(),
                           (_selfieEktpImage != null)? showUploadSelfieButton() : Container(),
                           (selfieProcessed == 'lagi proses')? Text('Processing.. Please wait a moment..',
-                              style: new TextStyle(fontSize: 12.0, color: textColor)):Container(),
+                              style: new TextStyle(fontSize: 12.0, color: Colors.black)):Container(),
                           (selfieProcessed == 'selfie ada')? Text('Processed',
-                              style: new TextStyle(fontSize: 12.0, color: textColor)):Container(),
+                              style: new TextStyle(fontSize: 12.0, color: Colors.black)):Container(),
                           SizedBox(height: 10),
                           (matchLivenessFeedback != "") ?
                           Container(
-                            child: (dukcapilStatus != '' && selfieProcessed == 'selfie ada')? Container(
-                                child: (message == 'Face Match Liveness Success' && messageDukcapil == 'Dukcapil Validation Success')? Text(matchLivenessFeedback,
-                                  style: new TextStyle(fontSize: 12.0, color: textColor),
+                            child: (messageDukcapil != '' && selfieProcessed == 'selfie ada')? Container(
+                                child: (message == 'Face Match Liveness Success' && messageDukcapil == 'Dukcapil Validation Success')?
+                                Text(matchLivenessFeedback,
+                                  style: new TextStyle(fontSize: 12.0, color: Colors.black),
                                   textAlign: TextAlign.center,
                                 ) : Text(matchLivenessFeedback,
-                                  style: new TextStyle(fontSize: 12.0, color: textColorRed),
+                                  style: new TextStyle(fontSize: 12.0, color: Colors.red),
                                   textAlign: TextAlign.center,
                                 )
                             ):Container(),
@@ -736,7 +737,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
                                 children: [
                                   SizedBox(height: 10),
                                   Text('Liveness or face match do not pass the requirement',
-                                    style: TextStyle(fontSize: 15.0, color: warningTextColor),
+                                    style: TextStyle(fontSize: 15.0, color: Colors.red),
                                     textAlign: TextAlign.center,
                                   ),
                                   // SizedBox(height: 10),
