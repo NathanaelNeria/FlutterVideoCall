@@ -1,28 +1,12 @@
-import 'dart:async';
-import 'dart:convert';
-
-import 'package:callkeep/callkeep.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_callkit_incoming/flutter_callkit_incoming.dart';
-import 'package:flutter_webrtc_demo/src/callkit/calling_page.dart';
-import 'package:flutter_webrtc_demo/src/parameterModel.dart';
-import 'package:uuid/uuid.dart';
-import 'src/callkit/app_router.dart';
-import 'src/callkit/navigation_service.dart';
-import 'src/pages/splashscreen.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'src/pages/welcomePage.dart';
-import 'package:http/http.dart' as http;
-import 'hexColorConverter.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+import 'app_router.dart';
+import 'navigation_service.dart';
+import 'dart:async';
+import 'package:uuid/uuid.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-
-void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  runApp(MaterialApp(home: MyApp(),
-    debugShowCheckedModeBanner: false,
-  ));
-}
+import 'package:flutter_callkit_incoming/flutter_callkit_incoming.dart';
+import 'calling_page.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print("Handling a background message: ${message.messageId}");
@@ -74,45 +58,24 @@ Future<void> showCallkitIncoming(String uuid) async {
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
-
   @override
   _MyAppState createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
-  String urlParam = 'https://api-portal.herokuapp.com/api/v1/admin/parameter';
-  String token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiNjIyODUxMmM5MmFmYjFmNDA2MDE5NTc2IiwidXNlcm5hbWUiOiJOYXRoYW5hZWwiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NDg3MTkxMjYsImV4cCI6MTY0ODg5MTkyNn0.1w2SGvqlSFV1YX-u1d-hAP9qmFTgnHVJsAsUl-glfK4';
-  var response;
-  Parameter parameter = Parameter();
-  Color bgColor = Colors.white;
-  Color buttonColor = Colors.white;
-  Color boxColor = Colors.white;
-
   var _uuid;
   var _currentUuid;
+
   late final FirebaseMessaging _firebaseMessaging;
-
-  param() async{
-    response = await http.get(Uri.parse(urlParam), headers: {'Authorization': 'Bearer $token' });
-
-    parameter = Parameter.fromJson(jsonDecode(response.body));
-    print(response.body);
-
-    setState(() {
-      bgColor = HexColor.fromHex(parameter.data![0].background!);
-      buttonColor = HexColor.fromHex(parameter.data![0].button!);
-      boxColor = HexColor.fromHex(parameter.data![0].box!);
-    });
-  }
 
   @override
   void initState() {
-    param();
+    super.initState();
     _uuid = Uuid();
     initFirebase();
     WidgetsBinding.instance?.addObserver(this);
-    super.initState();
+    //Check call when open app from terminated
+    checkAndNavigationCallingPage();
   }
 
   getCurrentCall() async {
@@ -155,7 +118,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   }
 
   initFirebase() async {
-    await Firebase.initializeApp();
+    // await Firebase.initializeApp();
     _firebaseMessaging = FirebaseMessaging.instance;
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
@@ -171,68 +134,16 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    return SplashScreen.timer(
-      seconds: 7,
-      navigateAfterSeconds: AfterSplash(parameter: parameter,),
-      title: Text(
-        'Initializing',
-        style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20.0, color: Colors.black),
-      ),
-      image: Image.asset('images/logoist.jpg'),
-      photoSize: 150.0,
-      backgroundColor: Colors.black,
-      loaderColor: Colors.red,
-    );
-  }
-}
-
-
-class AfterSplash extends StatefulWidget {
-  const AfterSplash({Key? key, required this.parameter}) : super(key: key);
-
-  final Parameter parameter;
-
-  @override
-  _AfterSplashState createState() => _AfterSplashState();
-}
-
-class _AfterSplashState extends State<AfterSplash> {
-  static const welcomePage = 'welcomePage.dart';
-  static const callingPage = 'calling_page.dart';
-
-  @override
-  Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
     return MaterialApp(
-      title: widget.parameter.data![0].title!,
-      theme: ThemeData(
-        primarySwatch: Colors.blueGrey,
-        textTheme:GoogleFonts.latoTextTheme(textTheme).copyWith(
-          bodyText1: GoogleFonts.montserrat(textStyle: textTheme.bodyText1),
-        ),
-      ),
-      home: WelcomePage(parameter: widget.parameter,),
-      // onGenerateRoute: (settings){
-      //   switch (settings.name) {
-      //     case welcomePage:
-      //       return MaterialPageRoute(
-      //           builder: (_) => WelcomePage(parameter: widget.parameter,), settings: settings);
-      //     case callingPage:
-      //       return MaterialPageRoute(
-      //           builder: (_) => CallingPage(), settings: settings);
-      //     default:
-      //       return null;
-      //   }
-      // },
-      // initialRoute: welcomePage,
+      theme: ThemeData.light(),
+      onGenerateRoute: AppRoute.generateRoute,
+      initialRoute: AppRoute.homePage,
       navigatorKey: NavigationService.instance.navigationKey,
       navigatorObservers: <NavigatorObserver>[
         NavigationService.instance.routeObserver
       ],
     );
   }
-
-
 
   Future<void> getDevicePushTokenVoIP() async {
     var devicePushTokenVoIP =

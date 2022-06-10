@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_webrtc_demo/src/nodeflux/screens/nodefluxOcrKtpResultPage.dart';
 import 'package:flutter_webrtc_demo/src/parameterModel.dart';
 import '../../Widget/bezierContainer.dart';
 import '../../hexColorConverter.dart';
@@ -76,7 +77,10 @@ class _PrepPageState extends State<PrepPage> {
       InkWell(
           onTap: () {
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => NodefluxOcrKtpPage(title: '', parameter: widget.parameter,)));
+                context, MaterialPageRoute(builder: (context) =>
+                // NodefluxOcrKtpPage(title: '', parameter: widget.parameter,)
+              NodefluxOcrKtpResultPage(parameter: widget.parameter)
+            ));
           },
           child:Container(
             width: MediaQuery.of(context).size.width,

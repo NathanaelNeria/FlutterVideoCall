@@ -8,10 +8,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
-  flutter_localizations:
-    sdk: flutter
-
   date_format: ^2.0.5
   time_picker_widget: ^1.0.0+10
   cupertino_icons: ^1.0.4
@@ -29,12 +25,20 @@ dependencies:
   email_validator: ^2.0.1
   firebase_auth: ^3.3.5
   firebase_database: ^9.0.5
-  firebase_core: ^1.11.0
+  firebase_core: ^1.17.0
   cloud_firestore: ^3.1.6
   firebase_storage: ^10.2.5
   json_annotation: ^4.4.0
   image: ^3.1.1
   firebase_auth_web: ^3.3.6
+  firebase_messaging: 11.2.15
+  flutter_callkit_incoming: ^1.0.0+6
+  uuid: ^3.0.6
+  callkeep: ^0.3.2
+  connectycube_flutter_call_kit: ^2.0.5
+
+  flutter_localizations:
+    sdk: flutter
 
 dev_dependencies:
   flutter_test:

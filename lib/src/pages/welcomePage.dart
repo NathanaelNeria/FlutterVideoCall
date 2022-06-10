@@ -3,17 +3,25 @@ import 'dart:convert';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_callkit_incoming/flutter_callkit_incoming.dart';
+import 'package:flutter_webrtc_demo/src/callkit/calling_page.dart';
+import 'package:flutter_webrtc_demo/src/callkit/callkit_page.dart';
 import 'package:flutter_webrtc_demo/src/nodeflux/screens/activeLiveness.dart';
 import 'package:flutter_webrtc_demo/src/parameterModel.dart';
 import 'package:flutter_webrtc_demo/src/webrtc_room/notice.dart';
 import 'package:flutter_webrtc_demo/src/webrtc_room/schedule.dart';
 import 'package:flutter_webrtc_demo/src/webrtc_room/webrtc_room.dart';
+import 'package:http/http.dart';
+import 'package:uuid/uuid.dart';
+import '../callkit/app_router.dart';
+import '../callkit/navigation_service.dart';
 import 'loginPage.dart';
 // import 'signup.dart';
 import 'prepPage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_webrtc_demo/hexColorConverter.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 class WelcomePage extends StatefulWidget {
   WelcomePage({Key? key, this.parameter}) : super(key: key);
@@ -30,6 +38,12 @@ class _WelcomePageState extends State<WelcomePage> {
   Color boxColor = Colors.white;
   String titleText = '';
   Color textColor = Colors.white;
+
+  var _uuid;
+  var _currentUuid;
+  var textEvents;
+
+  final FirebaseMessaging messaging = FirebaseMessaging.instance;
 
   Widget _signUpButton() {
     return InkWell(
@@ -66,9 +80,9 @@ class _WelcomePageState extends State<WelcomePage> {
   Widget _loginButton() {
     return InkWell(
       onTap: () async {
-        await Firebase.initializeApp();
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => Notice(email: 'nathanaelneria@gmail.com', nik: 3175022104970010, name: 'Nathanael Neria', parameter: widget.parameter!,)));
+        // Navigator.push(
+        //     context, MaterialPageRoute(builder: (context) => Notice(email: 'nathanaelneria@gmail.com', nik: 3175022104970010, name: 'Nathanael Neria', parameter: widget.parameter!,)));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp()));
       },
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -153,7 +167,147 @@ class _WelcomePageState extends State<WelcomePage> {
     boxColor = HexColor.fromHex(widget.parameter!.data![0].box!);
     titleText = widget.parameter!.data![0].title!;
     textColor = HexColor.fromHex(widget.parameter!.data![0].textColor!);
+    messaging.getToken().then((value) => print(value));
+    notifPermission();
+    _uuid = Uuid();
+    _currentUuid = "";
+    textEvents = "";
+    initCurrentCall();
+    listenerEvent(onEvent);
     super.initState();
+  }
+
+  notifPermission() async{
+    NotificationSettings settings = await messaging.requestPermission(
+      alert: true,
+      announcement: true,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true
+    );
+
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+      print('User granted permission');
+    } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
+      print('User granted provisional permission');
+    } else {
+      print('User declined or has not accepted permission');
+    }
+  }
+
+  initCurrentCall() async {
+    //check current call from pushkit if possible
+    var calls = await FlutterCallkitIncoming.activeCalls();
+    if (calls is List) {
+      if (calls.isNotEmpty) {
+        print('DATA: $calls');
+        this._currentUuid = calls[0]['id'];
+        return calls[0];
+      } else {
+        this._currentUuid = "";
+        return null;
+      }
+    }
+  }
+
+  Future<void> endCurrentCall() async {
+    initCurrentCall();
+    var params = <String, dynamic>{'id': this._currentUuid};
+    await FlutterCallkitIncoming.endCall(params);
+  }
+
+  Future<void> activeCalls() async {
+    var calls = await FlutterCallkitIncoming.activeCalls();
+    print(calls);
+  }
+
+  Future<void> endAllCalls() async {
+    await FlutterCallkitIncoming.endAllCalls();
+  }
+
+  Future<void> getDevicePushTokenVoIP() async {
+    var devicePushTokenVoIP =
+    await FlutterCallkitIncoming.getDevicePushTokenVoIP();
+    print(devicePushTokenVoIP);
+  }
+
+  Future<void> listenerEvent(Function? callback) async {
+    const callingPage = 'calling_page.dart';
+    try {
+      FlutterCallkitIncoming.onEvent.listen((event) async {
+        print('HOME: $event');
+        switch (event!.name) {
+          case CallEvent.ACTION_CALL_INCOMING:
+          // TODO: received an incoming call
+            print('incoming call');
+            // NavigationService.instance
+            //     .pushNamedIfNotCurrent(AppRoute.callingPage, args: event.body);
+            break;
+          case CallEvent.ACTION_CALL_START:
+          // TODO: started an outgoing call
+          // TODO: show screen calling in Flutter
+            break;
+          case CallEvent.ACTION_CALL_ACCEPT:
+          // TODO: accepted an incoming call
+          // TODO: show screen calling in Flutter
+            NavigationService.instance
+                .pushNamedIfNotCurrent(callingPage, args: event.body);
+            print('call accepted');
+            break;
+          case CallEvent.ACTION_CALL_DECLINE:
+          // TODO: declined an incoming call
+            await requestHttp("ACTION_CALL_DECLINE_FROM_DART");
+            print('decline call');
+            break;
+          case CallEvent.ACTION_CALL_ENDED:
+          // TODO: ended an incoming/outgoing call
+            break;
+          case CallEvent.ACTION_CALL_TIMEOUT:
+          // TODO: missed an incoming call
+            break;
+          case CallEvent.ACTION_CALL_CALLBACK:
+          // TODO: only Android - click action `Call back` from missed call notification
+            break;
+          case CallEvent.ACTION_CALL_TOGGLE_HOLD:
+          // TODO: only iOS
+            break;
+          case CallEvent.ACTION_CALL_TOGGLE_MUTE:
+          // TODO: only iOS
+            break;
+          case CallEvent.ACTION_CALL_TOGGLE_DMTF:
+          // TODO: only iOS
+            break;
+          case CallEvent.ACTION_CALL_TOGGLE_GROUP:
+          // TODO: only iOS
+            break;
+          case CallEvent.ACTION_CALL_TOGGLE_AUDIO_SESSION:
+          // TODO: only iOS
+            break;
+          case CallEvent.ACTION_DID_UPDATE_DEVICE_PUSH_TOKEN_VOIP:
+          // TODO: only iOS
+            break;
+        }
+        if (callback != null) {
+          callback(event.toString());
+        }
+      });
+    } on Exception {}
+  }
+
+  //check with https://webhook.site/#!/2748bc41-8599-4093-b8ad-93fd328f1cd2
+  Future<void> requestHttp(content) async {
+    get(Uri.parse(
+        'https://webhook.site/2748bc41-8599-4093-b8ad-93fd328f1cd2?data=$content'));
+  }
+
+  onEvent(event) {
+    if (!mounted) return;
+    setState(() {
+      textEvents += "${event.toString()}\n";
+      print(textEvents);
+    });
   }
 
   @override
