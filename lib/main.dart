@@ -110,7 +110,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     param();
     _uuid = Uuid();
     initFirebase();
-    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance?.addObserver(this);
     super.initState();
   }
 
@@ -133,7 +133,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     var currentCall = await getCurrentCall();
     if (currentCall != null) {
       NavigationService.instance
-          .pushNamedIfNotCurrent(AppRoute.callingPage, args: currentCall);
+          .pushNamedIfNotCurrent(AppRoute.videoCall, args: currentCall);
       // Navigator.push(context, MaterialPageRoute(builder: (context) => CallingPage(args: currentCall,)));
     }
   }
@@ -149,7 +149,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
+    WidgetsBinding.instance?.removeObserver(this);
     super.dispose();
   }
 
@@ -207,8 +207,8 @@ class _AfterSplashState extends State<AfterSplash> {
           bodyText1: GoogleFonts.montserrat(textStyle: textTheme.bodyText1),
         ),
       ),
-      home: WelcomePage(parameter: widget.parameter,),
-      onGenerateRoute: AppRoute.generateRoute,
+      home: WelcomePage(parameter: widget.parameter),
+      onGenerateRoute: AppRoute().generateRoute,
       navigatorKey: NavigationService.instance.navigationKey,
       navigatorObservers: <NavigatorObserver>[
         NavigationService.instance.routeObserver

@@ -13,7 +13,7 @@ class WebrtcRoom extends StatefulWidget {
 
   final bool scheduled;
   final String? nik;
-  final dynamic? parameter;
+  final Parameter? parameter;
 
   @override
   _WebrtcRoomState createState() => _WebrtcRoomState();
