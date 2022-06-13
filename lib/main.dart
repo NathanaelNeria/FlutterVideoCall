@@ -208,7 +208,7 @@ class _AfterSplashState extends State<AfterSplash> {
         ),
       ),
       home: WelcomePage(parameter: widget.parameter),
-      onGenerateRoute: AppRoute().generateRoute,
+      onGenerateRoute: AppRoute.generateRoute,
       navigatorKey: NavigationService.instance.navigationKey,
       navigatorObservers: <NavigatorObserver>[
         NavigationService.instance.routeObserver

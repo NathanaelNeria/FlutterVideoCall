@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_webrtc_demo/src/parameterModel.dart';
 import 'webrtc_signaling.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:http/http.dart' as http;
 
 class WebrtcRoom extends StatefulWidget {
   WebrtcRoom({Key? key, required this.scheduled, this.nik, this.parameter}) : super(key: key);
@@ -26,6 +28,18 @@ class _WebrtcRoomState extends State<WebrtcRoom> {
   String? roomId;
   TextEditingController textEditingController = TextEditingController(text: '');
   int? agentNum;
+
+  String urlParam = 'https://api-portal.herokuapp.com/api/v1/admin/parameter';
+  String token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiNjIyODUxMmM5MmFmYjFmNDA2MDE5NTc2IiwidXNlcm5hbWUiOiJOYXRoYW5hZWwiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NDg3MTkxMjYsImV4cCI6MTY0ODg5MTkyNn0.1w2SGvqlSFV1YX-u1d-hAP9qmFTgnHVJsAsUl-glfK4';
+  var response;
+  Parameter parameter = Parameter();
+
+
+  param() async{
+    response = await http.get(Uri.parse(urlParam), headers: {'Authorization': 'Bearer $token' });
+
+    parameter = Parameter.fromJson(jsonDecode(response.body));
+  }
 
 
   @override
@@ -151,7 +165,7 @@ class _WebrtcRoomState extends State<WebrtcRoom> {
                 onPressed: () {
                   signaling.hangUp(_localRenderer);
                   Navigator.push(
-                      context, MaterialPageRoute(builder: (context) => DisplayDataPage(parameter: widget.parameter!,)));
+                      context, MaterialPageRoute(builder: (context) => DisplayDataPage(parameter: parameter,)));
                 },
                 child: Icon(Icons.call_end_rounded),
                 style: ButtonStyle(
