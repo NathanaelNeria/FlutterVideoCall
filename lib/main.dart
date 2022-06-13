@@ -111,7 +111,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     param();
     _uuid = Uuid();
     initFirebase();
-    WidgetsBinding.instance?.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
     super.initState();
   }
 
@@ -150,7 +150,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   @override
   void dispose() {
-    WidgetsBinding.instance?.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
@@ -212,6 +212,19 @@ class _AfterSplashState extends State<AfterSplash> {
         ),
       ),
       home: WelcomePage(parameter: widget.parameter,),
+      // onGenerateRoute: (settings){
+      //   switch (settings.name) {
+      //     case welcomePage:
+      //       return MaterialPageRoute(
+      //           builder: (_) => WelcomePage(parameter: widget.parameter,), settings: settings);
+      //     case callingPage:
+      //       return MaterialPageRoute(
+      //           builder: (_) => CallingPage(), settings: settings);
+      //     default:
+      //       return null;
+      //   }
+      // },
+      // initialRoute: welcomePage,
       onGenerateRoute: AppRoute.generateRoute,
       navigatorKey: NavigationService.instance.navigationKey,
       navigatorObservers: <NavigatorObserver>[
