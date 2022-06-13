@@ -36,7 +36,7 @@ Future<void> showCallkitIncoming(String uuid) async {
     'appName': 'Callkit',
     'avatar': 'https://i.pravatar.cc/100',
     'handle': '0123456789',
-    'type': 0,
+    'type': 1,
     'duration': 30000,
     'textAccept': 'Accept',
     'textDecline': 'Decline',
@@ -111,7 +111,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     param();
     _uuid = Uuid();
     initFirebase();
-    WidgetsBinding.instance?.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
     super.initState();
   }
 
@@ -150,7 +150,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   @override
   void dispose() {
-    WidgetsBinding.instance?.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
@@ -225,6 +225,7 @@ class _AfterSplashState extends State<AfterSplash> {
       //   }
       // },
       // initialRoute: welcomePage,
+      onGenerateRoute: AppRoute.generateRoute,
       navigatorKey: NavigationService.instance.navigationKey,
       navigatorObservers: <NavigatorObserver>[
         NavigationService.instance.routeObserver

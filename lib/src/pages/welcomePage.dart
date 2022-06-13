@@ -253,7 +253,7 @@ class _WelcomePageState extends State<WelcomePage> {
           // TODO: accepted an incoming call
           // TODO: show screen calling in Flutter
             NavigationService.instance
-                .pushNamedIfNotCurrent(callingPage, args: event.body);
+                .pushNamedIfNotCurrent(AppRoute.videoCall, args: event.body);
             print('call accepted');
             break;
           case CallEvent.ACTION_CALL_DECLINE:

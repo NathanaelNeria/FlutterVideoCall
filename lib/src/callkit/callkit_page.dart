@@ -73,7 +73,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     super.initState();
     _uuid = Uuid();
     initFirebase();
-    WidgetsBinding.instance?.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
     //Check call when open app from terminated
     checkAndNavigationCallingPage();
   }
@@ -113,7 +113,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   @override
   void dispose() {
-    WidgetsBinding.instance?.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
