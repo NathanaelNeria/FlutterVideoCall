@@ -110,7 +110,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     param();
     _uuid = Uuid();
     initFirebase();
-    WidgetsBinding.instance?.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
     super.initState();
   }
 
@@ -149,7 +149,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   @override
   void dispose() {
-    WidgetsBinding.instance?.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
