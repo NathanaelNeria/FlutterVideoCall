@@ -9,11 +9,11 @@ import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class WebrtcRoom extends StatefulWidget {
-  WebrtcRoom({Key? key, required this.scheduled, this.nik, required this.parameter}) : super(key: key);
+  WebrtcRoom({Key? key, required this.scheduled, required this.nik, this.parameter}) : super(key: key);
 
   final bool scheduled;
-  final String? nik;
-  final Parameter parameter;
+  final String nik;
+  final Parameter? parameter;
 
   @override
   _WebrtcRoomState createState() => _WebrtcRoomState();
@@ -63,11 +63,11 @@ class _WebrtcRoomState extends State<WebrtcRoom> {
         });
       });
     }
-    // else if(widget.scheduled){
-    //   signaling.joinRoom(widget.nik, _remoteRenderer).whenComplete((){
-    //     signaling.connectionState(context);
-    //   });
-    // }
+    else if(widget.scheduled){
+      signaling.joinRoom(widget.nik, _remoteRenderer).whenComplete((){
+        signaling.connectionState(context);
+      });
+    }
 
     super.initState();
   }
@@ -151,7 +151,7 @@ class _WebrtcRoomState extends State<WebrtcRoom> {
                 onPressed: () {
                   signaling.hangUp(_localRenderer);
                   Navigator.push(
-                      context, MaterialPageRoute(builder: (context) => DisplayDataPage(parameter: widget.parameter,)));
+                      context, MaterialPageRoute(builder: (context) => DisplayDataPage(parameter: widget.parameter!,)));
                 },
                 child: Icon(Icons.call_end_rounded),
                 style: ButtonStyle(

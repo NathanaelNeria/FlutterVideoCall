@@ -80,9 +80,9 @@ class _WelcomePageState extends State<WelcomePage> {
   Widget _loginButton() {
     return InkWell(
       onTap: () async {
-        // Navigator.push(
-        //     context, MaterialPageRoute(builder: (context) => Notice(email: 'nathanaelneria@gmail.com', nik: 3175022104970010, name: 'Nathanael Neria', parameter: widget.parameter!,)));
-        Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp()));
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Notice(email: 'nathanaelneria@gmail.com', nik: 3175022104970010, name: 'Nathanael Neria', parameter: widget.parameter!,)));
+        // Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp()));
       },
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -253,7 +253,7 @@ class _WelcomePageState extends State<WelcomePage> {
           // TODO: accepted an incoming call
           // TODO: show screen calling in Flutter
             NavigationService.instance
-                .pushNamedIfNotCurrent(callingPage, args: event.body);
+                .pushNamedIfNotCurrent(AppRoute.videoCall, args: event.body);
             print('call accepted');
             break;
           case CallEvent.ACTION_CALL_DECLINE:

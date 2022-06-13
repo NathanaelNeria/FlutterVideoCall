@@ -533,7 +533,7 @@ class _NodefluxOcrKtpPageState extends State<NodefluxOcrKtpPage> {
   void goToResultPage() async {
     if (_formKey.currentState!.validate()) {
       Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => NodefluxOcrKtpResultPage(model: _nodefluxResult2Model!, parameter: widget.parameter,)));
+          builder: (context) => NodefluxOcrKtpResultPage(ektpImage: _ektpImage! ,model: _nodefluxResult2Model!, parameter: widget.parameter,)));
     }
   }
 

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc_demo/src/pages/welcomePage.dart';
 import 'package:flutter_webrtc_demo/src/parameterModel.dart';
@@ -29,6 +30,8 @@ class _ScheduleCallState extends State<ScheduleCall> {
 
   String? dateTime;
 
+  String? fcmToken;
+
   DateFormat formatter = DateFormat('yyyy-MM-dd');
 
   String? dateFormatted, timeFormatted;
@@ -51,6 +54,7 @@ class _ScheduleCallState extends State<ScheduleCall> {
 
   final db = FirebaseFirestore.instance;
 
+  late final FirebaseMessaging _firebaseMessaging;
 
 
   Future<String> _selectDate(BuildContext context) async {
@@ -165,6 +169,13 @@ class _ScheduleCallState extends State<ScheduleCall> {
     _selectedTime = DateTime.now().hour.toDouble() + (DateTime.now().minute.toDouble()/60);
     startTime = getTimeStringFromDouble(widget.parameter.data![0].operationalStart!);
     endTime = getTimeStringFromDouble(widget.parameter.data![0].operationalEnd!);
+    _firebaseMessaging = FirebaseMessaging.instance;
+    _firebaseMessaging.getToken().then((fcm){
+      setState(() {
+        fcmToken = fcm;
+        print('ini dari token: $fcmToken');
+      });
+    });
     super.initState();
   }
 
@@ -179,7 +190,8 @@ class _ScheduleCallState extends State<ScheduleCall> {
         'status': 'Pending',
         'disable': false,
         'disableRoom': true,
-        'disableDecline': false
+        'disableDecline': false,
+        'token': fcmToken
       });
     }
     catch(e){

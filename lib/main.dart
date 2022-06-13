@@ -36,7 +36,7 @@ Future<void> showCallkitIncoming(String uuid) async {
     'appName': 'Callkit',
     'avatar': 'https://i.pravatar.cc/100',
     'handle': '0123456789',
-    'type': 0,
+    'type': 1,
     'duration': 30000,
     'textAccept': 'Accept',
     'textDecline': 'Decline',
@@ -212,19 +212,7 @@ class _AfterSplashState extends State<AfterSplash> {
         ),
       ),
       home: WelcomePage(parameter: widget.parameter,),
-      // onGenerateRoute: (settings){
-      //   switch (settings.name) {
-      //     case welcomePage:
-      //       return MaterialPageRoute(
-      //           builder: (_) => WelcomePage(parameter: widget.parameter,), settings: settings);
-      //     case callingPage:
-      //       return MaterialPageRoute(
-      //           builder: (_) => CallingPage(), settings: settings);
-      //     default:
-      //       return null;
-      //   }
-      // },
-      // initialRoute: welcomePage,
+      onGenerateRoute: AppRoute.generateRoute,
       navigatorKey: NavigationService.instance.navigationKey,
       navigatorObservers: <NavigatorObserver>[
         NavigationService.instance.routeObserver

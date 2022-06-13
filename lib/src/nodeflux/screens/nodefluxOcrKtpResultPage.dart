@@ -35,23 +35,24 @@ import '../models/no_face_detected.dart';
 import '../models/dukcapilFaceMatch.dart';
 
 class NodefluxOcrKtpResultPage extends StatefulWidget {
-  final NodefluxResult2Model? model;
+  final NodefluxResult2Model model;
+  final File ektpImage;
   final Parameter parameter;
 
-  NodefluxOcrKtpResultPage({ Key? key, this.model, required this.parameter}) : super(key: key);
+  NodefluxOcrKtpResultPage({ Key? key, required this.ektpImage, required this.model, required this.parameter}) : super(key: key);
 
   @override
   _NodefluxOcrKtpResultPageState createState() => _NodefluxOcrKtpResultPageState();
 }
 
 class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
-   ImagePicker _picker= ImagePicker();
-   File? ektpImage;
-   File? _selfieImage;
-   File? _selfieEktpImage;
+  ImagePicker _picker= ImagePicker();
+  File? ektpImage;
+  File? _selfieImage;
+  File? _selfieEktpImage;
 
-   bool isEmail = false;
-   bool scheduled = false;
+  bool isEmail = false;
+  bool scheduled = false;
 
   TextEditingController nikController = TextEditingController();
   TextEditingController nameController = TextEditingController();
@@ -89,35 +90,35 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
   final int minPhotoSize=256000; // 250KB
   final int maxPhotoSize=512000; // 500KB
 
- late String ocrNama, ocrNik, ocrTempatLahir, ocrTanggalLahir, ocrJenisKelamin, ocrAlamat, ocrRtrw, ocrKecamatan, ocrAgama, ocrStatusPerkawinan,
+  late String ocrNama, ocrNik, ocrTempatLahir, ocrTanggalLahir, ocrJenisKelamin, ocrAlamat, ocrRtrw, ocrKecamatan, ocrAgama, ocrStatusPerkawinan,
       ocrPekerjaan, ocrProvinsi, ocrBerlakuHingga, ocrGolonganDarah, ocrKabupatenKota, ocrKelurahanDesa, ocrKewarganegaraan;
 
 
   TextEditingController scheduledDateTimeController = new TextEditingController(text: 'Anonymous');
   DatetimePickerWidget datetimePickerWidget = DatetimePickerWidget();
 
-   Color bgColor = Colors.white;
-   Color buttonColor = Colors.white;
-   Color boxColor = Colors.white;
-   String titleText = '';
-   Color textColor = Colors.white;
-   Color warningTextColor = Colors.white;
+  Color bgColor = Colors.white;
+  Color buttonColor = Colors.white;
+  Color boxColor = Colors.white;
+  String titleText = '';
+  Color textColor = Colors.white;
+  Color warningTextColor = Colors.white;
 
-   bool? isLive;
-   bool? isMatched;
-   bool nodefluxSelfie = false;
-   double? livenessValue;
-   double? similarityValue;
-   var matchLivenessFeedback="";
-   String message = '';
-   bool noFace = false;
-   bool underQualified = false;
-   bool changeColor = false;
-   String ktpDetected = '';
-   String messageDukcapil = '';
-   bool dukcapil = true;
-   String selfieProcessed = '';
-   String dukcapilStatus = '';
+  bool? isLive;
+  bool? isMatched;
+  bool nodefluxSelfie = false;
+  double? livenessValue;
+  double? similarityValue;
+  var matchLivenessFeedback="";
+  String message = '';
+  bool noFace = false;
+  bool underQualified = false;
+  bool changeColor = false;
+  String ktpDetected = '';
+  String messageDukcapil = '';
+  bool dukcapil = true;
+  String selfieProcessed = '';
+  String dukcapilStatus = '';
 
   @override
   void initState() {
@@ -133,23 +134,23 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
   }
 
   setup() {
-    nikController= TextEditingController(text: widget.model?.nik);
-    nameController= TextEditingController(text: widget.model?.nama);
-    birthdateController= TextEditingController(text: widget.model?.tanggal_lahir);
-    birthplaceController= TextEditingController(text: widget.model?.tempat_lahir);
-    genderController= TextEditingController(text: widget.model?.jenis_kelamin);
-    addressController= TextEditingController(text: widget.model?.alamat);
-    rtrwController= TextEditingController(text: widget.model?.rt_rw);
-    kecamatanController= TextEditingController(text: widget.model?.kecamatan);
-    religionController= TextEditingController(text: widget.model?.agama);
-    maritalStatusController= TextEditingController(text: widget.model?.status_perkawinan);
-    workfieldController= TextEditingController(text: widget.model?.pekerjaan);
-    provinceController= TextEditingController(text: widget.model?.provinsi);
-    expiryController= TextEditingController(text: widget.model?.berlaku_hingga);
-    bloodTypeController= TextEditingController(text: widget.model?.golongan_darah);
-    kabupatenKotaController= TextEditingController(text: widget.model?.kabupaten_kota);
-    kelurahanDesaController= TextEditingController(text: widget.model?.kelurahan_desa);
-    nationalityController= TextEditingController(text: widget.model?.kewarganegaraan);
+    nikController= TextEditingController(text: widget.model.nik);
+    nameController= TextEditingController(text: widget.model.nama);
+    birthdateController= TextEditingController(text: widget.model.tanggal_lahir);
+    birthplaceController= TextEditingController(text: widget.model.tempat_lahir);
+    genderController= TextEditingController(text: widget.model.jenis_kelamin);
+    addressController= TextEditingController(text: widget.model.alamat);
+    rtrwController= TextEditingController(text: widget.model.rt_rw);
+    kecamatanController= TextEditingController(text: widget.model.kecamatan);
+    religionController= TextEditingController(text: widget.model.agama);
+    maritalStatusController= TextEditingController(text: widget.model.status_perkawinan);
+    workfieldController= TextEditingController(text: widget.model.pekerjaan);
+    provinceController= TextEditingController(text: widget.model.provinsi);
+    expiryController= TextEditingController(text: widget.model.berlaku_hingga);
+    bloodTypeController= TextEditingController(text: widget.model.golongan_darah);
+    kabupatenKotaController= TextEditingController(text: widget.model.kabupaten_kota);
+    kelurahanDesaController= TextEditingController(text: widget.model.kelurahan_desa);
+    nationalityController= TextEditingController(text: widget.model.kewarganegaraan);
 
     initializeDateFormatting();
   }
@@ -271,7 +272,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
             Uri.parse(url),
             body: json.encode({
               "additional_params": {
-                "nik": widget.model?.nik,
+                "nik": widget.model.nik,
                 "transaction_id": "{random digit}",
                 "transaction_source": "{device}",
                 "dukcapil": {
@@ -293,7 +294,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
         );
 
         print(response.body);
-        print(widget.model?.nik);
+        print(widget.model.nik);
 
         dukcapilOngoing = DukcapilOngoing.fromJson(jsonDecode(response.body));
         okValue = dukcapilOngoing.ok!;
@@ -304,49 +305,49 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
         }
       }
 
-          if(currentStatus == "success"){
-            dukcapilFaceMatch = DukcapilFaceMatch.fromJson(jsonDecode(response.body));
-            setState(() {
-              similarityValue = dukcapilFaceMatch.job!.result!.result![0].faceMatch!.similarity;
-              messageDukcapil = dukcapilFaceMatch.message!;
-              nodefluxSelfie = true;
-              changeColor = true;
-              dukcapil = false;
-              selfieProcessed = 'selfie ada';
-            });
+      if(currentStatus == "success"){
+        dukcapilFaceMatch = DukcapilFaceMatch.fromJson(jsonDecode(response.body));
+        setState(() {
+          similarityValue = dukcapilFaceMatch.job!.result!.result![0].faceMatch!.similarity;
+          messageDukcapil = dukcapilFaceMatch.message!;
+          nodefluxSelfie = true;
+          changeColor = true;
+          dukcapil = false;
+          selfieProcessed = 'selfie ada';
+        });
 
-            double similarityPercentage=similarityValue!*100;
-            String isMatchedString = (similarityPercentage>=widget.parameter.data![0].percentageSimilarity!)? "matched": "not matched";
-            matchLivenessFeedback += "\nNIK " + isMatchedString +" with selfie ("+similarityPercentage.toStringAsFixed(2)+" %)";
-          }
-          else if(currentStatus == 'failed' || currentStatus == 'incompleted'){
-            dukcapilFail = DukcapilFail.fromJson(jsonDecode(response.body));
-            setState(() {
-              messageDukcapil = dukcapilFail.message!;
-              nodefluxSelfie = true;
-              changeColor = true;
-              similarityValue = 0.0;
-              dukcapil = false;
-              selfieProcessed = 'selfie ada';
-            });
+        double similarityPercentage=similarityValue!*100;
+        String isMatchedString = (similarityPercentage>=widget.parameter.data![0].percentageSimilarity!)? "matched": "not matched";
+        matchLivenessFeedback += "\nNIK " + isMatchedString +" with selfie ("+similarityPercentage.toStringAsFixed(2)+" %)";
+      }
+      else if(currentStatus == 'failed' || currentStatus == 'incompleted'){
+        dukcapilFail = DukcapilFail.fromJson(jsonDecode(response.body));
+        setState(() {
+          messageDukcapil = dukcapilFail.message!;
+          nodefluxSelfie = true;
+          changeColor = true;
+          similarityValue = 0.0;
+          dukcapil = false;
+          selfieProcessed = 'selfie ada';
+        });
 
-            if(messageDukcapil == 'Please ensure image format is JPEG, or NIK is registered on Dukcapil'){
-              matchLivenessFeedback += "\nNIK doesn't match with face or NIK not registered on Dukcapil";
-            }
-            else if(messageDukcapil == "NIK is not found, please check your NIK"){
-              matchLivenessFeedback += '\n$messageDukcapil';
-            }
-            else if(messageDukcapil == 'NIK data not found'){
-              matchLivenessFeedback += '\n$messageDukcapil';
-            }
-            else if(messageDukcapil == 'Invalid Response from Gateway'){
-              matchLivenessFeedback += 'Face doesn\'t match with Dukcapil';
-            }
-            else if(messageDukcapil == 'Gateway not Responding'){
-              matchLivenessFeedback += 'Dukcapil verification server error';
-            }
-          }
-          // await nodefluxSelfieMatchLivenessProcess(context);
+        if(messageDukcapil == 'Please ensure image format is JPEG, or NIK is registered on Dukcapil'){
+          matchLivenessFeedback += "\nNIK doesn't match with face or NIK not registered on Dukcapil";
+        }
+        else if(messageDukcapil == "NIK is not found, please check your NIK"){
+          matchLivenessFeedback += '\n$messageDukcapil';
+        }
+        else if(messageDukcapil == 'NIK data not found'){
+          matchLivenessFeedback += '\n$messageDukcapil';
+        }
+        else if(messageDukcapil == 'Invalid Response from Gateway'){
+          matchLivenessFeedback += 'Face doesn\'t match with Dukcapil';
+        }
+        else if(messageDukcapil == 'Gateway not Responding'){
+          matchLivenessFeedback += 'Dukcapil verification server error';
+        }
+      }
+      // await nodefluxSelfieMatchLivenessProcess(context);
     }
     catch(e){
       print('Error: $e');
@@ -357,8 +358,8 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
     String authorization = 'NODEFLUX-HMAC-SHA256 Credential=VFUWPCWUJEPWBSH3S7WNW7975/20220405/nodeflux.api.v1beta1.ImageAnalytic/StreamImageAnalytic, SignedHeaders=x-nodeflux-timestamp, Signature=ca67983c3bf8c688112b59f00e32f119481dbb2e6375e1ad5a7af66fca9cb7c8';
     final imageBytesSelfie = _selfieImage?.readAsBytesSync();
     String base64ImageSelfie = 'data:image/jpeg;base64,'+base64Encode(imageBytesSelfie!);
-    // final imageBytesEktp = widget.ektpImage.readAsBytesSync();
-    // String base64ImageEktp = 'data:image/jpeg;base64,'+base64Encode(imageBytesEktp);
+    final imageBytesEktp = widget.ektpImage.readAsBytesSync();
+    String base64ImageEktp = 'data:image/jpeg;base64,'+base64Encode(imageBytesEktp);
     String currentStatus='';
     LivenessModelUnderqualified livenessModelUnderqualified = LivenessModelUnderqualified();
     MessageModel messageModel = MessageModel();
@@ -370,7 +371,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
     try{
       var url='https://api.cloud.nodeflux.io/syncv2/analytics/face-match-liveness';
       List<String> photoBase64List=<String>[];
-      // photoBase64List.add(base64ImageEktp);
+      photoBase64List.add(base64ImageEktp);
       photoBase64List.add(base64ImageSelfie);
 
       var response;
@@ -378,10 +379,10 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
       response = await http
           .post(Uri.parse(url), body: json.encode({
         "images":photoBase64List
-          }),
+      }),
           headers: {"Accept": "application/json",  "Content-Type": "application/json",
-        "x-nodeflux-timestamp": "20220405T094324Z",
-        "Authorization": authorization
+            "x-nodeflux-timestamp": "20220405T094324Z",
+            "Authorization": authorization
           });
 
       print(response.body);
@@ -470,6 +471,9 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
     catch(e){
       debugPrint('Error $e');
     }
+    // setState(() {
+    //   print(matchLivenessFeedback);
+    // });
     print('isi string $matchLivenessFeedback');
   }
 
@@ -519,7 +523,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
               picture.path, resultPath,
               quality: photoQuality,
             );
-             resultLength=result!.lengthSync();
+            resultLength=result!.lengthSync();
           }
 
           double sizeinKb=resultLength.toDouble()/1024;
@@ -544,30 +548,30 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
     uploadImage(_selfieEktpImage!, "selfieEktp");
   }
 
-   Widget showUploadSelfieButton() {
-     return new Padding(
-         padding: EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 0.0),
-         child: Container(
-           height: 40.0,
-           decoration: BoxDecoration(
-             borderRadius: BorderRadius.all(Radius.circular(5)),
-             border: Border.all(color: boxColor, width: 2),
-           ),
-           child: new ElevatedButton(
-               child: new Text(
-                   'Take Selfie Photo',
-                   style: new TextStyle(fontSize: 12.0, color: textColor)),
-               onPressed: () {
-                 // nodefluxSelfie? changeColor :
-                 _getSelfieImage(this.context, ImageSource.camera);
-               },
-               style: ElevatedButton.styleFrom(
-                   primary: changeColor ? Colors.grey : buttonColor
-               )
-           ),
-         )
-     );
-   }
+  Widget showUploadSelfieButton() {
+    return new Padding(
+        padding: EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 0.0),
+        child: Container(
+          height: 40.0,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(5)),
+            border: Border.all(color: boxColor, width: 2),
+          ),
+          child: new ElevatedButton(
+              child: new Text(
+                  'Take Selfie Photo',
+                  style: new TextStyle(fontSize: 12.0, color: textColor)),
+              onPressed: () {
+                // nodefluxSelfie? changeColor :
+                _getSelfieImage(this.context, ImageSource.camera);
+              },
+              style: ElevatedButton.styleFrom(
+                  primary: changeColor ? Colors.grey : buttonColor
+              )
+          ),
+        )
+    );
+  }
 
   Widget showUploadSelfieEktpButton() {
     return new Padding(
@@ -693,9 +697,9 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
                                 )
                             ):Container(),
                           ):Container(),
-                          // (similarityValue != null && livenessValue != null && dukcapilStatus == 'success' &&
-                          //     _selfieImage != null && similarityValue! >= widget.parameter.data![0].percentageSimilarity!/100 && livenessValue! >= widget.parameter.data![0].percentageLiveness!/100
-                          // )?
+                          (similarityValue != null && livenessValue != null && dukcapilStatus == 'success' &&
+                              _selfieImage != null && similarityValue! >= widget.parameter.data![0].percentageSimilarity!/100 && livenessValue! >= widget.parameter.data![0].percentageLiveness!/100
+                          )?
                           InkWell(
                               onTap: createData,
                               child:Container(
@@ -704,16 +708,16 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
                                 margin: EdgeInsets.only(top: 10),
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(Radius.circular(5)),
-                                  border: Border.all(color: boxColor, width: 2),
-                                  boxShadow: <BoxShadow>[
-                                    BoxShadow(
-                                        color: boxColor,
-                                        offset: Offset(2, 4),
-                                        blurRadius: 8,
-                                        spreadRadius: 2)
-                                  ],
-                                  color: buttonColor
+                                    borderRadius: BorderRadius.all(Radius.circular(5)),
+                                    border: Border.all(color: boxColor, width: 2),
+                                    boxShadow: <BoxShadow>[
+                                      BoxShadow(
+                                          color: boxColor,
+                                          offset: Offset(2, 4),
+                                          blurRadius: 8,
+                                          spreadRadius: 2)
+                                    ],
+                                    color: buttonColor
                                 ),
                                 child: Text(
                                   'Start Video Call',
@@ -722,25 +726,25 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
                                 ),
                               )
                           )
-                          //     :
-                          // Container(
-                          //     child: (noFace && message == 'No face detected')? tryAgainButton()//true
-                          //         :
-                          //     ((nodefluxSelfie)?
-                          //     ((underQualified)? tryAgainButton()//true
-                          //         :
-                          //     ((similarityValue! < widget.parameter.data![0].percentageSimilarity!/100 && livenessValue! < widget.parameter.data![0].percentageLiveness!/100 && dukcapilStatus != 'success' && selfieProcessed == 'selfie ada')? Column(
-                          //       children: [
-                          //         SizedBox(height: 10),
-                          //         Text('Liveness or face match do not pass the requirement',
-                          //           style: TextStyle(fontSize: 15.0, color: Colors.red),
-                          //           textAlign: TextAlign.center,
-                          //         ),
-                          //         // SizedBox(height: 10),
-                          //         tryAgainButton()
-                          //       ],
-                          //     ):Container())) : Container())
-                          // ),
+                              :
+                          Container(
+                              child: (noFace && message == 'No face detected')? tryAgainButton()//true
+                                  :
+                              ((nodefluxSelfie)?
+                              ((underQualified)? tryAgainButton()//true
+                                  :
+                              ((similarityValue! < widget.parameter.data![0].percentageSimilarity!/100 && livenessValue! < widget.parameter.data![0].percentageLiveness!/100 && dukcapilStatus != 'success' && selfieProcessed == 'selfie ada')? Column(
+                                children: [
+                                  SizedBox(height: 10),
+                                  Text('Liveness or face match do not pass the requirement',
+                                    style: TextStyle(fontSize: 15.0, color: Colors.red),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  // SizedBox(height: 10),
+                                  tryAgainButton()
+                                ],
+                              ):Container())) : Container())
+                          ),
                         ]
                     ),
                   ],
@@ -753,12 +757,12 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
         )
     );
   }
-  
+
   checkQueue() async {
     int? queue1;
     int? queue2;
-    String? checkNikRoom = widget.model?.nik;
-    int nik = int.parse('3175022104970010');
+    String? checkNikRoom = widget.model.nik;
+    int nik = int.parse(widget.model.nik!);
     TimeOfDay currTime = TimeOfDay.now();
     double _openTime = widget.parameter.data![0].operationalStart!;
     double _closeTime = widget.parameter.data![0].operationalEnd!;
@@ -776,15 +780,15 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
       print('2')
     });
 
-    // await db.collection('rooms').doc('scheduledRoom').collection('scheduledRoomID').doc(checkNikRoom!).get().then((value){
-    //   if(value.exists){
-    //     scheduled = true;
-    //     print("hasil schedule" + value.toString());
-    //   }
-    //   else{
-    //     scheduled = false;
-    //   }
-    // });
+    await db.collection('rooms').doc('scheduledRoom').collection('scheduledRoomID').doc(checkNikRoom!).get().then((value){
+      if(value.exists){
+        scheduled = true;
+        print("hasil schedule" + value.toString());
+      }
+      else{
+        scheduled = false;
+      }
+    });
 
     print(queue1! + queue2! >= 3 || (_currTime <= _openTime || _currTime >= _closeTime));
     print(queue1! + queue2! < 3 && (_currTime >= _openTime && _currTime <= _closeTime));
@@ -861,7 +865,7 @@ class _NodefluxOcrKtpResultPageState extends State<NodefluxOcrKtpResultPage> {
       maxLength: 16,
       controller: nikController,
       onChanged: (value){
-        widget.model?.nik = value;
+        widget.model.nik = value;
       },
       keyboardType: TextInputType.number,
       decoration: new InputDecoration(

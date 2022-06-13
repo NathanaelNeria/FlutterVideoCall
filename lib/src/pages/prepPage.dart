@@ -78,8 +78,7 @@ class _PrepPageState extends State<PrepPage> {
           onTap: () {
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) =>
-                // NodefluxOcrKtpPage(title: '', parameter: widget.parameter,)
-              NodefluxOcrKtpResultPage(parameter: widget.parameter)
+                NodefluxOcrKtpPage(title: '', parameter: widget.parameter,)
             ));
           },
           child:Container(
