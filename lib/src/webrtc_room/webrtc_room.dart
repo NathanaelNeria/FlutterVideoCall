@@ -13,7 +13,7 @@ class WebrtcRoom extends StatefulWidget {
 
   final bool scheduled;
   final String? nik;
-  final Parameter? parameter;
+  final dynamic? parameter;
 
   @override
   _WebrtcRoomState createState() => _WebrtcRoomState();
@@ -63,11 +63,11 @@ class _WebrtcRoomState extends State<WebrtcRoom> {
         });
       });
     }
-    // else if(widget.scheduled){
-    //   signaling.joinRoom(widget.nik, _remoteRenderer).whenComplete((){
-    //     signaling.connectionState(context);
-    //   });
-    // }
+    else if(widget.scheduled){
+      signaling.joinRoom(widget.nik!, _remoteRenderer).whenComplete((){
+        signaling.connectionState(context);
+      });
+    }
 
     super.initState();
   }

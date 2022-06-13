@@ -4,8 +4,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_callkit_incoming/flutter_callkit_incoming.dart';
-import 'package:flutter_webrtc_demo/src/callkit/calling_page.dart';
-import 'package:flutter_webrtc_demo/src/callkit/callkit_page.dart';
 import 'package:flutter_webrtc_demo/src/nodeflux/screens/activeLiveness.dart';
 import 'package:flutter_webrtc_demo/src/parameterModel.dart';
 import 'package:flutter_webrtc_demo/src/webrtc_room/notice.dart';
@@ -253,7 +251,7 @@ class _WelcomePageState extends State<WelcomePage> {
           // TODO: accepted an incoming call
           // TODO: show screen calling in Flutter
             NavigationService.instance
-                .pushNamedIfNotCurrent(AppRoute.videoCall, args: event.body);
+                .pushNamedIfNotCurrent(AppRoute.videoCall, widget.parameter, args: event.body);
             print('call accepted');
             break;
           case CallEvent.ACTION_CALL_DECLINE:

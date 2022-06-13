@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'package:callkeep/callkeep.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_callkit_incoming/flutter_callkit_incoming.dart';
-import 'package:flutter_webrtc_demo/src/callkit/calling_page.dart';
 import 'package:flutter_webrtc_demo/src/parameterModel.dart';
 import 'package:uuid/uuid.dart';
 import 'src/callkit/app_router.dart';
@@ -197,9 +196,6 @@ class AfterSplash extends StatefulWidget {
 }
 
 class _AfterSplashState extends State<AfterSplash> {
-  static const welcomePage = 'welcomePage.dart';
-  static const callingPage = 'calling_page.dart';
-
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
@@ -212,19 +208,6 @@ class _AfterSplashState extends State<AfterSplash> {
         ),
       ),
       home: WelcomePage(parameter: widget.parameter,),
-      // onGenerateRoute: (settings){
-      //   switch (settings.name) {
-      //     case welcomePage:
-      //       return MaterialPageRoute(
-      //           builder: (_) => WelcomePage(parameter: widget.parameter,), settings: settings);
-      //     case callingPage:
-      //       return MaterialPageRoute(
-      //           builder: (_) => CallingPage(), settings: settings);
-      //     default:
-      //       return null;
-      //   }
-      // },
-      // initialRoute: welcomePage,
       onGenerateRoute: AppRoute.generateRoute,
       navigatorKey: NavigationService.instance.navigationKey,
       navigatorObservers: <NavigatorObserver>[
