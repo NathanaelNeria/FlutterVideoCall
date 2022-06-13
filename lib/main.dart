@@ -133,7 +133,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     var currentCall = await getCurrentCall();
     if (currentCall != null) {
       NavigationService.instance
-          .pushNamedIfNotCurrent(AppRoute.callingPage, args: currentCall);
+          .pushNamedIfNotCurrent(AppRoute.videoCall,parameter, args: currentCall);
       // Navigator.push(context, MaterialPageRoute(builder: (context) => CallingPage(args: currentCall,)));
     }
   }
