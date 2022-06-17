@@ -31,8 +31,8 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 Future<void> showCallkitIncoming(String uuid) async {
   var params = <String, dynamic>{
     'id': uuid,
-    'nameCaller': 'Hien Nguyen',
-    'appName': 'Callkit',
+    'nameCaller': 'IST Bank',
+    'appName': 'FusionClick VidiCall',
     'avatar': 'https://i.pravatar.cc/100',
     'handle': '0123456789',
     'type': 1,
