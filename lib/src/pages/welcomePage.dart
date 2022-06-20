@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_callkit_incoming/flutter_callkit_incoming.dart';
 import 'package:flutter_webrtc_demo/src/nodeflux/screens/activeLiveness.dart';
 import 'package:flutter_webrtc_demo/src/parameterModel.dart';
@@ -21,6 +22,8 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_webrtc_demo/hexColorConverter.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
+String _TAG = "Method_channeling";
+
 class WelcomePage extends StatefulWidget {
   WelcomePage({Key? key, this.parameter}) : super(key: key);
 
@@ -36,6 +39,10 @@ class _WelcomePageState extends State<WelcomePage> {
   Color boxColor = Colors.white;
   String titleText = '';
   Color textColor = Colors.white;
+
+  var platform = MethodChannel('samples.flutter.dev/battery');
+  var channel = 'getBatteryLevel';
+  var method_background = 'background_method';
 
   var _uuid;
   var _currentUuid;
@@ -158,6 +165,30 @@ class _WelcomePageState extends State<WelcomePage> {
     );
   }
 
+  void _getBatteryLevel() async{
+    String batteryLevel;
+
+    try {
+      try {
+        final int result = await platform.invokeMethod('getBatteryLevel');
+        batteryLevel = 'Battery level at $result % .';
+        print("Batary level is :: ${batteryLevel}");
+      } on PlatformException catch (e) {
+        batteryLevel = "Failed to get battery level: '${e.message}'.";
+      }
+    } catch (err) {
+      print("$_TAG  error ${err.toString()}");
+    }
+  }
+
+  void _getBackgroundMessage() async {
+    EventChannel _event_channel = new EventChannel(method_background);
+
+    _event_channel.receiveBroadcastStream().listen((event) {
+      print("Data is :: ${event.toString()}");
+    });
+  }
+
   @override
   void initState() {
     bgColor = HexColor.fromHex(widget.parameter!.data![0].background!);
@@ -172,6 +203,8 @@ class _WelcomePageState extends State<WelcomePage> {
     textEvents = "";
     initCurrentCall();
     listenerEvent(onEvent);
+    _getBatteryLevel();
+    _getBackgroundMessage();
     super.initState();
   }
 
