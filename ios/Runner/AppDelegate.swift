@@ -57,7 +57,7 @@ import flutter_callkit_incoming
        }
        
        // Handle incoming pushes
-       func pushRegistry(_ registry: PKPushRegistry, didReceiveIncomingPushWith payload: PKPushPayload, for type: PKPushType, completion: @escaping () -> Void) {
+       func pushRegistry(_ registry: PKPushRegistry, didReceiveIncomingPushWithPayload: PKPushPayload, for type: PKPushType, completion: @escaping () -> Void) {
            print("didReceiveIncomingPushWith")
            guard type == .voIP else { return }
            

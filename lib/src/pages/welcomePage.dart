@@ -40,10 +40,6 @@ class _WelcomePageState extends State<WelcomePage> {
   String titleText = '';
   Color textColor = Colors.white;
 
-  var platform = MethodChannel('samples.flutter.dev/battery');
-  var channel = 'getBatteryLevel';
-  var method_background = 'background_method';
-
   var _uuid;
   var _currentUuid;
   var textEvents;
@@ -165,30 +161,6 @@ class _WelcomePageState extends State<WelcomePage> {
     );
   }
 
-  void _getBatteryLevel() async{
-    String batteryLevel;
-
-    try {
-      try {
-        final int result = await platform.invokeMethod('getBatteryLevel');
-        batteryLevel = 'Battery level at $result % .';
-        print("Batary level is :: ${batteryLevel}");
-      } on PlatformException catch (e) {
-        batteryLevel = "Failed to get battery level: '${e.message}'.";
-      }
-    } catch (err) {
-      print("$_TAG  error ${err.toString()}");
-    }
-  }
-
-  void _getBackgroundMessage() async {
-    EventChannel _event_channel = new EventChannel(method_background);
-
-    _event_channel.receiveBroadcastStream().listen((event) {
-      print("Data is :: ${event.toString()}");
-    });
-  }
-
   @override
   void initState() {
     bgColor = HexColor.fromHex(widget.parameter!.data![0].background!);
@@ -203,8 +175,6 @@ class _WelcomePageState extends State<WelcomePage> {
     textEvents = "";
     initCurrentCall();
     listenerEvent(onEvent);
-    _getBatteryLevel();
-    _getBackgroundMessage();
     super.initState();
   }
 
