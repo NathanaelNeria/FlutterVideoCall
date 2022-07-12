@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_callkit_incoming/flutter_callkit_incoming.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc_demo/src/pages/displayDataPage.dart';
@@ -14,7 +15,6 @@ import 'package:http/http.dart' as http;
 typedef void StreamStateCallback(MediaStream stream);
 
 class WebrtcSignaling {
-
   Map<String, dynamic> configuration = {
     'iceServers': [
       {
@@ -37,18 +37,20 @@ class WebrtcSignaling {
   late Timer _timer;
 
   String urlParam = 'https://api-portal.herokuapp.com/api/v1/admin/parameter';
-  String token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiNjIyODUxMmM5MmFmYjFmNDA2MDE5NTc2IiwidXNlcm5hbWUiOiJOYXRoYW5hZWwiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NDg3MTkxMjYsImV4cCI6MTY0ODg5MTkyNn0.1w2SGvqlSFV1YX-u1d-hAP9qmFTgnHVJsAsUl-glfK4';
+  String token =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiNjIyODUxMmM5MmFmYjFmNDA2MDE5NTc2IiwidXNlcm5hbWUiOiJOYXRoYW5hZWwiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NDg3MTkxMjYsImV4cCI6MTY0ODg5MTkyNn0.1w2SGvqlSFV1YX-u1d-hAP9qmFTgnHVJsAsUl-glfK4';
   var response;
   Parameter parameter = Parameter();
 
-
-  param() async{
-    response = await http.get(Uri.parse(urlParam), headers: {'Authorization': 'Bearer $token' });
+  param() async {
+    response = await http
+        .get(Uri.parse(urlParam), headers: {'Authorization': 'Bearer $token'});
 
     parameter = Parameter.fromJson(jsonDecode(response.body));
+    print('backend complete signaling.dart');
   }
 
-  Future<int?>firebaseAgent(FirebaseFirestore db) async{
+  Future<int?> firebaseAgent(FirebaseFirestore db) async {
     late int VCHandled1;
     late int VCHandled2;
     bool? loggedIn1;
@@ -59,7 +61,7 @@ class WebrtcSignaling {
     var agent1Active = db.collection('isActive').doc('agent1').get();
     var agent2Active = db.collection('isActive').doc('agent2').get();
 
-    await agent1Active.then((doc){
+    await agent1Active.then((doc) {
       var jsonData = jsonEncode(doc.data());
       var parsedJson = jsonDecode(jsonData);
       agent1 = Agent1.fromJson(parsedJson);
@@ -69,7 +71,7 @@ class WebrtcSignaling {
       print(VCHandled1);
     });
 
-    await agent2Active.then((doc){
+    await agent2Active.then((doc) {
       var jsonData = jsonEncode(doc.data());
       var parsedJson = jsonDecode(jsonData);
       agent2 = Agent2.fromJson(parsedJson);
@@ -79,22 +81,25 @@ class WebrtcSignaling {
       print(VCHandled2);
     });
 
-    if((VCHandled1 <= VCHandled2) && loggedIn1! && !inCall1!){
+    if ((VCHandled1 <= VCHandled2) && loggedIn1! && !inCall1!) {
       agentAvail = 1;
     } // VChandled agent1 & 2 sama, agent 1 loggedin ga ada call
-    else if((VCHandled1 > VCHandled2) && loggedIn2! && !inCall2!){
+    else if ((VCHandled1 > VCHandled2) && loggedIn2! && !inCall2!) {
       agentAvail = 2;
     } // VChandled agent 1 > agent 2, agent 2 loggedin ga ada call
-    else if((VCHandled1 <= VCHandled2) && !loggedIn1! && loggedIn2!){
+    else if ((VCHandled1 <= VCHandled2) && !loggedIn1! && loggedIn2!) {
       agentAvail = 2;
     } // VChandled agent 1 < agent 2, agent 1 ga loggedin tapi agent 2 loggedin
-    else if((VCHandled1 > VCHandled2) && !loggedIn2! && loggedIn1!){
+    else if ((VCHandled1 > VCHandled2) && !loggedIn2! && loggedIn1!) {
       agentAvail = 1;
     } // VChandled agent 1 > agent 2, agent 2 ga loggedin tapi agent loggedin
-    else if((VCHandled1 > VCHandled2) && loggedIn1! && !inCall1! && inCall2!){
+    else if ((VCHandled1 > VCHandled2) && loggedIn1! && !inCall1! && inCall2!) {
       agentAvail = 1;
-    }//kalo call agent 1 > agent 2 tapi agent 2 lagi in call, agent 1 ga in call
-    else if((VCHandled1 <= VCHandled2) && loggedIn2! && !inCall2! && inCall1!){
+    } //kalo call agent 1 > agent 2 tapi agent 2 lagi in call, agent 1 ga in call
+    else if ((VCHandled1 <= VCHandled2) &&
+        loggedIn2! &&
+        !inCall2! &&
+        inCall1!) {
       agentAvail = 2;
     } //kalo call agent 1 < agent 2 tapi agent 1 lagi in call, agent 2 ga in call
 
@@ -103,8 +108,13 @@ class WebrtcSignaling {
     return agentAvail;
   }
 
-  Future<String?> createRoom(RTCVideoRenderer remoteRenderer, FirebaseFirestore db, int agentNum) async {
-    DocumentReference roomAgent = db.collection('rooms').doc('roomAgent' + agentNum.toString()).collection('roomIDAgent' + agentNum.toString()).doc();
+  Future<String?> createRoom(RTCVideoRenderer remoteRenderer,
+      FirebaseFirestore db, int agentNum) async {
+    DocumentReference roomAgent = db
+        .collection('rooms')
+        .doc('roomAgent' + agentNum.toString())
+        .collection('roomIDAgent' + agentNum.toString())
+        .doc();
 
     print('Create PeerConnection with configuration: $configuration');
 
@@ -120,12 +130,9 @@ class WebrtcSignaling {
     // Code for collecting ICE candidates below
     var callerCandidatesCollection = roomAgent.collection('callerCandidates');
 
-
     peerConnection?.onIceCandidate = (RTCIceCandidate candidate) {
       print('Got candidate: ${candidate.toMap()}');
       callerCandidatesCollection.add(candidate.toMap());
-
-
     }; // Finish Code for collecting ICE candidate
 
     // Add code for creating a room
@@ -195,7 +202,11 @@ class WebrtcSignaling {
 
   Future<void> joinRoom(String roomId, RTCVideoRenderer remoteVideo) async {
     FirebaseFirestore db = FirebaseFirestore.instance;
-    DocumentReference roomRef = db.collection('rooms').doc('scheduledRoom').collection('scheduledRoomID').doc(roomId);
+    DocumentReference roomRef = db
+        .collection('rooms')
+        .doc('scheduledRoom')
+        .collection('scheduledRoomID')
+        .doc(roomId);
     var roomSnapshot = await roomRef.get();
     print('Got room ${roomSnapshot.exists}');
 
@@ -267,20 +278,16 @@ class WebrtcSignaling {
   }
 
   Future<void> openUserMedia(
-      RTCVideoRenderer localVideo,
-      RTCVideoRenderer remoteVideo,
-      ) async {
-    var stream = await navigator.mediaDevices
-        .getUserMedia({
+    RTCVideoRenderer localVideo,
+    RTCVideoRenderer remoteVideo,
+  ) async {
+    var stream = await navigator.mediaDevices.getUserMedia({
       'video': {
         'facingMode': 'user',
-        'frameRate': {
-          'ideal': 30,
-          'max': 60
-        },
+        'frameRate': {'ideal': 30, 'max': 60},
       },
       'audio': true,
-      });
+    });
 
     localStream = stream;
     localVideo.srcObject = localStream;
@@ -289,6 +296,7 @@ class WebrtcSignaling {
   }
 
   Future<void> hangUp(RTCVideoRenderer localVideo) async {
+    await FlutterCallkitIncoming.endAllCalls();
     List<MediaStreamTrack> tracks = localVideo.srcObject!.getTracks();
     tracks.forEach((track) {
       track.stop();
@@ -322,17 +330,21 @@ class WebrtcSignaling {
     peerConnection!.onConnectionState = (RTCPeerConnectionState state) {
       print('Connection state change: $state');
 
-      if(state == RTCPeerConnectionState.RTCPeerConnectionStateConnected){
+      if (state == RTCPeerConnectionState.RTCPeerConnectionStateConnected) {
         connected = true;
-      }
-      else if (state == RTCPeerConnectionState.RTCPeerConnectionStateDisconnected) {
+      } else if (state ==
+          RTCPeerConnectionState.RTCPeerConnectionStateDisconnected) {
         Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => DisplayDataPage(parameter: parameter,)));
+            MaterialPageRoute(
+                builder: (context) => DisplayDataPage(
+                      parameter: parameter,
+                    )));
         print('disconnect');
         disconnect = true;
-      }
-      else if (state == RTCPeerConnectionState.RTCPeerConnectionStateFailed && !disconnect && !connected) {
+      } else if (state == RTCPeerConnectionState.RTCPeerConnectionStateFailed &&
+          !disconnect &&
+          !connected) {
         print('failed');
         showDialog(
             context: context,
@@ -349,8 +361,7 @@ class WebrtcSignaling {
                   )
                 ],
               );
-            }
-        );
+            });
       }
     };
   }
@@ -362,6 +373,9 @@ class WebrtcSignaling {
 
     peerConnection?.onConnectionState = (RTCPeerConnectionState state) {
       print('Connection state change: $state');
+      if (state != RTCPeerConnectionState.RTCPeerConnectionStateConnected) {
+        FlutterCallkitIncoming.endAllCalls();
+      }
     };
 
     peerConnection?.onSignalingState = (RTCSignalingState state) {

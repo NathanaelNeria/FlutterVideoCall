@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_callkit_incoming/flutter_callkit_incoming.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:flutter_webrtc_demo/src/pages/displayDataPage.dart';
 import 'package:flutter_webrtc_demo/src/parameterModel.dart';
@@ -11,7 +12,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:http/http.dart' as http;
 
 class WebrtcRoom extends StatefulWidget {
-  WebrtcRoom({Key? key, required this.scheduled, this.nik, this.parameter}) : super(key: key);
+  WebrtcRoom({Key? key, required this.scheduled, this.nik, this.parameter})
+      : super(key: key);
 
   final bool scheduled;
   final String? nik;
@@ -30,17 +32,18 @@ class _WebrtcRoomState extends State<WebrtcRoom> {
   int? agentNum;
 
   String urlParam = 'https://api-portal.herokuapp.com/api/v1/admin/parameter';
-  String token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiNjIyODUxMmM5MmFmYjFmNDA2MDE5NTc2IiwidXNlcm5hbWUiOiJOYXRoYW5hZWwiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NDg3MTkxMjYsImV4cCI6MTY0ODg5MTkyNn0.1w2SGvqlSFV1YX-u1d-hAP9qmFTgnHVJsAsUl-glfK4';
+  String token =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiNjIyODUxMmM5MmFmYjFmNDA2MDE5NTc2IiwidXNlcm5hbWUiOiJOYXRoYW5hZWwiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NDg3MTkxMjYsImV4cCI6MTY0ODg5MTkyNn0.1w2SGvqlSFV1YX-u1d-hAP9qmFTgnHVJsAsUl-glfK4';
   var response;
   Parameter parameter = Parameter();
 
-
-  param() async{
-    response = await http.get(Uri.parse(urlParam), headers: {'Authorization': 'Bearer $token' });
+  param() async {
+    response = await http
+        .get(Uri.parse(urlParam), headers: {'Authorization': 'Bearer $token'});
 
     parameter = Parameter.fromJson(jsonDecode(response.body));
+    print('backend complete room.dart');
   }
-
 
   @override
   void initState() {
@@ -54,20 +57,19 @@ class _WebrtcRoomState extends State<WebrtcRoom> {
       setState(() {});
     });
 
-    signaling.firebaseAgent(db).then((value){
+    signaling.firebaseAgent(db).then((value) {
       setState(() {
-          agentNum = value;
-          print(value);
-          print(agentNum);
+        agentNum = value;
+        print(value);
+        print(agentNum);
       });
     });
 
     signaling.openUserMedia(_localRenderer, _remoteRenderer).whenComplete(() {
-      setState(() {
-      });
-    } );
+      setState(() {});
+    });
 
-    if(!widget.scheduled) {
+    if (!widget.scheduled) {
       Timer(const Duration(seconds: 3), () {
         signaling.createRoom(_remoteRenderer, db, agentNum!).then((data) {
           setState(() {
@@ -76,13 +78,12 @@ class _WebrtcRoomState extends State<WebrtcRoom> {
           });
         });
       });
-    }
-    else if(widget.scheduled){
-      signaling.joinRoom(widget.nik!, _remoteRenderer).whenComplete((){
+    } else if (widget.scheduled) {
+      signaling.joinRoom(widget.nik!, _remoteRenderer).whenComplete(() {
         signaling.connectionState(context);
       });
     }
-
+    param();
     super.initState();
   }
 
@@ -104,82 +105,85 @@ class _WebrtcRoomState extends State<WebrtcRoom> {
       appBar: AppBar(
         title: Text("Video Call with Agent"),
       ),
-      body:
-      (_remoteRenderer.srcObject==null)?
-      Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(height: 280),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation <Color> (Colors.blue)
-                ),
-              ],
-            ),
-            SizedBox(height: 160),
-            Text("Connecting you to our agent"),
-            Text("Please wait.."),
-            SizedBox(height: 20),
-          ]
-      )
-          :
-      Column(
-        children: [
-          SizedBox(height: 178),
-          Expanded(
-            child:
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
+      body: (_remoteRenderer.srcObject == null)
+          ? Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
+              SizedBox(height: 280),
+              Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Expanded(
-                    child:RTCVideoView(_localRenderer, mirror: true),
-                  ),
-                  Expanded(child: RTCVideoView(_remoteRenderer)),
+                  CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.blue)),
                 ],
               ),
-            ),
-          ),
-          (_remoteRenderer.srcObject!=null)?Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Row(
+              SizedBox(height: 160),
+              Text("Connecting you to our agent"),
+              Text("Please wait.."),
+              SizedBox(height: 20),
+            ])
+          : Column(
+              children: [
+                SizedBox(height: 178),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: RTCVideoView(_localRenderer, mirror: true),
+                        ),
+                        Expanded(child: RTCVideoView(_remoteRenderer)),
+                      ],
+                    ),
+                  ),
+                ),
+                (_remoteRenderer.srcObject != null)
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                    "Client Video                             "),
+                                Text("Agent Video")
+                              ]),
+                        ],
+                      )
+                    : Container(),
+                SizedBox(height: 148),
+                Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("Client Video                             "),
-                    Text("Agent Video")]
-              ),
-            ],
-          ):
-          Container(),
-          SizedBox(height: 148),
-          Row (
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // START: Comment button hangup
-              (_remoteRenderer.srcObject!=null)?
-              ElevatedButton(
-                onPressed: () {
-                  signaling.hangUp(_localRenderer);
-                  Navigator.push(
-                      context, MaterialPageRoute(builder: (context) => DisplayDataPage(parameter: parameter,)));
-                },
-                child: Icon(Icons.call_end_rounded),
-                style: ButtonStyle(
-                  shape: MaterialStateProperty.all(CircleBorder()),
-                  padding: MaterialStateProperty.all(EdgeInsets.all(20)),
-                  backgroundColor: MaterialStateProperty.all(Colors.red), // <-- Button color
+                    // START: Comment button hangup
+                    (_remoteRenderer.srcObject != null)
+                        ? ElevatedButton(
+                            onPressed: () {
+                              FlutterCallkitIncoming.endAllCalls();
+                              signaling.hangUp(_localRenderer);
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => DisplayDataPage(
+                                            parameter: parameter,
+                                          )));
+                            },
+                            child: Icon(Icons.call_end_rounded),
+                            style: ButtonStyle(
+                              shape: MaterialStateProperty.all(CircleBorder()),
+                              padding:
+                                  MaterialStateProperty.all(EdgeInsets.all(20)),
+                              backgroundColor: MaterialStateProperty.all(
+                                  Colors.red), // <-- Button color
+                            ),
+                          )
+                        : Container(),
+                    // END: Comment button hangup
+                  ],
                 ),
-              ):Container(),
-              // END: Comment button hangup
-            ],
-          ),
-          SizedBox(height: 8)
-        ],
-      ),
+                SizedBox(height: 8)
+              ],
+            ),
     );
   }
 }

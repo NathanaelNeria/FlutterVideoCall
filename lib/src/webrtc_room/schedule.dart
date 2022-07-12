@@ -9,7 +9,13 @@ import 'package:date_format/date_format.dart';
 import 'dart:math';
 
 class ScheduleCall extends StatefulWidget {
-  const ScheduleCall({Key? key, required this.email, required this.nik, required this.name, required this.parameter}) : super(key: key);
+  const ScheduleCall(
+      {Key? key,
+      required this.email,
+      required this.nik,
+      required this.name,
+      required this.parameter})
+      : super(key: key);
 
   final String email;
   final int nik;
@@ -43,9 +49,11 @@ class _ScheduleCallState extends State<ScheduleCall> {
 
   double? _selectedTime;
 
-  DateTime selectedDate = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 1);
+  DateTime selectedDate = DateTime(
+      DateTime.now().year, DateTime.now().month, DateTime.now().day + 1);
 
-  DateTime today = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 1);
+  DateTime today = DateTime(
+      DateTime.now().year, DateTime.now().month, DateTime.now().day + 1);
 
   TimeOfDay selectedTime = TimeOfDay(hour: 00, minute: 00);
 
@@ -56,26 +64,23 @@ class _ScheduleCallState extends State<ScheduleCall> {
 
   late final FirebaseMessaging _firebaseMessaging;
 
-
   Future<String> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
         initialDate: selectedDate,
         initialDatePickerMode: DatePickerMode.day,
         initialEntryMode: DatePickerEntryMode.calendarOnly,
-        selectableDayPredicate: (val) =>
-          (val.weekday != 7) ? true : false,
-        firstDate: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 1),
-        lastDate: DateTime(DateTime.now().year + 1)
-    );
+        selectableDayPredicate: (val) => (val.weekday != 7) ? true : false,
+        firstDate: DateTime(
+            DateTime.now().year, DateTime.now().month, DateTime.now().day + 1),
+        lastDate: DateTime(DateTime.now().year + 1));
     if (picked != null)
       setState(() {
         selectedDate = picked;
         _dateController.text = DateFormat.yMd().format(selectedDate);
         dateFormatted = formatter.format(selectedDate);
       });
-    else if (picked == null){
-
+    else if (picked == null) {
       setState(() {
         dateFormatted = formatter.format(selectedDate);
       });
@@ -91,7 +96,7 @@ class _ScheduleCallState extends State<ScheduleCall> {
       context: context,
       initialTime: selectedTime,
       initialEntryMode: TimePickerEntryMode.input,
-      builder: (context, widget){
+      builder: (context, widget) {
         return MediaQuery(
           data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
           child: widget!,
@@ -101,35 +106,35 @@ class _ScheduleCallState extends State<ScheduleCall> {
     if (picked != null) {
       setState(() {
         selectedTime = picked;
-        _selectedTime = selectedTime.hour.toDouble() + (selectedTime.minute.toDouble()/60);
+        _selectedTime = selectedTime.hour.toDouble() +
+            (selectedTime.minute.toDouble() / 60);
         _hour = selectedTime.hour.toString();
         _minute = selectedTime.minute.toString();
         _time = _hour! + ' : ' + _minute!;
         _timeController.text = _time!;
         _timeController.text = formatDate(
-            DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, selectedTime.hour, selectedTime.minute),
+            DateTime(DateTime.now().year, DateTime.now().month,
+                DateTime.now().day, selectedTime.hour, selectedTime.minute),
             [HH, ':', nn, " "]).toString();
         print(_selectedTime! > _openTime && _selectedTime! < _closeTime);
         print(_selectedTime);
       });
 
       // double _selectedTime = selectedTime.hour.toDouble() + (selectedTime.minute.toDouble()/60);
-      if(_selectedTime! >= _openTime && _selectedTime! <= _closeTime){
+      if (_selectedTime! >= _openTime && _selectedTime! <= _closeTime) {
         operationTime = true;
         timeFormatted = selectedTime.format(context);
-      }
-      else{
+      } else {
         operationTime = false;
         timeMessage = 'Please select time between $startTime - $endTime';
       }
-    }
-    else if(picked == null){
-      _selectedTime = selectedTime.hour.toDouble() + (selectedTime.minute.toDouble()/60);
-      if(_selectedTime! >= _openTime && _selectedTime! <= _closeTime){
+    } else if (picked == null) {
+      _selectedTime =
+          selectedTime.hour.toDouble() + (selectedTime.minute.toDouble() / 60);
+      if (_selectedTime! >= _openTime && _selectedTime! <= _closeTime) {
         operationTime = true;
         timeFormatted = selectedTime.format(context);
-      }
-      else{
+      } else {
         operationTime = false;
         timeMessage = 'Please select time between $startTime - $endTime';
       }
@@ -166,11 +171,14 @@ class _ScheduleCallState extends State<ScheduleCall> {
     // dateFormatted = _dateController.text;
     timeFormatted = _timeController.text;
     dateFormatted = formatter.format(today);
-    _selectedTime = DateTime.now().hour.toDouble() + (DateTime.now().minute.toDouble()/60);
-    startTime = getTimeStringFromDouble(widget.parameter.data![0].operationalStart!);
-    endTime = getTimeStringFromDouble(widget.parameter.data![0].operationalEnd!);
+    _selectedTime = DateTime.now().hour.toDouble() +
+        (DateTime.now().minute.toDouble() / 60);
+    startTime =
+        getTimeStringFromDouble(widget.parameter.data![0].operationalStart!);
+    endTime =
+        getTimeStringFromDouble(widget.parameter.data![0].operationalEnd!);
     _firebaseMessaging = FirebaseMessaging.instance;
-    _firebaseMessaging.getToken().then((fcm){
+    _firebaseMessaging.getToken().then((fcm) {
       setState(() {
         fcmToken = fcm;
         print('ini dari token: $fcmToken');
@@ -193,20 +201,27 @@ class _ScheduleCallState extends State<ScheduleCall> {
         'disableDecline': false,
         'token': fcmToken
       });
-    }
-    catch(e){
+    } catch (e) {
       print('Error: $e');
     }
   }
 
-  Widget setCallSchedule(){
+  Widget setCallSchedule() {
     return InkWell(
       onTap: () {
-        if(operationTime) {
+        if (operationTime) {
           firestoreSchedule();
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => scheduleDisplay(name: widget.name, nik: widget.nik, email: widget.email, date: dateFormatted!, time: timeFormatted!, parameter: widget.parameter,))
-          );
+              context,
+              MaterialPageRoute(
+                  builder: (context) => scheduleDisplay(
+                        name: widget.name,
+                        nik: widget.nik,
+                        email: widget.email,
+                        date: dateFormatted!,
+                        time: timeFormatted!,
+                        parameter: widget.parameter,
+                      )));
         }
       },
       child: Container(
@@ -273,7 +288,7 @@ class _ScheduleCallState extends State<ScheduleCall> {
                       },
                       decoration: InputDecoration(
                           disabledBorder:
-                          UnderlineInputBorder(borderSide: BorderSide.none),
+                              UnderlineInputBorder(borderSide: BorderSide.none),
                           // labelText: 'Time',
                           contentPadding: EdgeInsets.only(top: 0.0)),
                     ),
@@ -296,7 +311,7 @@ class _ScheduleCallState extends State<ScheduleCall> {
                   },
                   child: Container(
                     margin: EdgeInsets.only(top: 30),
-                    width: _width! / 1.7,
+                    width: _width! / 1.2,
                     height: _height! / 9,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(color: Colors.grey[200]),
@@ -312,14 +327,16 @@ class _ScheduleCallState extends State<ScheduleCall> {
                       controller: _timeController,
                       decoration: InputDecoration(
                           disabledBorder:
-                          UnderlineInputBorder(borderSide: BorderSide.none),
+                              UnderlineInputBorder(borderSide: BorderSide.none),
                           // labelText: 'Time',
                           contentPadding: EdgeInsets.all(5)),
                     ),
                   ),
                 ),
                 SizedBox(height: 20),
-                (operationTime)? Container() : Text(timeMessage, style: TextStyle(color: Colors.red)),
+                (operationTime)
+                    ? Container()
+                    : Text(timeMessage, style: TextStyle(color: Colors.red)),
                 SizedBox(height: 20),
                 setCallSchedule(),
               ],
