@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_callkit_incoming/flutter_callkit_incoming.dart';
 import 'package:flutter_webrtc_demo/src/parameterModel.dart';
+import 'package:flutter_webrtc_demo/src/webrtc_room/webrtc_room.dart';
 import 'package:uuid/uuid.dart';
 import 'src/callkit/app_router.dart';
 import 'src/callkit/navigation_service.dart';
@@ -18,7 +19,8 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(MaterialApp(home: MyApp(),
+  runApp(MaterialApp(
+    home: MyApp(),
     debugShowCheckedModeBanner: false,
   ));
 }
@@ -81,7 +83,8 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   String urlParam = 'https://api-portal.herokuapp.com/api/v1/admin/parameter';
-  String token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiNjIyODUxMmM5MmFmYjFmNDA2MDE5NTc2IiwidXNlcm5hbWUiOiJOYXRoYW5hZWwiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NDg3MTkxMjYsImV4cCI6MTY0ODg5MTkyNn0.1w2SGvqlSFV1YX-u1d-hAP9qmFTgnHVJsAsUl-glfK4';
+  String token =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiNjIyODUxMmM5MmFmYjFmNDA2MDE5NTc2IiwidXNlcm5hbWUiOiJOYXRoYW5hZWwiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NDg3MTkxMjYsImV4cCI6MTY0ODg5MTkyNn0.1w2SGvqlSFV1YX-u1d-hAP9qmFTgnHVJsAsUl-glfK4';
   var response;
   Parameter parameter = Parameter();
   Color bgColor = Colors.white;
@@ -90,10 +93,12 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   var _uuid;
   var _currentUuid;
+  var textEvents;
   late final FirebaseMessaging _firebaseMessaging;
 
-  param() async{
-    response = await http.get(Uri.parse(urlParam), headers: {'Authorization': 'Bearer $token' });
+  param() async {
+    response = await http
+        .get(Uri.parse(urlParam), headers: {'Authorization': 'Bearer $token'});
 
     parameter = Parameter.fromJson(jsonDecode(response.body));
     print(response.body);
@@ -110,6 +115,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     param();
     _uuid = Uuid();
     initFirebase();
+    // checkAndNavigationCallingPage();
     WidgetsBinding.instance.addObserver(this);
     super.initState();
   }
@@ -132,9 +138,13 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   checkAndNavigationCallingPage() async {
     var currentCall = await getCurrentCall();
     if (currentCall != null) {
-      NavigationService.instance
-          .pushNamedIfNotCurrent(AppRoute.videoCall, args: currentCall);
-      // Navigator.push(context, MaterialPageRoute(builder: (context) => CallingPage(args: currentCall,)));
+      // NavigationService.instance
+      //     .pushNamedIfNotCurrent(AppRoute.videoCall, args: currentCall);
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  WebrtcRoom(scheduled: true, nik: "3175022104970010")));
     }
   }
 
@@ -172,10 +182,13 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return SplashScreen.timer(
       seconds: 7,
-      navigateAfterSeconds: AfterSplash(parameter: parameter,),
+      navigateAfterSeconds: AfterSplash(
+        parameter: parameter,
+      ),
       title: Text(
         'Initializing',
-        style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20.0, color: Colors.black),
+        style: TextStyle(
+            fontWeight: FontWeight.w600, fontSize: 20.0, color: Colors.black),
       ),
       image: Image.asset('images/logoist.jpg'),
       photoSize: 150.0,
@@ -184,7 +197,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     );
   }
 }
-
 
 class AfterSplash extends StatefulWidget {
   const AfterSplash({Key? key, required this.parameter}) : super(key: key);
@@ -195,15 +207,67 @@ class AfterSplash extends StatefulWidget {
   _AfterSplashState createState() => _AfterSplashState();
 }
 
-class _AfterSplashState extends State<AfterSplash> {
+class _AfterSplashState extends State<AfterSplash> with WidgetsBindingObserver {
+  var _currentUuid;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    checkAndNavigationCallingPage();
+    super.initState();
+  }
+
+  getCurrentCall() async {
+    //check current call from pushkit if possible
+    var calls = await FlutterCallkitIncoming.activeCalls();
+    if (calls is List) {
+      if (calls.isNotEmpty) {
+        print('DATA: $calls');
+        this._currentUuid = calls[0]['id'];
+        return calls[0];
+      } else {
+        this._currentUuid = "";
+        return null;
+      }
+    }
+  }
+
+  checkAndNavigationCallingPage() async {
+    var currentCall = await getCurrentCall();
+    if (currentCall != null) {
+      // NavigationService.instance
+      //     .pushNamedIfNotCurrent(AppRoute.videoCall, args: currentCall);
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  WebrtcRoom(scheduled: true, nik: "3175022104970010")));
+    }
+  }
+
+  @override
+  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
+    print(state);
+    if (state == AppLifecycleState.resumed) {
+      //Check call when open app from background
+      checkAndNavigationCallingPage();
+    }
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     return MaterialApp(
-      title: widget.parameter.data![0].title!,
+      // title: widget.parameter.data![0].title!,
       theme: ThemeData(
         primarySwatch: Colors.blueGrey,
-        textTheme:GoogleFonts.latoTextTheme(textTheme).copyWith(
+        textTheme: GoogleFonts.latoTextTheme(textTheme).copyWith(
           bodyText1: GoogleFonts.montserrat(textStyle: textTheme.bodyText1),
         ),
       ),
@@ -216,11 +280,9 @@ class _AfterSplashState extends State<AfterSplash> {
     );
   }
 
-
-
   Future<void> getDevicePushTokenVoIP() async {
     var devicePushTokenVoIP =
-    await FlutterCallkitIncoming.getDevicePushTokenVoIP();
+        await FlutterCallkitIncoming.getDevicePushTokenVoIP();
     print(devicePushTokenVoIP);
   }
 }

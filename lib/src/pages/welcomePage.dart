@@ -22,7 +22,6 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_webrtc_demo/hexColorConverter.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
-String _TAG = "Method_channeling";
 
 class WelcomePage extends StatefulWidget {
   WelcomePage({Key? key, this.parameter}) : super(key: key);
@@ -178,6 +177,82 @@ class _WelcomePageState extends State<WelcomePage> {
     super.initState();
   }
 
+  Future<void> listenerEvent(Function? callback) async {
+    try {
+      FlutterCallkitIncoming.onEvent.listen((event) async {
+        print('HOME: $event');
+        switch (event!.name) {
+          case CallEvent.ACTION_CALL_INCOMING:
+          // TODO: received an incoming call
+            print('incoming call');
+            // NavigationService.instance
+            //     .pushNamedIfNotCurrent(AppRoute.callingPage, args: event.body);
+            break;
+          case CallEvent.ACTION_CALL_START:
+          // TODO: started an outgoing call
+          // TODO: show screen calling in Flutter
+            break;
+          case CallEvent.ACTION_CALL_ACCEPT:
+          // TODO: accepted an incoming call
+          // TODO: show screen calling in Flutter
+            NavigationService.instance
+                .pushNamedIfNotCurrent(AppRoute.videoCall, args: event.body);
+            break;
+          case CallEvent.ACTION_CALL_DECLINE:
+          // TODO: declined an incoming call
+            await requestHttp("ACTION_CALL_DECLINE_FROM_DART");
+            print('decline call');
+            break;
+          case CallEvent.ACTION_CALL_ENDED:
+          // TODO: ended an incoming/outgoing call
+            endAllCalls();
+            break;
+          case CallEvent.ACTION_CALL_TIMEOUT:
+          // TODO: missed an incoming call
+            break;
+          case CallEvent.ACTION_CALL_CALLBACK:
+          // TODO: only Android - click action `Call back` from missed call notification
+            break;
+          case CallEvent.ACTION_CALL_TOGGLE_HOLD:
+          // TODO: only iOS
+            break;
+          case CallEvent.ACTION_CALL_TOGGLE_MUTE:
+          // TODO: only iOS
+            break;
+          case CallEvent.ACTION_CALL_TOGGLE_DMTF:
+          // TODO: only iOS
+            break;
+          case CallEvent.ACTION_CALL_TOGGLE_GROUP:
+          // TODO: only iOS
+            break;
+          case CallEvent.ACTION_CALL_TOGGLE_AUDIO_SESSION:
+          // TODO: only iOS
+            break;
+          case CallEvent.ACTION_DID_UPDATE_DEVICE_PUSH_TOKEN_VOIP:
+          // TODO: only iOS
+            break;
+        }
+        if (callback != null) {
+          callback(event.toString());
+        }
+      });
+    } on Exception {}
+  }
+
+  //check with https://webhook.site/#!/2748bc41-8599-4093-b8ad-93fd328f1cd2
+  Future<void> requestHttp(content) async {
+    get(Uri.parse(
+        'https://webhook.site/2748bc41-8599-4093-b8ad-93fd328f1cd2?data=$content'));
+  }
+
+  onEvent(event) {
+    if (!mounted) return;
+    setState(() {
+      textEvents += "${event.toString()}\n";
+      print(textEvents);
+    });
+  }
+
   notifPermission() async{
     NotificationSettings settings = await messaging.requestPermission(
       alert: true,
@@ -234,83 +309,6 @@ class _WelcomePageState extends State<WelcomePage> {
     print(devicePushTokenVoIP);
   }
 
-  Future<void> listenerEvent(Function? callback) async {
-    const callingPage = 'calling_page.dart';
-    try {
-      FlutterCallkitIncoming.onEvent.listen((event) async {
-        print('HOME: $event');
-        switch (event!.name) {
-          case CallEvent.ACTION_CALL_INCOMING:
-          // TODO: received an incoming call
-            print('incoming call');
-            // NavigationService.instance
-            //     .pushNamedIfNotCurrent(AppRoute.callingPage, args: event.body);
-            break;
-          case CallEvent.ACTION_CALL_START:
-          // TODO: started an outgoing call
-          // TODO: show screen calling in Flutter
-            break;
-          case CallEvent.ACTION_CALL_ACCEPT:
-          // TODO: accepted an incoming call
-          // TODO: show screen calling in Flutter
-            NavigationService.instance
-                .pushNamedIfNotCurrent(AppRoute.videoCall, args: event.body);
-            print('call accepted');
-            break;
-          case CallEvent.ACTION_CALL_DECLINE:
-          // TODO: declined an incoming call
-            await requestHttp("ACTION_CALL_DECLINE_FROM_DART");
-            print('decline call');
-            break;
-          case CallEvent.ACTION_CALL_ENDED:
-          // TODO: ended an incoming/outgoing call
-            break;
-          case CallEvent.ACTION_CALL_TIMEOUT:
-          // TODO: missed an incoming call
-            break;
-          case CallEvent.ACTION_CALL_CALLBACK:
-          // TODO: only Android - click action `Call back` from missed call notification
-            break;
-          case CallEvent.ACTION_CALL_TOGGLE_HOLD:
-          // TODO: only iOS
-            break;
-          case CallEvent.ACTION_CALL_TOGGLE_MUTE:
-          // TODO: only iOS
-            break;
-          case CallEvent.ACTION_CALL_TOGGLE_DMTF:
-          // TODO: only iOS
-            break;
-          case CallEvent.ACTION_CALL_TOGGLE_GROUP:
-          // TODO: only iOS
-            break;
-          case CallEvent.ACTION_CALL_TOGGLE_AUDIO_SESSION:
-          // TODO: only iOS
-            break;
-          case CallEvent.ACTION_DID_UPDATE_DEVICE_PUSH_TOKEN_VOIP:
-          // TODO: only iOS
-            break;
-        }
-        if (callback != null) {
-          callback(event.toString());
-        }
-      });
-    } on Exception {}
-  }
-
-  //check with https://webhook.site/#!/2748bc41-8599-4093-b8ad-93fd328f1cd2
-  Future<void> requestHttp(content) async {
-    get(Uri.parse(
-        'https://webhook.site/2748bc41-8599-4093-b8ad-93fd328f1cd2?data=$content'));
-  }
-
-  onEvent(event) {
-    if (!mounted) return;
-    setState(() {
-      textEvents += "${event.toString()}\n";
-      print(textEvents);
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -356,8 +354,11 @@ class _WelcomePageState extends State<WelcomePage> {
                 'Welcome to $titleText. Ease of transaction in your hand',
                 style: TextStyle(color: textColor, fontSize: 17), textAlign: TextAlign.center,
               ),
-              SizedBox(
-                height: 80,
+              ElevatedButton(
+                onPressed: endAllCalls,
+                child: Text(
+                  'end call'
+                ),
               ),
               Text(
                 //'Apakah kamu sudah memiliki rekening IST Mobile?',

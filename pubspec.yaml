@@ -32,10 +32,8 @@ dependencies:
   image: ^3.1.1
   firebase_auth_web: ^3.3.6
   firebase_messaging: 11.2.15
-  flutter_callkit_incoming: ^1.0.0+6
+  flutter_callkit_incoming: ^1.0.2+1
   uuid: ^3.0.6
-  callkeep: ^0.3.2
-  connectycube_flutter_call_kit: ^2.0.5
 
   flutter_localizations:
     sdk: flutter
@@ -50,3 +48,10 @@ flutter:
     - images/logoist.jpg
     - images/no_photo_selected.png
     - images/bank_NTBS.png
+  plugin:
+    platforms:
+      android:
+        package: com.hiennv.flutter_callkit_incoming
+        pluginClass: FlutterCallkitIncomingPlugin
+      ios:
+        pluginClass: FlutterCallkitIncomingPlugin
