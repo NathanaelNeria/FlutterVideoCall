@@ -326,6 +326,7 @@ class WebrtcSignaling {
   void connectionState(BuildContext context) {
     bool disconnect = false;
     bool connected = false;
+    bool connecting = false;
 
     peerConnection!.onConnectionState = (RTCPeerConnectionState state) {
       print('Connection state change: $state');
@@ -342,9 +343,13 @@ class WebrtcSignaling {
                     )));
         print('disconnect');
         disconnect = true;
+      } else if (state ==
+          RTCPeerConnectionState.RTCPeerConnectionStateConnecting) {
+        connecting = true;
       } else if (state == RTCPeerConnectionState.RTCPeerConnectionStateFailed &&
           !disconnect &&
-          !connected) {
+          !connected &&
+          !connecting) {
         print('failed');
         showDialog(
             context: context,
@@ -373,7 +378,8 @@ class WebrtcSignaling {
 
     peerConnection?.onConnectionState = (RTCPeerConnectionState state) {
       print('Connection state change: $state');
-      if (state != RTCPeerConnectionState.RTCPeerConnectionStateConnected) {
+      if (state != RTCPeerConnectionState.RTCPeerConnectionStateConnected ||
+          state != RTCPeerConnectionState.RTCPeerConnectionStateConnecting) {
         FlutterCallkitIncoming.endAllCalls();
       }
     };

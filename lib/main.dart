@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 
-// import 'package:callkeep/callkeep.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_callkit_incoming/flutter_callkit_incoming.dart';
 import 'package:flutter_webrtc_demo/src/parameterModel.dart';
@@ -17,7 +16,7 @@ import 'hexColorConverter.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(MaterialApp(
     home: MyApp(),
@@ -237,6 +236,7 @@ class _AfterSplashState extends State<AfterSplash> with WidgetsBindingObserver {
     if (currentCall != null) {
       // NavigationService.instance
       //     .pushNamedIfNotCurrent(AppRoute.videoCall, args: currentCall);
+      print('push ke webrtc room');
       Navigator.push(
           context,
           MaterialPageRoute(
@@ -273,6 +273,7 @@ class _AfterSplashState extends State<AfterSplash> with WidgetsBindingObserver {
       ),
       home: WelcomePage(parameter: widget.parameter),
       onGenerateRoute: AppRoute.generateRoute,
+      // initialRoute: AppRoute.videoCall,
       navigatorKey: NavigationService.instance.navigationKey,
       navigatorObservers: <NavigatorObserver>[
         NavigationService.instance.routeObserver

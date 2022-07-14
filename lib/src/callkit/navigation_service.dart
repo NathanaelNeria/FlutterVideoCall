@@ -73,10 +73,10 @@ class NavigationService {
   /// Push the route with the given name onto the navigator, and then remove all
   /// the previous routes until the `predicate` returns true.
   Future<T?> pushNamedAndRemoveUntil<T extends Object>(
-      String routeName, {
-        Object? args,
-        bool Function(Route<dynamic>)? predicate,
-      }) async {
+    String routeName, {
+    Object? args,
+    bool Function(Route<dynamic>)? predicate,
+  }) async {
     return navigationKey.currentState?.pushNamedAndRemoveUntil<T>(
       routeName,
       predicate ?? (_) => false,
@@ -87,9 +87,9 @@ class NavigationService {
   /// Push the given route onto the navigator, and then remove all the previous
   /// routes until the `predicate` returns true.
   Future<T?> pushAndRemoveUntil<T extends Object>(
-      Route<T> route, {
-        bool Function(Route<dynamic>)? predicate,
-      }) async {
+    Route<T> route, {
+    bool Function(Route<dynamic>)? predicate,
+  }) async {
     return navigationKey.currentState?.pushAndRemoveUntil<T>(
       route,
       predicate ?? (_) => false,

@@ -51,6 +51,7 @@ class _WebrtcRoomState extends State<WebrtcRoom> {
     Intl.defaultLocale = 'pt_BR';
 
     initRenderers();
+    print('init webrtc room');
 
     signaling.onAddRemoteStream = ((stream) {
       _remoteRenderer.srcObject = stream;
