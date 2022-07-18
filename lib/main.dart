@@ -95,7 +95,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   var textEvents;
   late final FirebaseMessaging _firebaseMessaging;
 
-  param() async {
+  Future<Parameter> param() async {
     response = await http
         .get(Uri.parse(urlParam), headers: {'Authorization': 'Bearer $token'});
 
@@ -107,6 +107,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       buttonColor = HexColor.fromHex(parameter.data![0].button!);
       boxColor = HexColor.fromHex(parameter.data![0].box!);
     });
+    return parameter;
   }
 
   @override
@@ -177,10 +178,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
+  Widget splashScreen() {
     return SplashScreen.timer(
-      seconds: 7,
+      seconds: 4,
       navigateAfterSeconds: AfterSplash(
         parameter: parameter,
       ),
@@ -193,6 +193,20 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       photoSize: 150.0,
       backgroundColor: Colors.black,
       loaderColor: Colors.red,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<Parameter>(
+      future: param(),
+      builder: (BuildContext context, AsyncSnapshot<Parameter> snapshot) {
+        if (snapshot.hasData) {
+          return splashScreen();
+        } else {
+          return splashScreen();
+        }
+      },
     );
   }
 }
@@ -264,7 +278,6 @@ class _AfterSplashState extends State<AfterSplash> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     return MaterialApp(
-      // title: widget.parameter.data![0].title!,
       theme: ThemeData(
         primarySwatch: Colors.blueGrey,
         textTheme: GoogleFonts.latoTextTheme(textTheme).copyWith(
@@ -273,7 +286,6 @@ class _AfterSplashState extends State<AfterSplash> with WidgetsBindingObserver {
       ),
       home: WelcomePage(parameter: widget.parameter),
       onGenerateRoute: AppRoute.generateRoute,
-      // initialRoute: AppRoute.videoCall,
       navigatorKey: NavigationService.instance.navigationKey,
       navigatorObservers: <NavigatorObserver>[
         NavigationService.instance.routeObserver

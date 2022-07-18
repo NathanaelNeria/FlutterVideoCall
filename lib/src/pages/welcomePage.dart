@@ -22,12 +22,11 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_webrtc_demo/hexColorConverter.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
-
 class WelcomePage extends StatefulWidget {
   WelcomePage({Key? key, this.parameter}) : super(key: key);
 
   final Parameter? parameter;
-  
+
   @override
   _WelcomePageState createState() => _WelcomePageState();
 }
@@ -49,29 +48,30 @@ class _WelcomePageState extends State<WelcomePage> {
     return InkWell(
       onTap: () {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => PrepPage(title: '', parameter: widget.parameter!,)));
+            context,
+            MaterialPageRoute(
+                builder: (context) => PrepPage(
+                      parameter: widget.parameter!,
+                    )));
       },
       child: Container(
         width: MediaQuery.of(context).size.width,
         padding: EdgeInsets.symmetric(vertical: 13),
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(5)),
-          border: Border.all(color: boxColor, width: 2),
-          boxShadow: <BoxShadow>[
-            BoxShadow(
-                color: boxColor,
-                offset: Offset(2, 4),
-                blurRadius: 8,
-                spreadRadius: 2)
-          ],
-          color: buttonColor
-        ),
+            borderRadius: BorderRadius.all(Radius.circular(5)),
+            border: Border.all(color: boxColor, width: 2),
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                  color: boxColor,
+                  offset: Offset(2, 4),
+                  blurRadius: 8,
+                  spreadRadius: 2)
+            ],
+            color: buttonColor),
         child: Text(
           'Open Account Now',
-          style: TextStyle(fontSize: 20,
-              color: textColor
-          ),
+          style: TextStyle(fontSize: 20, color: textColor),
         ),
       ),
     );
@@ -81,7 +81,14 @@ class _WelcomePageState extends State<WelcomePage> {
     return InkWell(
       onTap: () async {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => Notice(email: 'nathanaelneria@gmail.com', nik: 3175022104970010, name: 'Nathanael Neria', parameter: widget.parameter!,)));
+            context,
+            MaterialPageRoute(
+                builder: (context) => Notice(
+                      email: 'nathanaelneria@gmail.com',
+                      nik: 3175022104970010,
+                      name: 'Nathanael Neria',
+                      parameter: widget.parameter!,
+                    )));
         // Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp()));
       },
       child: Container(
@@ -89,17 +96,16 @@ class _WelcomePageState extends State<WelcomePage> {
         padding: EdgeInsets.symmetric(vertical: 13),
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(5)),
-          border: Border.all(color: boxColor, width: 2),
-          boxShadow: <BoxShadow>[
-            BoxShadow(
-                color: boxColor,
-                offset: Offset(2, 4),
-                blurRadius: 8,
-                spreadRadius: 2)
-          ],
-          color: buttonColor
-        ),
+            borderRadius: BorderRadius.all(Radius.circular(5)),
+            border: Border.all(color: boxColor, width: 2),
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                  color: boxColor,
+                  offset: Offset(2, 4),
+                  blurRadius: 8,
+                  spreadRadius: 2)
+            ],
+            color: buttonColor),
         child: Text(
           'Login',
           style: TextStyle(fontSize: 20, color: textColor),
@@ -183,53 +189,53 @@ class _WelcomePageState extends State<WelcomePage> {
         print('HOME: $event');
         switch (event!.name) {
           case CallEvent.ACTION_CALL_INCOMING:
-          // TODO: received an incoming call
+            // TODO: received an incoming call
             print('incoming call');
             // NavigationService.instance
             //     .pushNamedIfNotCurrent(AppRoute.callingPage, args: event.body);
             break;
           case CallEvent.ACTION_CALL_START:
-          // TODO: started an outgoing call
-          // TODO: show screen calling in Flutter
+            // TODO: started an outgoing call
+            // TODO: show screen calling in Flutter
             break;
           case CallEvent.ACTION_CALL_ACCEPT:
-          // TODO: accepted an incoming call
-          // TODO: show screen calling in Flutter
+            // TODO: accepted an incoming call
+            // TODO: show screen calling in Flutter
             NavigationService.instance
                 .pushNamedIfNotCurrent(AppRoute.videoCall, args: event.body);
             break;
           case CallEvent.ACTION_CALL_DECLINE:
-          // TODO: declined an incoming call
+            // TODO: declined an incoming call
             await requestHttp("ACTION_CALL_DECLINE_FROM_DART");
             print('decline call');
             break;
           case CallEvent.ACTION_CALL_ENDED:
-          // TODO: ended an incoming/outgoing call
+            // TODO: ended an incoming/outgoing call
             endAllCalls();
             break;
           case CallEvent.ACTION_CALL_TIMEOUT:
-          // TODO: missed an incoming call
+            // TODO: missed an incoming call
             break;
           case CallEvent.ACTION_CALL_CALLBACK:
-          // TODO: only Android - click action `Call back` from missed call notification
+            // TODO: only Android - click action `Call back` from missed call notification
             break;
           case CallEvent.ACTION_CALL_TOGGLE_HOLD:
-          // TODO: only iOS
+            // TODO: only iOS
             break;
           case CallEvent.ACTION_CALL_TOGGLE_MUTE:
-          // TODO: only iOS
+            // TODO: only iOS
             break;
           case CallEvent.ACTION_CALL_TOGGLE_DMTF:
-          // TODO: only iOS
+            // TODO: only iOS
             break;
           case CallEvent.ACTION_CALL_TOGGLE_GROUP:
-          // TODO: only iOS
+            // TODO: only iOS
             break;
           case CallEvent.ACTION_CALL_TOGGLE_AUDIO_SESSION:
-          // TODO: only iOS
+            // TODO: only iOS
             break;
           case CallEvent.ACTION_DID_UPDATE_DEVICE_PUSH_TOKEN_VOIP:
-          // TODO: only iOS
+            // TODO: only iOS
             break;
         }
         if (callback != null) {
@@ -253,20 +259,20 @@ class _WelcomePageState extends State<WelcomePage> {
     });
   }
 
-  notifPermission() async{
+  notifPermission() async {
     NotificationSettings settings = await messaging.requestPermission(
-      alert: true,
-      announcement: true,
-      badge: true,
-      carPlay: false,
-      criticalAlert: false,
-      provisional: false,
-      sound: true
-    );
+        alert: true,
+        announcement: true,
+        badge: true,
+        carPlay: false,
+        criticalAlert: false,
+        provisional: false,
+        sound: true);
 
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
       print('User granted permission');
-    } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
+    } else if (settings.authorizationStatus ==
+        AuthorizationStatus.provisional) {
       print('User granted provisional permission');
     } else {
       print('User declined or has not accepted permission');
@@ -305,15 +311,15 @@ class _WelcomePageState extends State<WelcomePage> {
 
   Future<void> getDevicePushTokenVoIP() async {
     var devicePushTokenVoIP =
-    await FlutterCallkitIncoming.getDevicePushTokenVoIP();
+        await FlutterCallkitIncoming.getDevicePushTokenVoIP();
     print(devicePushTokenVoIP);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body:SingleChildScrollView(
-        child:Container(
+      body: SingleChildScrollView(
+        child: Container(
           padding: EdgeInsets.symmetric(horizontal: 20),
           height: MediaQuery.of(context).size.height,
           decoration: BoxDecoration(
@@ -326,11 +332,10 @@ class _WelcomePageState extends State<WelcomePage> {
                     spreadRadius: 2)
               ],
               gradient: LinearGradient(
-                  begin: Alignment.bottomLeft,
-                  end: Alignment.topRight,
-                  colors: [bgColor, bgColor],
-              )
-          ),
+                begin: Alignment.bottomLeft,
+                end: Alignment.topRight,
+                colors: [bgColor, bgColor],
+              )),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -344,7 +349,11 @@ class _WelcomePageState extends State<WelcomePage> {
               ),
               Text(
                 titleText,
-                style: TextStyle(color: textColor, fontSize: 23, fontWeight: FontWeight.bold), textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: textColor,
+                    fontSize: 23,
+                    fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
               ),
               SizedBox(
                 height: 25,
@@ -352,18 +361,18 @@ class _WelcomePageState extends State<WelcomePage> {
               Text(
                 //'Selamat datang di IST Bank Mobile. Kemudahan bertransaksi dalam genggaman Anda',
                 'Welcome to $titleText. Ease of transaction in your hand',
-                style: TextStyle(color: textColor, fontSize: 17), textAlign: TextAlign.center,
+                style: TextStyle(color: textColor, fontSize: 17),
+                textAlign: TextAlign.center,
               ),
               ElevatedButton(
                 onPressed: endAllCalls,
-                child: Text(
-                  'end call'
-                ),
+                child: Text('end call'),
               ),
               Text(
                 //'Apakah kamu sudah memiliki rekening IST Mobile?',
                 'Do you have $titleText Account?',
-                style: TextStyle(color: textColor, fontSize: 17), textAlign: TextAlign.center,
+                style: TextStyle(color: textColor, fontSize: 17),
+                textAlign: TextAlign.center,
               ),
               SizedBox(
                 height: 20,
@@ -375,7 +384,8 @@ class _WelcomePageState extends State<WelcomePage> {
               Text(
                 //'Belum memiliki rekening IST Mobile.\nMau buka rekening kamu sekarang juga?',
                 'I don\'t have $titleText Account. \nWant to open account now?',
-                style: TextStyle(color: textColor, fontSize: 17), textAlign: TextAlign.center,
+                style: TextStyle(color: textColor, fontSize: 17),
+                textAlign: TextAlign.center,
               ),
               SizedBox(
                 height: 20,

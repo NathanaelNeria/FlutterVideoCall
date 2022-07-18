@@ -7,12 +7,10 @@ import 'loginPage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../nodeflux/screens/nodefluxOcrKtpPage.dart';
 
-
 class PrepPage extends StatefulWidget {
-  PrepPage({Key? key, required this.title, required this.parameter}) : super(key: key);
+  PrepPage({Key? key, this.title, required this.parameter}) : super(key: key);
 
-
-  final String title;
+  final String? title;
   final Parameter parameter;
 
   @override
@@ -41,7 +39,10 @@ class _PrepPageState extends State<PrepPage> {
               child: Icon(Icons.keyboard_arrow_left, color: textColor),
             ),
             Text('Back',
-                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: textColor))
+                style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                    color: textColor))
           ],
         ),
       ),
@@ -73,40 +74,40 @@ class _PrepPageState extends State<PrepPage> {
   }
 
   Widget _submitButton() {
-    return
-      InkWell(
-          onTap: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) =>
-                NodefluxOcrKtpPage(title: '', parameter: widget.parameter,)
-            ));
-          },
-          child:Container(
-            width: MediaQuery.of(context).size.width,
-            padding: EdgeInsets.symmetric(vertical: 15),
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
+    return InkWell(
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => NodefluxOcrKtpPage(
+                        title: '',
+                        parameter: widget.parameter,
+                      )));
+        },
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          padding: EdgeInsets.symmetric(vertical: 15),
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(5)),
               border: Border.all(color: boxColor, width: 2),
-                boxShadow: <BoxShadow>[
-                  BoxShadow(
-                      color: boxColor,
-                      offset: Offset(2, 4),
-                      blurRadius: 8,
-                      spreadRadius: 2)
-                ],
-                color: buttonColor
-            ),
-            child: Text(
-              //     'OK, Semua sudah siap',
-              'OK, I am ready',
-              style: TextStyle(fontSize: 20, color: textColor),
-            ),
-          )
-      );
+              boxShadow: <BoxShadow>[
+                BoxShadow(
+                    color: boxColor,
+                    offset: Offset(2, 4),
+                    blurRadius: 8,
+                    spreadRadius: 2)
+              ],
+              color: buttonColor),
+          child: Text(
+            //     'OK, Semua sudah siap',
+            'OK, I am ready',
+            style: TextStyle(fontSize: 20, color: textColor),
+          ),
+        ));
   }
 
-  Widget selectProduct(){
+  Widget selectProduct() {
     var product = ['Savings Account', 'Current Account'];
     return Container(
         width: MediaQuery.of(context).size.width,
@@ -130,8 +131,7 @@ class _PrepPageState extends State<PrepPage> {
                       canvasColor: Colors.blue.shade200,
                     ),
                     child: Text(value, style: TextStyle(color: Colors.white)),
-                  )
-              );
+                  ));
             }).toList(),
             onChanged: (String? newValue) {
               setState(() {
@@ -140,32 +140,30 @@ class _PrepPageState extends State<PrepPage> {
               });
             },
           ),
-        )
-    );
+        ));
   }
 
   Widget _title() {
     return RichText(
       textAlign: TextAlign.center,
       text: TextSpan(
-          text: titleText,
-          style: GoogleFonts.portLligatSans(
-              textStyle: Theme.of(context).textTheme.headline4,
-              fontSize: 30,
-              fontWeight: FontWeight.w700,
-              // color: Color(0xffe46b10),
-              color: Colors.white
-          ),
-          // children: [
-          //   TextSpan(
-          //     text: ' Bank',
-          //     style: TextStyle(color: Colors.white, fontSize: 30),
-          //   ),
-          //   // TextSpan(
-          //   //   text: 'rnz',
-          //   //   style: TextStyle(color: Color(0xffe46b10), fontSize: 30),
-          //   // ),
-          // ]
+        text: titleText,
+        style: GoogleFonts.portLligatSans(
+            textStyle: Theme.of(context).textTheme.headline4,
+            fontSize: 30,
+            fontWeight: FontWeight.w700,
+            // color: Color(0xffe46b10),
+            color: Colors.white),
+        // children: [
+        //   TextSpan(
+        //     text: ' Bank',
+        //     style: TextStyle(color: Colors.white, fontSize: 30),
+        //   ),
+        //   // TextSpan(
+        //   //   text: 'rnz',
+        //   //   style: TextStyle(color: Color(0xffe46b10), fontSize: 30),
+        //   // ),
+        // ]
       ),
     );
   }
@@ -195,12 +193,9 @@ class _PrepPageState extends State<PrepPage> {
                   spreadRadius: 2)
             ],
             gradient: LinearGradient(
-                begin: Alignment.bottomLeft,
-                end: Alignment.topRight,
+                begin: Alignment.bottomLeft, end: Alignment.topRight,
                 // colors: [Color(0xfffbb448), Color(0xffe46b10)]
-                colors: [bgColor, bgColor]
-            )
-        ),
+                colors: [bgColor, bgColor])),
         height: height,
         child: Stack(
           children: <Widget>[
@@ -219,13 +214,10 @@ class _PrepPageState extends State<PrepPage> {
                     Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget> [
-                          SizedBox(height: 80),
-                          _title()
-                        ]
-                    ),
-                    Column(crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget> [
+                        children: <Widget>[SizedBox(height: 80), _title()]),
+                    Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
                           SizedBox(height: height * .03),
 
                           SizedBox(
@@ -233,7 +225,11 @@ class _PrepPageState extends State<PrepPage> {
                           ),
                           Text(
                             'Let\'s follow these steps to register $titleText Account',
-                            style: TextStyle(color: textColor, fontSize: 17, fontWeight: FontWeight.bold), textAlign: TextAlign.left,
+                            style: TextStyle(
+                                color: textColor,
+                                fontSize: 17,
+                                fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.left,
                           ),
                           //_emailPasswordWidget(),
                           SizedBox(
@@ -241,28 +237,41 @@ class _PrepPageState extends State<PrepPage> {
                           ),
                           Text(
                             'Please prepare these following items to begin:',
-                            style: TextStyle(color: textColor, fontSize: 17), textAlign: TextAlign.left,
+                            style: TextStyle(color: textColor, fontSize: 17),
+                            textAlign: TextAlign.left,
                           ),
                           SizedBox(
                             height: 20,
                           ),
                           Text(
                             '\u2022 eKTP',
-                            style: TextStyle(color: textColor, fontSize: 17, fontWeight: FontWeight.bold), textAlign: TextAlign.left,
+                            style: TextStyle(
+                                color: textColor,
+                                fontSize: 17,
+                                fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.left,
                           ),
                           SizedBox(
                             height: 20,
                           ),
                           Text(
                             '\u2022 Active Mobile Phone Number and Email',
-                            style: TextStyle(color: textColor, fontSize: 17, fontWeight: FontWeight.bold), textAlign: TextAlign.left,
+                            style: TextStyle(
+                                color: textColor,
+                                fontSize: 17,
+                                fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.left,
                           ),
                           SizedBox(
                             height: 20,
                           ),
                           Text(
                             '\u2022 Appropriate situation to take selfie',
-                            style: TextStyle(color: textColor, fontSize: 17, fontWeight: FontWeight.bold), textAlign: TextAlign.left,
+                            style: TextStyle(
+                                color: textColor,
+                                fontSize: 17,
+                                fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.left,
                           ),
                           // SizedBox(
                           //   height: 20,
