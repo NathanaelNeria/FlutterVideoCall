@@ -112,7 +112,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   @override
   void initState() {
-    param();
+    // param();
     _uuid = Uuid();
     initFirebase();
     // checkAndNavigationCallingPage();
@@ -180,7 +180,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   Widget splashScreen() {
     return SplashScreen.timer(
-      seconds: 4,
+      seconds: 7,
       navigateAfterSeconds: AfterSplash(
         parameter: parameter,
       ),

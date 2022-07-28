@@ -6,6 +6,7 @@ import 'package:flutter_callkit_incoming/flutter_callkit_incoming.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:flutter_webrtc_demo/src/pages/displayDataPage.dart';
 import 'package:flutter_webrtc_demo/src/parameterModel.dart';
+import 'package:flutter_webrtc_demo/src/utils/websocket.dart';
 import 'webrtc_signaling.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -90,8 +91,14 @@ class _WebrtcRoomState extends State<WebrtcRoom> {
 
   @override
   void dispose() {
-    _localRenderer.dispose();
-    _remoteRenderer.dispose();
+    if (_localRenderer.srcObject != null) {
+      _localRenderer.srcObject = null;
+      _localRenderer.dispose();
+    }
+    if (_remoteRenderer.srcObject != null) {
+      _remoteRenderer.srcObject = null;
+      _remoteRenderer.dispose();
+    }
     super.dispose();
   }
 
@@ -160,7 +167,7 @@ class _WebrtcRoomState extends State<WebrtcRoom> {
                     (_remoteRenderer.srcObject != null)
                         ? ElevatedButton(
                             onPressed: () {
-                              FlutterCallkitIncoming.endAllCalls();
+                              // FlutterCallkitIncoming.endAllCalls();
                               signaling.hangUp(_localRenderer);
                               Navigator.push(
                                   context,

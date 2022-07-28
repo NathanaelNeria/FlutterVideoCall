@@ -131,14 +131,14 @@ class WebrtcSignaling {
     var callerCandidatesCollection = roomAgent.collection('callerCandidates');
 
     peerConnection?.onIceCandidate = (RTCIceCandidate candidate) {
-      print('Got candidate: ${candidate.toMap()}');
+      // print('Got candidate: ${candidate.toMap()}');
       callerCandidatesCollection.add(candidate.toMap());
     }; // Finish Code for collecting ICE candidate
 
     // Add code for creating a room
     RTCSessionDescription offer = await peerConnection!.createOffer();
     await peerConnection!.setLocalDescription(offer);
-    print('Created offer: $offer');
+    // print('Created offer: $offer');
 
     Map<String, dynamic> roomWithOffer = {'offer': offer.toMap()};
 
@@ -300,11 +300,13 @@ class WebrtcSignaling {
     List<MediaStreamTrack> tracks = localVideo.srcObject!.getTracks();
     tracks.forEach((track) {
       track.stop();
+      print('camera stop');
     });
 
     if (remoteStream != null) {
       remoteStream!.getTracks().forEach((track) => track.stop());
     }
+
     if (peerConnection != null) peerConnection!.close();
 
     if (roomId != null) {
@@ -319,7 +321,10 @@ class WebrtcSignaling {
       await roomRef.delete();
     }
 
-    localStream!.dispose();
+    await localStream!.dispose();
+    if (localVideo.srcObject != null) {
+      localVideo.srcObject = null;
+    }
     remoteStream?.dispose();
   }
 
@@ -328,7 +333,7 @@ class WebrtcSignaling {
     bool connected = false;
     bool connecting = false;
 
-    peerConnection!.onConnectionState = (RTCPeerConnectionState state) {
+    peerConnection!.onConnectionState = (RTCPeerConnectionState state) async {
       print('Connection state change: $state');
 
       if (state == RTCPeerConnectionState.RTCPeerConnectionStateConnected) {
@@ -343,9 +348,7 @@ class WebrtcSignaling {
                     )));
         print('disconnect');
         disconnect = true;
-      } else if (state ==
-          RTCPeerConnectionState.RTCPeerConnectionStateConnecting) {
-        connecting = true;
+        await FlutterCallkitIncoming.endAllCalls();
       } else if (state == RTCPeerConnectionState.RTCPeerConnectionStateFailed &&
           !disconnect &&
           !connected &&
@@ -367,6 +370,7 @@ class WebrtcSignaling {
                 ],
               );
             });
+        await FlutterCallkitIncoming.endAllCalls();
       }
     };
   }
